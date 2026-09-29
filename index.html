@@ -90,7 +90,7 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 0 25px rgba(255,0,51,0.3); }
 .card h3 { color: var(--red); margin-bottom: 10px; }
 .card p { color: var(--dim); font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px; flex: 1; }
-.card .price { color: var(--red); font-weight: bold; font-size: 1.1rem; margin-bottom: 14px; padding-top: 12px; border-top: 1px dashed var(--card-border); }
+.card .price { color: var(--red); font-weight: bold; font-size: 1rem; margin-bottom: 14px; padding-top: 12px; border-top: 1px dashed var(--card-border); }
 .card .order-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 10px; border-radius: 6px; text-decoration: none; text-align: center; font-weight: bold; transition: 0.25s; font-family: inherit; font-size: 0.9rem; cursor: pointer; display: block; margin-bottom: 8px; }
 .card .order-btn:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
 .card .cart-add-btn { background: var(--red); border: 1px solid var(--red); color: #fff; padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; transition: 0.25s; font-family: inherit; font-size: 0.9rem; cursor: pointer; display: block; box-shadow: 0 0 15px rgba(255,0,51,0.3); }
@@ -235,6 +235,7 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .cart-empty { text-align: center; color: var(--dim); padding: 30px 10px; }
 .checkout-btn { width: 100%; background: var(--red); color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; font-family: inherit; transition: 0.25s; box-shadow: 0 0 20px rgba(255,0,51,0.4); }
 .checkout-btn:hover { box-shadow: 0 0 35px var(--red); transform: translateY(-2px); }
+.payment-note { background: rgba(255,0,51,0.1); border: 1px dashed var(--red); border-radius: 8px; padding: 12px; margin-bottom: 14px; text-align: center; color: var(--red); font-weight: bold; font-size: 0.9rem; }
 footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1px solid var(--card-border); color: var(--dim); font-size: 0.85rem; }
 @media (max-width: 720px) {
   body { padding-left: 0; padding-bottom: 70px; }
@@ -290,13 +291,13 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <!-- الاشتراكات -->
 <section id="plans" class="section">
   <h2 class="page-title">⭐ خطط الاشتراك</h2>
-  <p class="page-sub">اختر الخطة اللي تناسبك — واستمتع بكل مميزات الموقع.</p>
+  <p class="page-sub">اختر الخطة اللي تناسبك — الدفع عبر رصيد ليبيانا.</p>
   <div class="pricing-grid">
     <div class="pricing-card free">
       <div class="plan-icon">🆓</div>
       <div class="plan-name">المجانية</div>
       <div class="plan-desc">للتجربة والاستكشاف</div>
-      <div class="plan-price"><span class="amount">0</span><span class="currency">$</span><span class="period">مجاناً للأبد</span></div>
+      <div class="plan-price"><span class="amount">0</span><span class="currency"> د.ل</span><span class="period">مجاناً للأبد</span></div>
       <ul class="pricing-features">
         <li>تصفح كل الأقسام</li>
         <li>خدمات مجانية محدودة</li>
@@ -313,7 +314,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
       <div class="plan-icon">🚀</div>
       <div class="plan-name">Pro</div>
       <div class="plan-desc">للمستخدمين الجادين</div>
-      <div class="plan-price"><span class="amount">4.99</span><span class="currency">$</span><span class="period">شهرياً</span></div>
+      <div class="plan-price"><span class="amount">5</span><span class="currency"> د.ل</span><span class="period">لمدة أسبوعين</span></div>
       <ul class="pricing-features">
         <li>كل مميزات المجانية</li>
         <li>فتح كل السكربتات</li>
@@ -323,14 +324,14 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
         <li>خصم 20% على الخدمات المدفوعة</li>
         <li class="no">استشارات VIP</li>
       </ul>
-      <a onclick="contactViaInstagram('اشتراك Pro 4.99$')" class="pricing-btn">اشترك الآن</a>
+      <a onclick="contactViaInstagram('اشتراك Pro — 5 د.ل / أسبوعين (رصيد ليبيانا)')" class="pricing-btn">اشترك الآن</a>
     </div>
     <div class="pricing-card plus">
       <div class="card-ribbon">الخارقة</div>
       <div class="plan-icon">👑</div>
       <div class="plan-name">Plus</div>
       <div class="plan-desc">كل شيء، بلا حدود</div>
-      <div class="plan-price"><span class="amount">9.99</span><span class="currency">$</span><span class="period">شهرياً</span></div>
+      <div class="plan-price"><span class="amount">10</span><span class="currency"> د.ل</span><span class="period">لمدة شهرين</span></div>
       <ul class="pricing-features">
         <li>كل مميزات Pro</li>
         <li>كل الموقع مجاني بالكامل</li>
@@ -340,7 +341,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
         <li>خصم 50% على كل الخدمات</li>
         <li>هدية شهرية</li>
       </ul>
-      <a onclick="contactViaInstagram('اشتراك Plus 9.99$')" class="pricing-btn">اشترك الآن</a>
+      <a onclick="contactViaInstagram('اشتراك Plus — 10 د.ل / شهرين (رصيد ليبيانا)')" class="pricing-btn">اشترك الآن</a>
     </div>
   </div>
 </section>
@@ -361,7 +362,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
     </div>
     <div class="visitor-counter"><span class="label">👁️ عدد الزوار:</span><span class="num" id="visitorCount">...</span></div>
     <h1 class="glitch" data-text="أبني الكود. أصنع الحلول.">أبني الكود. أصنع الحلول.</h1>
-    <p class="sub">متخصص في البرمجة والتطوير — من الفكرة إلى الإطلاق.</p>
+    <p class="sub">متخصص في البرمجة والتطوير — الدفع عبر رصيد ليبيانا.</p>
     <div class="cta">
       <button class="btn" onclick="showSection('plans', document.querySelectorAll('.nav-links a')[0])">⭐ اشترك الآن</button>
       <button class="btn ghost" onclick="showSection('contact', document.querySelectorAll('.nav-links a')[15])">تواصل معي</button>
@@ -374,8 +375,8 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   <h2 class="page-title">عنّي</h2>
   <div class="about-box">
     <p>منصة RA_7DEE7 — حيث تتحول الأفكار إلى واقع رقمي. لسنا مجرد موقع، بل بوابة تقنية متكاملة تجمع بين الإبداع والاحترافية.</p>
-    <p>نقدم حلولاً رقمية تناسب الجميع — من الفرد الذي يحلم بمشروعه الأول، إلى الشركة التي تبحث عن شريك تقني موثوق. نؤمن بأن التقنية حق للجميع، لذلك نقدم خدمات تبدأ من 1$ فقط.</p>
-    <p>هذا الموقع متخصص في البرمجة والتطوير، ويضم خدماتي ومشاريعي، مع قنوات تواصل مباشرة للتعاون والاستفسار.</p>
+    <p>نقدم حلولاً رقمية تناسب الجميع — من الفرد الذي يحلم بمشروعه الأول، إلى الشركة التي تبحث عن شريك تقني موثوق. نؤمن بأن التقنية حق للجميع، لذلك نقدم خدمات بأسعار منخفضة تبدأ من 2 دينار ليبي.</p>
+    <p><strong>💳 الدفع عبر رصيد ليبيانا — سهل وسريع وآمن.</strong></p>
   </div>
   <h3 class="section-title">المهارات</h3>
   <div class="skills"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Python</span><span>تطوير واجهات</span><span>تطوير تطبيقات</span><span>حل المشكلات</span><span>تحسين الأداء</span></div>
@@ -384,7 +385,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <!-- خدماتي -->
 <section id="services" class="section">
   <h2 class="page-title">خدماتي الاحترافية</h2>
-  <p class="page-sub">حلول تقنية متكاملة — من الفكرة حتى التسليم.</p>
+  <p class="page-sub">حلول تقنية متكاملة — الدفع عبر رصيد ليبيانا.</p>
   <div class="pro-services">
     <div class="pro-card"><div class="pro-icon">🌐</div><h3>صنع <span>مواقع</span></h3><p>مواقع احترافية متجاوبة مع الجوال، سريعة الأداء، بتصميم عصري.</p><ul class="pro-features"><li>تصميم مخصص حسب رغبتك</li><li>متوافق مع كل الأجهزة</li><li>سرعة تحميل عالية</li></ul><a onclick="contactViaInstagram('صنع مواقع')" class="pro-btn">اطلب الخدمة ←</a></div>
     <div class="pro-card"><div class="pro-icon">📱</div><h3>تصميم <span>تطبيقات</span></h3><p>تطبيقات حسب الرغبة — بأي وظيفة وبأي واجهة تريدها.</p><ul class="pro-features"><li>واجهة استخدام عصرية</li><li>أداء سريع وسلس</li><li>تطوير حسب الفكرة</li></ul><a onclick="contactViaInstagram('تصميم تطبيقات')" class="pro-btn">اطلب الخدمة ←</a></div>
@@ -423,35 +424,35 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <!-- متجري -->
 <section id="shop" class="section">
   <h2 class="page-title">متجري</h2>
-  <p class="page-sub">خدمات برمجية وتقنية — أضف إلى السلة أو تواصل مباشرة.</p>
+  <p class="page-sub">الدفع عبر رصيد ليبيانا — أضف إلى السلة أو تواصل مباشرة.</p>
   <div class="grid">
-    <div class="card"><span class="tag">تطوير ويب</span><h3>صنع مواقع</h3><p>تنفيذ موقع كامل من الصفر حسب طلبك — بأي فكرة وبأي حجم.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('صنع مواقع', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع مواقع')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تطبيقات</span><h3>تصميم تطبيقات حسب الرغبة</h3><p>تصميم وتنفيذ تطبيق حسب فكرتك — بأي وظيفة وبأي واجهة تريدها.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('تصميم تطبيقات', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم تطبيقات حسب الرغبة')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">أدوات</span><h3>صنع أدوات</h3><p>بناء أدوات برمجية مخصصة حسب حاجتك.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('صنع أدوات', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع أدوات')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تطوير ويب</span><h3>تصميم موقع كامل</h3><p>موقع متجاوب بأي فكرة تريدها — شخصي، شركة، أو متجر.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('تصميم موقع كامل', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم موقع كامل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">بوتات</span><h3>بوت تيليجرام / واتساب</h3><p>بوت مخصص لأي وظيفة — ردود تلقائية، تنبيهات، إدارة قناة.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('بوت تيليجرام/واتساب', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت تيليجرام / واتساب')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">بوتات</span><h3>بوت ديسكورد</h3><p>بوت لإدارة السيرفرات — أوامر، حماية، وأدوات تفاعلية.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('بوت ديسكورد', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت ديسكورد')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تصميم</span><h3>تصميم شعار احترافي</h3><p>شعار مخصص يناسب هويتك — بأسلوب عصري واحترافي.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('تصميم شعار', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم شعار احترافي')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تصميم</span><h3>تصميم بانر / كوفر</h3><p>كوفر احترافي لقناتك على يوتيوب أو تيك توك.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('تصميم بانر/كوفر', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم بانر / كوفر')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">أتمتة</span><h3>سكربت أتمتة</h3><p>سكربت لأي مهمة متكررة تسويها آلياً.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت أتمتة', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت أتمتة')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">إصلاح</span><h3>إصلاح أخطاء المواقع</h3><p>حل مشاكل موقعك وإصلاح الأخطاء البرمجية.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('إصلاح أخطاء المواقع', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('إصلاح أخطاء المواقع')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">أداء</span><h3>تحسين سرعة المواقع</h3><p>تسريع موقعك البطيء وتحسين تجربة المستخدم.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('تحسين سرعة المواقع', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تحسين سرعة المواقع')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تطوير ويب</span><h3>صنع مواقع</h3><p>تنفيذ موقع كامل من الصفر حسب طلبك.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('صنع مواقع', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع مواقع — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تطبيقات</span><h3>تصميم تطبيقات</h3><p>تصميم وتنفيذ تطبيق حسب فكرتك — بأي وظيفة.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم تطبيقات', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم تطبيقات — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">أدوات</span><h3>صنع أدوات</h3><p>بناء أدوات برمجية مخصصة حسب حاجتك.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('صنع أدوات', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع أدوات — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تطوير ويب</span><h3>تصميم موقع كامل</h3><p>موقع متجاوب بأي فكرة تريدها — شخصي أو شركة.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم موقع كامل', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم موقع كامل — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">بوتات</span><h3>بوت تيليجرام / واتساب</h3><p>بوت مخصص لأي وظيفة — ردود تلقائية، تنبيهات.</p><div class="price">4 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('بوت تيليجرام/واتساب', 4)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت تيليجرام / واتساب — 4 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">بوتات</span><h3>بوت ديسكورد</h3><p>بوت لإدارة السيرفرات — أوامر، حماية، أدوات.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('بوت ديسكورد', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت ديسكورد — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تصميم</span><h3>تصميم شعار احترافي</h3><p>شعار مخصص يناسب هويتك — بأسلوب عصري.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم شعار', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم شعار — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تصميم</span><h3>تصميم بانر / كوفر</h3><p>كوفر احترافي لقناتك على يوتيوب أو تيك توك.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم بانر/كوفر', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم بانر / كوفر — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">أتمتة</span><h3>سكربت أتمتة</h3><p>سكربت لأي مهمة متكررة تسويها آلياً.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت أتمتة', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت أتمتة — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">إصلاح</span><h3>إصلاح أخطاء المواقع</h3><p>حل مشاكل موقعك وإصلاح الأخطاء البرمجية.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('إصلاح أخطاء المواقع', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('إصلاح أخطاء المواقع — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">أداء</span><h3>تحسين سرعة المواقع</h3><p>تسريع موقعك البطيء وتحسين تجربة المستخدم.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تحسين سرعة المواقع', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تحسين سرعة المواقع — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
   </div>
 </section>
 
 <!-- سكربتاتي -->
 <section id="scripts" class="section">
   <h2 class="page-title">سكربتاتي</h2>
-  <p class="page-sub">سكربتات جاهزة للاستخدام الفوري.</p>
+  <p class="page-sub">الدفع عبر رصيد ليبيانا — سكربتات جاهزة للاستخدام.</p>
   <div class="grid">
-    <div class="card"><span class="tag">Python</span><h3>سكربت تحميل فيديوهات</h3><p>تحميل فيديوهات من منصات مختلفة بجودة عالية.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت تحميل فيديوهات', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت تحميل فيديوهات')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>سكربت ضغط ملفات</h3><p>ضغط عدد كبير من الملفات دفعة وحدة.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت ضغط ملفات', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت ضغط ملفات')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>إعادة تسمية تلقائية</h3><p>يعيد تسمية مئات الملفات تلقائياً بنمط تختاره.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت إعادة تسمية', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت إعادة تسمية تلقائية')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>تنبيه واتساب / تيليجرام</h3><p>يرسل لك تنبيه عند حدث معين.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت تنبيهات', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت تنبيهات واتساب/تيليجرام')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">JavaScript</span><h3>حماية نموذج</h3><p>حماية نماذج التواصل من السبام والبوتات.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت حماية نموذج', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت حماية نموذج')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">JavaScript</span><h3>عدّاد تنازلي</h3><p>عدّاد جاهز للعروض والمناسبات.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت عدّاد', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت عدّاد تنازلي')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Bash</span><h3>نسخ احتياطي</h3><p>نسخة احتياطية دورية من موقعك أو ملفاتك.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت نسخ احتياطي', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت نسخ احتياطي')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>مراقبة موقع</h3><p>يراقب موقعاً ويبلغك لو تعطّل أو تغيّر.</p><div class="price">1 $</div><button class="cart-add-btn" onclick="addToCart('سكربت مراقبة موقع', 1)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت مراقبة موقع')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>سكربت تحميل فيديوهات</h3><p>تحميل فيديوهات من منصات مختلفة بجودة عالية.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت تحميل فيديوهات', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت تحميل فيديوهات — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>سكربت ضغط ملفات</h3><p>ضغط عدد كبير من الملفات دفعة وحدة.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت ضغط ملفات', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت ضغط ملفات — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>إعادة تسمية تلقائية</h3><p>يعيد تسمية مئات الملفات تلقائياً بنمط تختاره.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت إعادة تسمية', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت إعادة تسمية — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>تنبيه واتساب / تيليجرام</h3><p>يرسل لك تنبيه عند حدث معين.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت تنبيهات', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت تنبيهات — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">JavaScript</span><h3>حماية نموذج</h3><p>حماية نماذج التواصل من السبام والبوتات.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت حماية نموذج', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت حماية نموذج — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">JavaScript</span><h3>عدّاد تنازلي</h3><p>عدّاد جاهز للعروض والمناسبات.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت عدّاد', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت عدّاد — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">Bash</span><h3>نسخ احتياطي</h3><p>نسخة احتياطية دورية من موقعك أو ملفاتك.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت نسخ احتياطي', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت نسخ احتياطي — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>مراقبة موقع</h3><p>يراقب موقعاً ويبلغك لو تعطّل أو تغيّر.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت مراقبة موقع', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت مراقبة موقع — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
   </div>
 </section>
 
@@ -490,7 +491,6 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
       <li>شارك شغلك واطلب ملاحظات</li>
       <li>اصبر — الإتقان يحتاج وقت</li>
     </ul>
-    <p>البرمجة مو موهبة — هي مهارة تُبنى بالممارسة. كل مبرمج محترف بدأ من الصفر مثلك تماماً.</p>
   </div>
 
   <div class="blog-post">
@@ -505,7 +505,6 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
       <li><strong>SQL:</strong> للتعامل مع قواعد البيانات</li>
       <li><strong>Go:</strong> سريعة وقوية، مطلوبة في السيرفرات</li>
     </ul>
-    <p><strong>نصيحة:</strong> اختر لغة واحدة وابدأ فيها — لا تشتت نفسك.</p>
   </div>
 
   <div class="blog-post">
@@ -535,7 +534,6 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
       <li>✅ يحترم الخصوصية والسرية</li>
       <li>✅ يتبع ميثاق أخلاقي مهني</li>
     </ul>
-    <p><strong>أشهر الشهادات في المجال:</strong> CEH، OSCP، CompTIA Security+، CISSP.</p>
   </div>
 
   <div class="blog-post">
@@ -559,8 +557,8 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
       <li><strong>Phishing:</strong> رسائل مزيفة تسرق بياناتك — تحقق دائماً من المصدر</li>
       <li><strong>Malware:</strong> برامج خبيثة — لا تحمّل من مصادر غير موثوقة</li>
       <li><strong>DDoS:</strong> إغراق موقع بطلبات — يُحل بالحماية السحابية</li>
-      <li><strong>SQL Injection:</strong> استغلال ثغرات قواعد البيانات — يُمنع بالتحقق من المدخلات</li>
-      <li><strong>Social Engineering:</strong> استغلال النفس البشرية — لا تشارك معلوماتك</li>
+      <li><strong>SQL Injection:</strong> استغلال ثغرات قواعد البيانات</li>
+      <li><strong>Social Engineering:</strong> استغلال النفس البشرية</li>
     </ul>
   </div>
 </section>
@@ -581,12 +579,11 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="faq" class="section">
   <h2 class="page-title">الأسئلة الشائعة</h2>
   <p class="page-sub">أسئلة تتكرر من الزبائن — إذا ما لقيت جوابك، تواصل معي.</p>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كم يستغرق تسليم الموقع؟ <span class="arrow">▼</span></div><div class="faq-answer">يعتمد على حجم الموقع. المواقع البسيطة 2-3 أيام، والمتوسطة 5-7 أيام، والمعقدة 2-3 أسابيع. نتفق على المدة قبل البدء.</div></div>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كيف يتم الدفع؟ <span class="arrow">▼</span></div><div class="faq-answer">نتفق على طريقة الدفع بعد الطلب — تحويل بنكي محلي، USDT، أو PayPal. الدفع على دفعتين: 50% مقدماً و 50% عند التسليم.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كم يستغرق تسليم الموقع؟ <span class="arrow">▼</span></div><div class="faq-answer">يعتمد على حجم الموقع. المواقع البسيطة 2-3 أيام، والمتوسطة 5-7 أيام، والمعقدة 2-3 أسابيع.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كيف يتم الدفع؟ <span class="arrow">▼</span></div><div class="faq-answer">الدفع عبر رصيد ليبيانا — سهل وسريع. نتفق على التفاصيل عبر الخاص.</div></div>
   <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل تقدم دعم بعد التسليم؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — دعم مجاني لمدة 30 يوم بعد التسليم لأي مشكلة تقنية أو استفسار.</div></div>
   <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل يمكن تعديل الموقع بعد التسليم؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — أراجعك الكود كامل مع شرح كيف تعدل عليه. وإذا احتجت مساعدة، أنا موجود.</div></div>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل تعمل على مشاريع خارج ليبيا؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — أعمل مع زبائن من أي مكان في العالم. التواصل عبر انستقرام أو الإيميل.</div></div>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">ما الفرق بين Pro و Plus؟ <span class="arrow">▼</span></div><div class="faq-answer">Pro (4.99$) يعطيك فتح كل السكربتات والأدوات + خصم 20%. Plus (9.99$) يعطيك كل شي مجاني في الموقع + استشارات غير محدودة + خصم 50% + دعم VIP.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">ما الفرق بين Pro و Plus؟ <span class="arrow">▼</span></div><div class="faq-answer">Pro (5 د.ل — أسبوعين) يعطيك فتح كل السكربتات والأدوات + خصم 20%. Plus (10 د.ل — شهرين) يعطيك كل شي مجاني في الموقع + استشارات غير محدودة + خصم 50% + دعم VIP.</div></div>
 </section>
 
 <!-- قريباً -->
@@ -661,13 +658,14 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   </div>
 </section>
 
-<footer><p>© 2026 RA_7DEE7 — جميع الحقوق محفوظة</p></footer>
+<footer><p>© 2026 RA_7DEE7 — الدفع عبر رصيد ليبيانا</p></footer>
 
 <div class="cart-modal" id="cartModal">
   <div class="cart-content">
     <h3>🛒 سلة التسوق <button class="close-cart" onclick="closeCart()">✕</button></h3>
     <div id="cartItems"></div>
-    <div class="cart-total" id="cartTotal" style="display:none;"><div class="label">المجموع الكلي:</div><div class="amount" id="totalAmount">0 $</div></div>
+    <div class="cart-total" id="cartTotal" style="display:none;"><div class="label">المجموع الكلي:</div><div class="amount" id="totalAmount">0 د.ل</div></div>
+    <div class="payment-note" id="paymentNote" style="display:none;">💳 الدفع عبر رصيد ليبيانا</div>
     <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" style="display:none;">📤 إتمام الطلب</button>
   </div>
 </div>
@@ -741,24 +739,16 @@ function toggleTheme() {
 
 function toggleFaq(el) { el.classList.toggle('open'); }
 
-/* ====== الدالة الجديدة: نسخ + فتح انستقرام ====== */
 function contactViaInstagram(serviceName) {
-  const message = 'مرحباً،\nأريد خدمة: ' + serviceName + '\nمن موقع RA_7DEE7';
-  const copyAndOpen = () => {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(message).then(() => {
-        showToast('✅ تم نسخ الرسالة — الصقها في الخاص', 3500);
-      }).catch(() => {
-        fallbackCopy(message);
-      });
-    } else {
-      fallbackCopy(message);
-    }
-    setTimeout(() => {
-      window.open('https://www.instagram.com/ra_7dee7_', '_blank');
-    }, 900);
-  };
-  copyAndOpen();
+  const message = 'مرحباً،\nأريد خدمة: ' + serviceName + '\nالدفع عبر رصيد ليبيانا\nمن موقع RA_7DEE7';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(message).then(() => {
+      showToast('✅ تم نسخ الرسالة — الصقها في الخاص', 3500);
+    }).catch(() => fallbackCopy(message));
+  } else {
+    fallbackCopy(message);
+  }
+  setTimeout(() => { window.open('https://www.instagram.com/ra_7dee7_', '_blank'); }, 900);
 }
 
 function fallbackCopy(text) {
@@ -773,7 +763,6 @@ function fallbackCopy(text) {
   textarea.remove();
 }
 
-/* ====== السلة ====== */
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartBadge(); }
 function updateCartBadge() {
@@ -806,10 +795,12 @@ function renderCart() {
   const totalEl = document.getElementById('cartTotal');
   const checkoutBtn = document.getElementById('checkoutBtn');
   const totalAmount = document.getElementById('totalAmount');
+  const paymentNote = document.getElementById('paymentNote');
   if (cart.length === 0) {
     container.innerHTML = '<div class="cart-empty">🛒<br><br>السلة فاضية<br>أضف خدمات من المتجر</div>';
     totalEl.style.display = 'none';
     checkoutBtn.style.display = 'none';
+    if (paymentNote) paymentNote.style.display = 'none';
     return;
   }
   let html = ''; let total = 0;
@@ -817,12 +808,13 @@ function renderCart() {
     const qty = item.qty || 1;
     const subtotal = item.price * qty;
     total += subtotal;
-    html += '<div class="cart-item"><div class="item-info"><div class="item-name">' + item.name + (qty > 1 ? ' × ' + qty : '') + '</div><div class="item-price">' + subtotal + ' $</div></div><button class="remove-btn" onclick="removeFromCart(' + i + ')">✕</button></div>';
+    html += '<div class="cart-item"><div class="item-info"><div class="item-name">' + item.name + (qty > 1 ? ' × ' + qty : '') + '</div><div class="item-price">' + subtotal + ' د.ل</div></div><button class="remove-btn" onclick="removeFromCart(' + i + ')">✕</button></div>';
   });
   container.innerHTML = html;
-  totalAmount.textContent = total + ' $';
+  totalAmount.textContent = total + ' د.ل';
   totalEl.style.display = 'block';
   checkoutBtn.style.display = 'block';
+  if (paymentNote) paymentNote.style.display = 'block';
 }
 function checkout() {
   if (cart.length === 0) return;
@@ -832,9 +824,10 @@ function checkout() {
     const qty = item.qty || 1;
     const subtotal = item.price * qty;
     total += subtotal;
-    message += '• ' + item.name + (qty > 1 ? ' × ' + qty : '') + ' = ' + subtotal + ' $\n';
+    message += '• ' + item.name + (qty > 1 ? ' × ' + qty : '') + ' = ' + subtotal + ' د.ل\n';
   });
-  message += '\n💰 المجموع: ' + total + ' $';
+  message += '\n💰 المجموع: ' + total + ' د.ل';
+  message += '\n💳 الدفع عبر رصيد ليبيانا';
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(message).then(() => {
       showToast('✅ تم نسخ الطلب — الصقه في الخاص', 3500);
@@ -842,9 +835,7 @@ function checkout() {
   } else {
     fallbackCopy(message);
   }
-  setTimeout(() => {
-    window.open('https://www.instagram.com/ra_7dee7_', '_blank');
-  }, 900);
+  setTimeout(() => { window.open('https://www.instagram.com/ra_7dee7_', '_blank'); }, 900);
 }
 updateCartBadge();
 document.getElementById('cartModal').addEventListener('click', function(e) { if (e.target === this) closeCart(); });
