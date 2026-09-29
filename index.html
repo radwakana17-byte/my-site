@@ -21,20 +21,37 @@ body.light {
   --term-bg: #e0e0e0;
   --scan: rgba(255,0,51,0.04);
 }
-body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; transition: background 0.4s, color 0.4s; }
+body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; transition: background 0.4s, color 0.4s; padding-left: 70px; }
 .scanlines { position: fixed; inset: 0; pointer-events: none; z-index: 999; background: repeating-linear-gradient(to bottom, var(--scan) 0px, var(--scan) 1px, transparent 1px, transparent 3px); }
+
+/* ====== السايدبار الجانبي ====== */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 70px;
+  background: var(--bg2); border-left: 2px solid var(--red);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 0; gap: 12px; z-index: 150;
+  box-shadow: 2px 0 20px rgba(255,0,51,0.3);
+  overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar { width: 0; }
+.sidebar .side-logo { color: var(--red); font-weight: bold; font-size: 0.7rem; text-align: center; margin-bottom: 10px; text-shadow: 0 0 8px var(--red-glow); }
+.side-icon { width: 48px; height: 48px; background: var(--bg); border: 1px solid var(--red); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--red); text-decoration: none; transition: 0.3s; position: relative; cursor: pointer; }
+.side-icon:hover { background: var(--red); color: #fff; transform: scale(1.1); box-shadow: 0 0 20px var(--red); }
+.side-icon .tooltip { position: absolute; right: 60px; background: var(--red); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s; font-weight: bold; }
+.side-icon:hover .tooltip { opacity: 1; right: 55px; }
+.side-icon .side-badge { position: absolute; top: -5px; right: -5px; background: #fff; color: var(--red); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; border: 2px solid var(--red); }
+
+/* ====== باقي التصميم ====== */
 header { position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--bg) 95%, transparent); border-bottom: 1px solid var(--red); backdrop-filter: blur(6px); }
 nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; gap: 10px; }
-.logo { color: var(--red); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 8px var(--red-glow); white-space: nowrap; }
+.logo { color: var(--red); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 8px var(--red-glow); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.verified-badge { display: inline-flex; align-items: center; gap: 3px; background: var(--red); color: #fff; font-size: 0.62rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 0 10px rgba(255,0,51,0.5); }
 .nav-links { list-style: none; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .nav-links a { color: var(--text); text-decoration: none; font-size: 0.8rem; transition: 0.25s; position: relative; cursor: pointer; }
 .nav-links a:hover, .nav-links a.active { color: var(--red); text-shadow: 0 0 8px var(--red-glow); }
 .nav-links a.active::after { content: ''; position: absolute; bottom: -6px; right: 0; left: 0; height: 2px; background: var(--red); box-shadow: 0 0 8px var(--red); }
 .theme-btn { background: transparent; border: 1px solid var(--red); color: var(--red); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
 .theme-btn:hover { background: var(--red); color: #fff; box-shadow: 0 0 15px var(--red); }
-.cart-btn { background: transparent; border: 1px solid var(--red); color: var(--red); height: 34px; padding: 0 12px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: 0.25s; display: flex; align-items: center; gap: 6px; font-family: inherit; font-weight: bold; position: relative; }
-.cart-btn:hover { background: var(--red); color: #fff; box-shadow: 0 0 15px var(--red); }
-.cart-btn .badge { background: #fff; color: var(--red); border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; }
 .menu-toggle { display: none; font-size: 1.5rem; color: var(--red); cursor: pointer; }
 .section { display: none; max-width: 1100px; margin: 50px auto; padding: 0 20px; }
 .section.active { display: block; animation: fadeIn 0.4s ease; }
@@ -70,6 +87,15 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .section-title { color: var(--red); margin: 36px 0 18px; font-size: 1.3rem; }
 .prompt-badge { display: inline-block; background: linear-gradient(90deg, var(--red), #ff6600); color: #fff; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; box-shadow: 0 0 20px rgba(255,0,51,0.5); animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 20px rgba(255,0,51,0.5); } 50% { box-shadow: 0 0 35px rgba(255,0,51,0.9); } }
+
+/* ====== عدّاد تنازلي ====== */
+.countdown-box { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 2px solid var(--red); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 30px; box-shadow: 0 0 30px rgba(255,0,51,0.4); }
+.countdown-box .countdown-label { color: var(--red); font-weight: bold; font-size: 1rem; margin-bottom: 12px; }
+.countdown-timer { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.countdown-timer .unit { background: var(--bg); border: 1px solid var(--red); border-radius: 8px; padding: 10px 14px; min-width: 65px; }
+.countdown-timer .unit .num { color: var(--red); font-size: 1.6rem; font-weight: bold; display: block; text-shadow: 0 0 15px var(--red-glow); }
+.countdown-timer .unit .lbl { color: var(--dim); font-size: 0.72rem; }
+
 .about-box p { line-height: 2; margin-bottom: 16px; color: var(--text); background: var(--bg2); padding: 18px; border-right: 3px solid var(--red); border-radius: 4px; }
 .skills { display: flex; flex-wrap: wrap; gap: 10px; }
 .skills span { background: var(--bg2); border: 1px solid var(--red); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; color: var(--red); transition: 0.25s; }
@@ -84,7 +110,6 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .card .order-btn:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
 .card .cart-add-btn { background: var(--red); border: 1px solid var(--red); color: #fff; padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; transition: 0.25s; font-family: inherit; font-size: 0.9rem; cursor: pointer; display: block; box-shadow: 0 0 15px rgba(255,0,51,0.3); }
 .card .cart-add-btn:hover { box-shadow: 0 0 30px var(--red); transform: translateY(-2px); }
-.card .cart-add-btn.added { background: #27c93f; border-color: #27c93f; box-shadow: 0 0 15px rgba(39,201,63,0.5); }
 .tag { font-size: 0.75rem; color: var(--red); border: 1px solid var(--red); padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 10px; align-self: flex-start; }
 .pro-services { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 20px; }
 .pro-card { position: relative; background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 14px; padding: 28px 24px; transition: 0.35s; overflow: hidden; display: flex; flex-direction: column; }
@@ -141,6 +166,44 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .email-display .label { color: var(--dim); font-size: 0.85rem; margin-bottom: 8px; }
 .email-display a { color: var(--red); text-decoration: none; font-size: 1rem; font-weight: bold; direction: ltr; display: inline-block; }
 .email-display a:hover { text-shadow: 0 0 10px var(--red); }
+
+/* ====== الأسئلة الشائعة ====== */
+.faq-item { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; transition: 0.3s; }
+.faq-item:hover { border-color: var(--red); }
+.faq-question { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text); font-weight: bold; font-size: 0.95rem; transition: 0.25s; }
+.faq-question:hover { color: var(--red); }
+.faq-question .arrow { color: var(--red); font-size: 1.2rem; transition: 0.3s; }
+.faq-item.open .faq-question .arrow { transform: rotate(180deg); }
+.faq-answer { max-height: 0; overflow: hidden; transition: 0.4s; padding: 0 22px; color: var(--dim); font-size: 0.9rem; line-height: 1.9; }
+.faq-item.open .faq-answer { max-height: 500px; padding: 0 22px 18px; }
+
+/* ====== شهاداتي ====== */
+.cert-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top: 20px; }
+.cert-card { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; text-align: center; transition: 0.35s; position: relative; overflow: hidden; }
+.cert-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,0,51,0.25); }
+.cert-card .cert-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.cert-card h4 { color: var(--red); font-size: 1rem; margin-bottom: 8px; }
+.cert-card p { color: var(--dim); font-size: 0.85rem; line-height: 1.7; }
+
+/* ====== قريباً ====== */
+.coming-soon-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 20px; }
+.coming-card { background: var(--bg2); border: 1px dashed var(--red); border-radius: 12px; padding: 24px; text-align: center; transition: 0.3s; position: relative; }
+.coming-card:hover { border-style: solid; box-shadow: 0 0 25px rgba(255,0,51,0.25); }
+.coming-card .soon-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.7; }
+.coming-card h4 { color: var(--text); font-size: 1rem; margin-bottom: 8px; }
+.coming-card p { color: var(--dim); font-size: 0.85rem; line-height: 1.7; margin-bottom: 14px; }
+.coming-card .soon-badge { display: inline-block; background: var(--red); color: #fff; padding: 4px 14px; border-radius: 12px; font-size: 0.72rem; font-weight: bold; box-shadow: 0 0 10px rgba(255,0,51,0.4); }
+
+/* ====== أدواتي المفضلة ====== */
+.tools-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 20px; }
+.tool-card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
+.tool-card:hover { border-color: var(--red); transform: translateY(-4px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
+.tool-card .tool-icon { font-size: 1.8rem; }
+.tool-card h4 { color: var(--red); font-size: 0.98rem; }
+.tool-card p { color: var(--dim); font-size: 0.82rem; line-height: 1.7; flex: 1; }
+.tool-card .tool-tag { font-size: 0.7rem; color: var(--red); border: 1px solid var(--red); padding: 2px 10px; border-radius: 10px; align-self: flex-start; }
+
+/* ====== السلة ====== */
 .cart-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
 .cart-modal.open { display: flex; animation: fadeIn 0.3s ease; }
 .cart-content { background: var(--bg2); border: 1px solid var(--red); border-radius: 12px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 0 50px rgba(255,0,51,0.5); }
@@ -161,6 +224,11 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .checkout-btn:hover { box-shadow: 0 0 35px var(--red); transform: translateY(-2px); }
 footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1px solid var(--card-border); color: var(--dim); font-size: 0.85rem; }
 @media (max-width: 720px) {
+  body { padding-left: 0; padding-bottom: 70px; }
+  .sidebar { left: 0; right: 0; bottom: 0; top: auto; width: 100%; flex-direction: row; justify-content: space-around; padding: 8px 0; border-left: none; border-top: 2px solid var(--red); overflow-x: auto; }
+  .sidebar .side-logo { display: none; }
+  .side-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+  .side-icon .tooltip { display: none; }
   .menu-toggle { display: block; }
   .nav-links { position: absolute; top: 100%; right: 0; left: 0; background: var(--bg); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--red); max-height: 0; overflow: hidden; transition: 0.3s; align-items: flex-start; }
   .nav-links.open { max-height: 800px; }
@@ -172,9 +240,30 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <body>
 <div class="scanlines"></div>
 
+<!-- السايدبار الجانبي -->
+<aside class="sidebar">
+  <div class="side-logo">&gt;_<br>RA</div>
+  <a href="https://www.tiktok.com/@loh7he" target="_blank" class="side-icon" title="تيك توك">
+    ♪ <span class="tooltip">تيك توك</span>
+  </a>
+  <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="side-icon" title="انستقرام">
+    ◉ <span class="tooltip">انستقرام</span>
+  </a>
+  <a href="mailto:radwakana17@gmail.com" class="side-icon" title="إيميل">
+    ✉ <span class="tooltip">راسلني</span>
+  </a>
+  <div class="side-icon" onclick="openCart()" title="السلة">
+    🛒 <span class="side-badge" id="sideBadge">0</span>
+    <span class="tooltip">السلة</span>
+  </div>
+  <div class="side-icon" onclick="toggleTheme()" title="الوضع" id="sideTheme">
+    🌙 <span class="tooltip">الوضع</span>
+  </div>
+</aside>
+
 <header>
   <nav>
-    <div class="logo">&gt;_ RA_7DEE7</div>
+    <div class="logo">&gt;_ RA_7DEE7 <span class="verified-badge">✓ موثق</span></div>
     <ul class="nav-links" id="navLinks">
       <li><a onclick="showSection('home', this)" class="active">الرئيسية</a></li>
       <li><a onclick="showSection('about', this)">عنّي</a></li>
@@ -182,13 +271,15 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
       <li><a onclick="showSection('free', this)">مجانية</a></li>
       <li><a onclick="showSection('shop', this)">متجري</a></li>
       <li><a onclick="showSection('scripts', this)">سكربتاتي</a></li>
+      <li><a onclick="showSection('tools', this)">أدواتي</a></li>
       <li><a onclick="showSection('blog', this)">مدونتي</a></li>
+      <li><a onclick="showSection('certs', this)">شهاداتي</a></li>
+      <li><a onclick="showSection('faq', this)">أسئلة</a></li>
+      <li><a onclick="showSection('soon', this)">قريباً</a></li>
       <li><a onclick="showSection('work', this)">أعمالي</a></li>
       <li><a onclick="showSection('reviews', this)">آراء</a></li>
       <li><a onclick="showSection('report', this)">إبلاغ</a></li>
       <li><a onclick="showSection('contact', this)">تواصل</a></li>
-      <li><button class="cart-btn" onclick="openCart()" title="سلة التسوق">🛒 <span class="badge" id="cartBadge">0</span></button></li>
-      <li><button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="تبديل الوضع">🌙</button></li>
     </ul>
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>
   </nav>
@@ -221,7 +312,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
     <p class="sub">متخصص في البرمجة والتطوير — من الفكرة إلى الإطلاق.</p>
     <div class="cta">
       <button class="btn" onclick="showSection('services', document.querySelectorAll('.nav-links a')[2])">🚀 ابدأ البرمجة</button>
-      <button class="btn ghost" onclick="showSection('contact', document.querySelectorAll('.nav-links a')[10])">تواصل معي</button>
+      <button class="btn ghost" onclick="showSection('contact', document.querySelectorAll('.nav-links a')[14])">تواصل معي</button>
     </div>
   </div>
 </section>
@@ -261,6 +352,17 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   <h2 class="page-title">خدمات مجانية</h2>
   <div class="prompt-badge">🔥 برومنت</div>
   <p class="page-sub">خدمات أقدمها مجاناً — لدعم المبتدئين والمجتمع التقني.</p>
+
+  <div class="countdown-box">
+    <div class="countdown-label">⏳ عرض خاص — ينتهي خلال:</div>
+    <div class="countdown-timer" id="countdown">
+      <div class="unit"><span class="num" id="cd-days">7</span><span class="lbl">يوم</span></div>
+      <div class="unit"><span class="num" id="cd-hours">00</span><span class="lbl">ساعة</span></div>
+      <div class="unit"><span class="num" id="cd-mins">00</span><span class="lbl">دقيقة</span></div>
+      <div class="unit"><span class="num" id="cd-secs">00</span><span class="lbl">ثانية</span></div>
+    </div>
+  </div>
+
   <div class="pro-services">
     <div class="pro-card"><div class="pro-icon">🎁</div><h3>صنع موقع <span>جاهز لك</span></h3><p>أسوي لك موقع جاهز حسب طلبك — بسرعة وموثوقية عالية.</p><ul class="pro-features"><li>⚡ سرعة في تجهيز الموقع</li><li>✅ موثوق</li><li>⏳ لفترة محدودة</li></ul><a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="pro-btn">اطلب الآن ←</a></div>
     <div class="pro-card"><div class="pro-icon">💬</div><h3>استشارة <span>تقنية</span></h3><p>10 دقائق نصيحة تقنية عن مشروعك — توجيه سريع ومفيد.</p><ul class="pro-features"><li>بدون أي مقابل</li><li>رد سريع</li></ul><a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="pro-btn">اطلب الآن ←</a></div>
@@ -307,23 +409,60 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   </div>
 </section>
 
+<!-- أدواتي المفضلة -->
+<section id="tools" class="section">
+  <h2 class="page-title">أدواتي المفضلة</h2>
+  <p class="page-sub">الأدوات اللي أستخدمها يومياً في البرمجة والتطوير.</p>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-icon">🐍</div><h4>Python</h4><p>لغتي الأساسية في الأتمتة، السكربتات، والذكاء الاصطناعي.</p><span class="tool-tag">لغة برمجة</span></div>
+    <div class="tool-card"><div class="tool-icon">⚡</div><h4>JavaScript</h4><p>لتطوير الويب والتفاعل مع المستخدم.</p><span class="tool-tag">لغة برمجة</span></div>
+    <div class="tool-card"><div class="tool-icon">📝</div><h4>VS Code</h4><p>محرر الكود المفضل عندي — خفيف وقوي.</p><span class="tool-tag">محرر أكواد</span></div>
+    <div class="tool-card"><div class="tool-icon">🐙</div><h4>GitHub</h4><p>لحفظ المشاريع والتعاون مع المطورين.</p><span class="tool-tag">استضافة كود</span></div>
+    <div class="tool-card"><div class="tool-icon">🎨</div><h4>Figma</h4><p>لتصميم الواجهات قبل ما أبدأ البرمجة.</p><span class="tool-tag">تصميم</span></div>
+    <div class="tool-card"><div class="tool-icon">🔧</div><h4>Postman</h4><p>لاختبار APIs والتعامل معها.</p><span class="tool-tag">أدوات API</span></div>
+  </div>
+</section>
+
 <!-- مدونتي -->
 <section id="blog" class="section">
   <h2 class="page-title">مدونتي</h2>
   <p class="page-sub">نصائح تقنية ومفاهيم في الأمن السيبراني والهندسة العكسية.</p>
 
   <div class="blog-post">
-    <span class="badge">نصائح تقنية</span>
-    <h3>🔒 5 نصائح لحماية حساباتك</h3>
-    <div class="meta">📅 نصائح عامة · قراءة 3 دقائق</div>
-    <p>الأمان الرقمي يبدأ من عادات بسيطة. هذي أهم النصائح لحماية حساباتك:</p>
+    <span class="badge">رحلتي</span>
+    <h3>🚀 رحلتي في البرمجة — من الصفر إلى الاحتراف</h3>
+    <div class="meta">📅 تجربتي الشخصية · قراءة 5 دقائق</div>
+    <p>بدأت رحلتي في البرمجة بدافع الفضول — كنت أشوف المواقع والتطبيقات وأتساءل: كيف تصير؟ ومن هنا بدأت الرحلة.</p>
+    <p><strong>البداية:</strong></p>
+    <p>تعلمت HTML و CSS أول شي، سويت صفحات بسيطة، حسيت بالإنجاز لما شفت أول صفحة من تصميمي تظهر على المتصفح.</p>
+    <p><strong>التطور:</strong></p>
+    <p>بعدها دخلت JavaScript، تعلمت كيف أخلي الصفحات تفاعلية، سويت مشاريع صغيرة، أخطاء كثيرة، وتعلمت من كل خطأ.</p>
+    <p><strong>الاحتراف:</strong></p>
+    <p>انتقلت لـ Python، تعلمت الأتمتة، السكربتات، وبناء الأدوات. اليوم أبني مواقع كاملة، بوتات، وأدوات برمجية حسب الطلب.</p>
+    <p><strong>نصيحتي لك:</strong></p>
     <ul>
-      <li>استخدم كلمة مرور قوية ومختلفة لكل حساب</li>
-      <li>فعّل المصادقة الثنائية (2FA) على كل حساباتك</li>
-      <li>لا تضغط على روابط مشبوهة تجيك من مصادر مجهولة</li>
-      <li>حدّث تطبيقاتك ونظامك باستمرار</li>
-      <li>استخدم مدير كلمات مرور موثوق</li>
+      <li>لا تستنى الوقت المناسب — ابدأ اليوم</li>
+      <li>لا تخاف من الأخطاء — هي أفضل معلم</li>
+      <li>طبّق بمشاريع حقيقية، لا تكتفي بالمشاهدة</li>
+      <li>شارك شغلك واطلب ملاحظات</li>
+      <li>اصبر — الإتقان يحتاج وقت</li>
     </ul>
+    <p>البرمجة مو موهبة — هي مهارة تُبنى بالممارسة. كل مبرمج محترف بدأ من الصفر مثلك تماماً.</p>
+  </div>
+
+  <div class="blog-post">
+    <span class="badge">نصائح تقنية</span>
+    <h3>💻 أفضل 5 لغات برمجة للمبتدئين 2026</h3>
+    <div class="meta">📅 للمبتدئين · قراءة 4 دقائق</div>
+    <p>إذا تبي تبدأ في البرمجة، هذي أفضل 5 لغات اختار من بينها:</p>
+    <ul>
+      <li><strong>Python:</strong> الأسهل للمبتدئين، تُستخدم في الذكاء الاصطناعي والأتمتة</li>
+      <li><strong>JavaScript:</strong> أساس الويب، أي موقع يحتاجها</li>
+      <li><strong>HTML/CSS:</strong> مو لغات برمجة بالضبط، لكن ضرورية لكل مطور ويب</li>
+      <li><strong>SQL:</strong> للتعامل مع قواعد البيانات</li>
+      <li><strong>Go:</strong> سريعة وقوية، مطلوبة في السيرفرات</li>
+    </ul>
+    <p><strong>نصيحة:</strong> اختر لغة واحدة وابدأ فيها — لا تشتت نفسك.</p>
   </div>
 
   <div class="blog-post">
@@ -366,6 +505,20 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 
   <div class="blog-post">
     <span class="badge">نصائح تقنية</span>
+    <h3>🔒 5 نصائح لحماية حساباتك</h3>
+    <div class="meta">📅 نصائح عامة · قراءة 3 دقائق</div>
+    <p>الأمان الرقمي يبدأ من عادات بسيطة. هذي أهم النصائح لحماية حساباتك:</p>
+    <ul>
+      <li>استخدم كلمة مرور قوية ومختلفة لكل حساب</li>
+      <li>فعّل المصادقة الثنائية (2FA) على كل حساباتك</li>
+      <li>لا تضغط على روابط مشبوهة تجيك من مصادر مجهولة</li>
+      <li>حدّث تطبيقاتك ونظامك باستمرار</li>
+      <li>استخدم مدير كلمات مرور موثوق</li>
+    </ul>
+  </div>
+
+  <div class="blog-post">
+    <span class="badge">نصائح تقنية</span>
     <h3>💻 كيف تبدأ في البرمجة؟</h3>
     <div class="meta">📅 للمبتدئين · قراءة 4 دقائق</div>
     <p>البداية في البرمجة أسهل مما تتخيل. هذي خارطة طريق مبسطة:</p>
@@ -392,6 +545,66 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
       <li><strong>Social Engineering:</strong> استغلال النفس البشرية — لا تشارك معلوماتك</li>
     </ul>
     <p><strong>القاعدة الذهبية:</strong> الوعي هو أقوى دفاع.</p>
+  </div>
+</section>
+
+<!-- شهاداتي -->
+<section id="certs" class="section">
+  <h2 class="page-title">شهاداتي</h2>
+  <p class="page-sub">شهادات وإنجازات تقنية في مسيرتي.</p>
+  <div class="cert-grid">
+    <div class="cert-card"><div class="cert-icon">🎓</div><h4>أساسيات البرمجة</h4><p>شهادة في أساسيات البرمجة وتطوير الويب.</p></div>
+    <div class="cert-card"><div class="cert-icon">🐍</div><h4>Python للمبتدئين</h4><p>إتمام دورة Python من الصفر حتى المستوى المتقدم.</p></div>
+    <div class="cert-card"><div class="cert-icon">🌐</div><h4>تطوير الويب</h4><p>شهادة في تطوير مواقع الويب (Frontend).</p></div>
+    <div class="cert-card"><div class="cert-icon">🛡️</div><h4>أساسيات الأمن السيبراني</h4><p>شهادة في أساسيات الحماية والأمن الرقمي.</p></div>
+  </div>
+</section>
+
+<!-- الأسئلة الشائعة -->
+<section id="faq" class="section">
+  <h2 class="page-title">الأسئلة الشائعة</h2>
+  <p class="page-sub">أسئلة تتكرر من الزبائن — إذا ما لقيت جوابك، تواصل معي.</p>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">كم يستغرق تسليم الموقع؟ <span class="arrow">▼</span></div>
+    <div class="faq-answer">يعتمد على حجم الموقع. المواقع البسيطة 2-3 أيام، والمتوسطة 5-7 أيام، والمعقدة 2-3 أسابيع. نتفق على المدة قبل البدء.</div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">كيف يتم الدفع؟ <span class="arrow">▼</span></div>
+    <div class="faq-answer">نتفق على طريقة الدفع بعد الطلب — تحويل بنكي محلي، USDT، أو PayPal. الدفع على دفعتين: 50% مقدماً و 50% عند التسليم.</div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">هل تقدم دعم بعد التسليم؟ <span class="arrow">▼</span></div>
+    <div class="faq-answer">نعم — دعم مجاني لمدة 30 يوم بعد التسليم لأي مشكلة تقنية أو استفسار.</div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">هل يمكن تعديل الموقع بعد التسليم؟ <span class="arrow">▼</span></div>
+    <div class="faq-answer">نعم — أراجعك الكود كامل مع شرح كيف تعدل عليه. وإذا احتجت مساعدة، أنا موجود.</div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">هل تعمل على مشاريع خارج ليبيا؟ <span class="arrow">▼</span></div>
+    <div class="faq-answer">نعم — أعمل مع زبائن من أي مكان في العالم. التواصل عبر انستقرام أو الإيميل.</div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">ما هي طرق التواصل المتاحة؟ <span class="arrow">▼</span></div>
+    <div class="faq-answer">انستقرام (@ra_7dee7_)، تيك توك (@loh7he)، أو الإيميل (radwakana17@gmail.com).</div>
+  </div>
+</section>
+
+<!-- قريباً -->
+<section id="soon" class="section">
+  <h2 class="page-title">قريباً</h2>
+  <p class="page-sub">خدمات وميزات جديدة رح تضاف قريباً.</p>
+  <div class="coming-soon-grid">
+    <div class="coming-card"><div class="soon-icon">📱</div><h4>تطبيق جوال</h4><p>تطبيق للموقع يعمل على Android و iOS.</p><span class="soon-badge">قريباً</span></div>
+    <div class="coming-card"><div class="soon-icon">🎥</div><h4>دورات فيديو</h4><p>دورات تعليمية في البرمجة والأمن السيبراني.</p><span class="soon-badge">قريباً</span></div>
+    <div class="coming-card"><div class="soon-icon">💳</div><h4>دفع إلكتروني</h4><p>بوابة دفع مباشرة في الموقع.</p><span class="soon-badge">قريباً</span></div>
+    <div class="coming-card"><div class="soon-icon">🏆</div><h4>نظام نقاط</h4><p>نقاط لكل زبون، وخصومات للزبائن الدائمين.</p><span class="soon-badge">قريباً</span></div>
   </div>
 </section>
 
@@ -528,10 +741,10 @@ function toggleMenu() {
 
 function toggleTheme() {
   document.body.classList.toggle('light');
-  const btn = document.getElementById('themeBtn');
   const isLight = document.body.classList.contains('light');
-  btn.textContent = isLight ? '☀️' : '🌙';
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  const sideTheme = document.getElementById('sideTheme');
+  if (sideTheme) sideTheme.innerHTML = (isLight ? '☀️' : '🌙') + ' <span class="tooltip">الوضع</span>';
 }
 
 (function loadTheme() {
@@ -539,8 +752,8 @@ function toggleTheme() {
   if (saved === 'light') {
     document.body.classList.add('light');
     setTimeout(() => {
-      const btn = document.getElementById('themeBtn');
-      if (btn) btn.textContent = '☀️';
+      const sideTheme = document.getElementById('sideTheme');
+      if (sideTheme) sideTheme.innerHTML = '☀️ <span class="tooltip">الوضع</span>';
     }, 100);
   }
 })();
@@ -562,6 +775,46 @@ function toggleTheme() {
   }, 30);
 })();
 
+/* ====== عدّاد تنازلي 7 أيام ====== */
+(function initCountdown() {
+  let end = localStorage.getItem('countdownEnd');
+  if (!end) {
+    end = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    localStorage.setItem('countdownEnd', end);
+  }
+  const endTime = parseInt(end);
+
+  function update() {
+    const now = Date.now();
+    let diff = endTime - now;
+    if (diff < 0) diff = 0;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    const pad = n => String(n).padStart(2, '0');
+
+    const dEl = document.getElementById('cd-days');
+    const hEl = document.getElementById('cd-hours');
+    const mEl = document.getElementById('cd-mins');
+    const sEl = document.getElementById('cd-secs');
+
+    if (dEl) dEl.textContent = days;
+    if (hEl) hEl.textContent = pad(hours);
+    if (mEl) mEl.textContent = pad(mins);
+    if (sEl) sEl.textContent = pad(secs);
+  }
+  update();
+  setInterval(update, 1000);
+})();
+
+/* ====== الأسئلة الشائعة ====== */
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+
 /* ====== السلة ====== */
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
@@ -572,7 +825,9 @@ function saveCart() {
 
 function updateCartBadge() {
   const badge = document.getElementById('cartBadge');
+  const sideBadge = document.getElementById('sideBadge');
   if (badge) badge.textContent = cart.length;
+  if (sideBadge) sideBadge.textContent = cart.length;
 }
 
 function addToCart(name, price) {
@@ -654,7 +909,6 @@ function checkout() {
     message += '• ' + item.name + (qty > 1 ? ' × ' + qty : '') + ' = ' + subtotal + ' $\n';
   });
   message += '\n💰 المجموع: ' + total + ' $';
-  const encoded = encodeURIComponent(message);
   window.open('https://www.instagram.com/ra_7dee7_', '_blank');
   setTimeout(() => {
     alert('✅ رح يفتحلك الانستا\n\n📋 انسخ تفاصيل الطلب:\n\n' + message);
@@ -664,7 +918,6 @@ function checkout() {
 
 updateCartBadge();
 
-/* إغلاق السلة لو ضغط براها */
 document.getElementById('cartModal').addEventListener('click', function(e) {
   if (e.target === this) closeCart();
 });
@@ -698,4 +951,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-  </html>
+                                       </html>
