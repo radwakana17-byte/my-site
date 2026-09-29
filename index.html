@@ -13,6 +13,8 @@
   --card-border: #222;
   --term-bg: #1a1a1a;
   --scan: rgba(255,0,51,0.03);
+  --gold: #ffd700;
+  --silver: #c0c0c0;
 }
 body.light {
   --bg: #f5f5f5; --bg2: #ffffff; --bg3: #eaeaea;
@@ -46,8 +48,8 @@ header { position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, 
 nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; gap: 10px; }
 .logo { color: var(--red); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 8px var(--red-glow); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
 .verified-badge { display: inline-flex; align-items: center; gap: 3px; background: var(--red); color: #fff; font-size: 0.62rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 0 10px rgba(255,0,51,0.5); }
-.nav-links { list-style: none; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-.nav-links a { color: var(--text); text-decoration: none; font-size: 0.8rem; transition: 0.25s; position: relative; cursor: pointer; }
+.nav-links { list-style: none; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.nav-links a { color: var(--text); text-decoration: none; font-size: 0.78rem; transition: 0.25s; position: relative; cursor: pointer; }
 .nav-links a:hover, .nav-links a.active { color: var(--red); text-shadow: 0 0 8px var(--red-glow); }
 .nav-links a.active::after { content: ''; position: absolute; bottom: -6px; right: 0; left: 0; height: 2px; background: var(--red); box-shadow: 0 0 8px var(--red); }
 .theme-btn { background: transparent; border: 1px solid var(--red); color: var(--red); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
@@ -87,15 +89,12 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .section-title { color: var(--red); margin: 36px 0 18px; font-size: 1.3rem; }
 .prompt-badge { display: inline-block; background: linear-gradient(90deg, var(--red), #ff6600); color: #fff; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; box-shadow: 0 0 20px rgba(255,0,51,0.5); animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 20px rgba(255,0,51,0.5); } 50% { box-shadow: 0 0 35px rgba(255,0,51,0.9); } }
-
-/* ====== عدّاد تنازلي ====== */
 .countdown-box { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 2px solid var(--red); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 30px; box-shadow: 0 0 30px rgba(255,0,51,0.4); }
 .countdown-box .countdown-label { color: var(--red); font-weight: bold; font-size: 1rem; margin-bottom: 12px; }
 .countdown-timer { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 .countdown-timer .unit { background: var(--bg); border: 1px solid var(--red); border-radius: 8px; padding: 10px 14px; min-width: 65px; }
 .countdown-timer .unit .num { color: var(--red); font-size: 1.6rem; font-weight: bold; display: block; text-shadow: 0 0 15px var(--red-glow); }
 .countdown-timer .unit .lbl { color: var(--dim); font-size: 0.72rem; }
-
 .about-box p { line-height: 2; margin-bottom: 16px; color: var(--text); background: var(--bg2); padding: 18px; border-right: 3px solid var(--red); border-radius: 4px; }
 .skills { display: flex; flex-wrap: wrap; gap: 10px; }
 .skills span { background: var(--bg2); border: 1px solid var(--red); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; color: var(--red); transition: 0.25s; }
@@ -125,6 +124,47 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .pro-features li::before { content: '✓'; position: absolute; right: 0; color: var(--red); font-weight: bold; }
 .pro-btn { display: block; text-align: center; background: var(--red); color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s; font-size: 0.9rem; box-shadow: 0 5px 20px rgba(255,0,51,0.3); }
 .pro-btn:hover { box-shadow: 0 5px 30px var(--red); transform: translateY(-2px); }
+
+/* ====== الاشتراكات ====== */
+.pricing-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 30px; }
+.pricing-card { position: relative; background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 2px solid var(--card-border); border-radius: 18px; padding: 32px 26px; transition: 0.4s; display: flex; flex-direction: column; text-align: center; overflow: hidden; }
+.pricing-card:hover { transform: translateY(-10px); }
+.pricing-card.free:hover { border-color: var(--dim); box-shadow: 0 15px 40px rgba(150,150,150,0.2); }
+.pricing-card.pro { border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,51,0.3); }
+.pricing-card.pro:hover { box-shadow: 0 20px 50px rgba(255,0,51,0.5); }
+.pricing-card.plus { border-color: var(--gold); box-shadow: 0 0 30px rgba(255,215,0,0.3); }
+.pricing-card.plus:hover { box-shadow: 0 20px 50px rgba(255,215,0,0.5); }
+.pricing-card .card-ribbon { position: absolute; top: 15px; left: -35px; background: var(--red); color: #fff; padding: 5px 40px; font-size: 0.7rem; font-weight: bold; transform: rotate(-45deg); box-shadow: 0 0 15px rgba(255,0,51,0.6); }
+.pricing-card.plus .card-ribbon { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(255,215,0,0.6); }
+.pricing-card .plan-icon { font-size: 3rem; margin-bottom: 14px; }
+.pricing-card .plan-name { font-size: 1.4rem; font-weight: bold; margin-bottom: 8px; }
+.pricing-card.free .plan-name { color: var(--dim); }
+.pricing-card.pro .plan-name { color: var(--red); text-shadow: 0 0 15px var(--red-glow); }
+.pricing-card.plus .plan-name { color: var(--gold); text-shadow: 0 0 15px rgba(255,215,0,0.5); }
+.pricing-card .plan-desc { color: var(--dim); font-size: 0.85rem; margin-bottom: 20px; }
+.pricing-card .plan-price { margin-bottom: 24px; }
+.pricing-card .plan-price .amount { font-size: 2.5rem; font-weight: bold; }
+.pricing-card.free .plan-price .amount { color: var(--dim); }
+.pricing-card.pro .plan-price .amount { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+.pricing-card.plus .plan-price .amount { color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.6); }
+.pricing-card .plan-price .currency { font-size: 1.1rem; color: var(--dim); }
+.pricing-card .plan-price .period { display: block; color: var(--dim); font-size: 0.8rem; margin-top: 4px; }
+.pricing-features { list-style: none; text-align: right; margin-bottom: 26px; flex: 1; }
+.pricing-features li { color: var(--text); font-size: 0.88rem; padding: 8px 0; padding-right: 26px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.pricing-features li::before { content: '✓'; position: absolute; right: 0; font-weight: bold; }
+.pricing-card.free .pricing-features li::before { color: var(--dim); }
+.pricing-card.pro .pricing-features li::before { color: var(--red); }
+.pricing-card.plus .pricing-features li::before { color: var(--gold); }
+.pricing-features li.no { opacity: 0.4; }
+.pricing-features li.no::before { content: '✕'; }
+.pricing-btn { display: block; padding: 14px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: 0.3s; text-align: center; }
+.pricing-card.free .pricing-btn { background: transparent; border: 1px solid var(--dim); color: var(--dim); }
+.pricing-card.free .pricing-btn:hover { background: var(--dim); color: #fff; }
+.pricing-card.pro .pricing-btn { background: var(--red); color: #fff; box-shadow: 0 5px 25px rgba(255,0,51,0.5); }
+.pricing-card.pro .pricing-btn:hover { box-shadow: 0 5px 40px var(--red); transform: translateY(-3px); }
+.pricing-card.plus .pricing-btn { background: linear-gradient(135deg, var(--gold), #ff9500); color: #000; box-shadow: 0 5px 25px rgba(255,215,0,0.5); }
+.pricing-card.plus .pricing-btn:hover { box-shadow: 0 5px 40px rgba(255,215,0,0.8); transform: translateY(-3px); }
+
 .reviews { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 20px; }
 .review { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 14px; padding: 26px 22px; position: relative; transition: 0.35s; }
 .review:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255,0,51,0.2); }
@@ -166,8 +206,6 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .email-display .label { color: var(--dim); font-size: 0.85rem; margin-bottom: 8px; }
 .email-display a { color: var(--red); text-decoration: none; font-size: 1rem; font-weight: bold; direction: ltr; display: inline-block; }
 .email-display a:hover { text-shadow: 0 0 10px var(--red); }
-
-/* ====== الأسئلة الشائعة ====== */
 .faq-item { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; transition: 0.3s; }
 .faq-item:hover { border-color: var(--red); }
 .faq-question { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text); font-weight: bold; font-size: 0.95rem; transition: 0.25s; }
@@ -176,16 +214,12 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .faq-item.open .faq-question .arrow { transform: rotate(180deg); }
 .faq-answer { max-height: 0; overflow: hidden; transition: 0.4s; padding: 0 22px; color: var(--dim); font-size: 0.9rem; line-height: 1.9; }
 .faq-item.open .faq-answer { max-height: 500px; padding: 0 22px 18px; }
-
-/* ====== شهاداتي ====== */
 .cert-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top: 20px; }
 .cert-card { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; text-align: center; transition: 0.35s; position: relative; overflow: hidden; }
 .cert-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,0,51,0.25); }
 .cert-card .cert-icon { font-size: 2.5rem; margin-bottom: 12px; }
 .cert-card h4 { color: var(--red); font-size: 1rem; margin-bottom: 8px; }
 .cert-card p { color: var(--dim); font-size: 0.85rem; line-height: 1.7; }
-
-/* ====== قريباً ====== */
 .coming-soon-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 20px; }
 .coming-card { background: var(--bg2); border: 1px dashed var(--red); border-radius: 12px; padding: 24px; text-align: center; transition: 0.3s; position: relative; }
 .coming-card:hover { border-style: solid; box-shadow: 0 0 25px rgba(255,0,51,0.25); }
@@ -193,8 +227,6 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .coming-card h4 { color: var(--text); font-size: 1rem; margin-bottom: 8px; }
 .coming-card p { color: var(--dim); font-size: 0.85rem; line-height: 1.7; margin-bottom: 14px; }
 .coming-card .soon-badge { display: inline-block; background: var(--red); color: #fff; padding: 4px 14px; border-radius: 12px; font-size: 0.72rem; font-weight: bold; box-shadow: 0 0 10px rgba(255,0,51,0.4); }
-
-/* ====== أدواتي المفضلة ====== */
 .tools-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 20px; }
 .tool-card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
 .tool-card:hover { border-color: var(--red); transform: translateY(-4px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
@@ -202,8 +234,6 @@ nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justi
 .tool-card h4 { color: var(--red); font-size: 0.98rem; }
 .tool-card p { color: var(--dim); font-size: 0.82rem; line-height: 1.7; flex: 1; }
 .tool-card .tool-tag { font-size: 0.7rem; color: var(--red); border: 1px solid var(--red); padding: 2px 10px; border-radius: 10px; align-self: flex-start; }
-
-/* ====== السلة ====== */
 .cart-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
 .cart-modal.open { display: flex; animation: fadeIn 0.3s ease; }
 .cart-content { background: var(--bg2); border: 1px solid var(--red); border-radius: 12px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 0 50px rgba(255,0,51,0.5); }
@@ -231,7 +261,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   .side-icon .tooltip { display: none; }
   .menu-toggle { display: block; }
   .nav-links { position: absolute; top: 100%; right: 0; left: 0; background: var(--bg); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--red); max-height: 0; overflow: hidden; transition: 0.3s; align-items: flex-start; }
-  .nav-links.open { max-height: 800px; }
+  .nav-links.open { max-height: 900px; }
   .glitch { font-size: 1.5rem; }
   .term-body { font-size: 0.8rem; }
 }
@@ -240,31 +270,20 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <body>
 <div class="scanlines"></div>
 
-<!-- السايدبار الجانبي -->
 <aside class="sidebar">
   <div class="side-logo">&gt;_<br>RA</div>
-  <a href="https://www.tiktok.com/@loh7he" target="_blank" class="side-icon" title="تيك توك">
-    ♪ <span class="tooltip">تيك توك</span>
-  </a>
-  <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="side-icon" title="انستقرام">
-    ◉ <span class="tooltip">انستقرام</span>
-  </a>
-  <a href="mailto:radwakana17@gmail.com" class="side-icon" title="إيميل">
-    ✉ <span class="tooltip">راسلني</span>
-  </a>
-  <div class="side-icon" onclick="openCart()" title="السلة">
-    🛒 <span class="side-badge" id="sideBadge">0</span>
-    <span class="tooltip">السلة</span>
-  </div>
-  <div class="side-icon" onclick="toggleTheme()" title="الوضع" id="sideTheme">
-    🌙 <span class="tooltip">الوضع</span>
-  </div>
+  <a href="https://www.tiktok.com/@loh7he" target="_blank" class="side-icon" title="تيك توك">♪ <span class="tooltip">تيك توك</span></a>
+  <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="side-icon" title="انستقرام">◉ <span class="tooltip">انستقرام</span></a>
+  <a href="mailto:radwakana17@gmail.com" class="side-icon" title="إيميل">✉ <span class="tooltip">راسلني</span></a>
+  <div class="side-icon" onclick="openCart()" title="السلة">🛒 <span class="side-badge" id="sideBadge">0</span><span class="tooltip">السلة</span></div>
+  <div class="side-icon" onclick="toggleTheme()" title="الوضع" id="sideTheme">🌙 <span class="tooltip">الوضع</span></div>
 </aside>
 
 <header>
   <nav>
     <div class="logo">&gt;_ RA_7DEE7 <span class="verified-badge">✓ موثق</span></div>
     <ul class="nav-links" id="navLinks">
+      <li><a onclick="showSection('plans', this)">⭐ الاشتراكات</a></li>
       <li><a onclick="showSection('home', this)" class="active">الرئيسية</a></li>
       <li><a onclick="showSection('about', this)">عنّي</a></li>
       <li><a onclick="showSection('services', this)">خدماتي</a></li>
@@ -285,6 +304,84 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   </nav>
 </header>
 
+<!-- الاشتراكات -->
+<section id="plans" class="section">
+  <h2 class="page-title">⭐ خطط الاشتراك</h2>
+  <p class="page-sub">اختر الخطة اللي تناسبك — واستمتع بكل مميزات الموقع.</p>
+
+  <div class="pricing-grid">
+
+    <!-- مجاني -->
+    <div class="pricing-card free">
+      <div class="plan-icon">🆓</div>
+      <div class="plan-name">المجانية</div>
+      <div class="plan-desc">للتجربة والاستكشاف</div>
+      <div class="plan-price">
+        <span class="amount">0</span>
+        <span class="currency">$</span>
+        <span class="period">مجاناً للأبد</span>
+      </div>
+      <ul class="pricing-features">
+        <li>تصفح كل الأقسام</li>
+        <li>خدمات مجانية محدودة</li>
+        <li>قراءة المدونة</li>
+        <li>التواصل عبر انستقرام</li>
+        <li class="no">الوصول لكل السكربتات</li>
+        <li class="no">دعم أسرع</li>
+        <li class="no">خصومات على الخدمات</li>
+      </ul>
+      <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="pricing-btn">ابدأ الآن</a>
+    </div>
+
+    <!-- Pro -->
+    <div class="pricing-card pro">
+      <div class="card-ribbon">الأكثر طلباً</div>
+      <div class="plan-icon">🚀</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">للمستخدمين الجادين</div>
+      <div class="plan-price">
+        <span class="amount">4.99</span>
+        <span class="currency">$</span>
+        <span class="period">شهرياً</span>
+      </div>
+      <ul class="pricing-features">
+        <li>كل مميزات المجانية</li>
+        <li>فتح كل السكربتات</li>
+        <li>فتح كل الأدوات</li>
+        <li>دعم أسرع عبر الخاص</li>
+        <li>طلب غير محدود</li>
+        <li>خصم 20% على الخدمات المدفوعة</li>
+        <li class="no">استشارات VIP</li>
+      </ul>
+      <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="pricing-btn">اشترك الآن</a>
+    </div>
+
+    <!-- Plus -->
+    <div class="pricing-card plus">
+      <div class="card-ribbon">الخارقة</div>
+      <div class="plan-icon">👑</div>
+      <div class="plan-name">Plus</div>
+      <div class="plan-desc">كل شيء، بلا حدود</div>
+      <div class="plan-price">
+        <span class="amount">9.99</span>
+        <span class="currency">$</span>
+        <span class="period">شهرياً</span>
+      </div>
+      <ul class="pricing-features">
+        <li>كل مميزات Pro</li>
+        <li>كل الموقع مجاني بالكامل</li>
+        <li>استشارات غير محدودة</li>
+        <li>أولوية في تنفيذ الطلبات</li>
+        <li>دعم VIP على مدار الساعة</li>
+        <li>خصم 50% على كل الخدمات</li>
+        <li>هدية شهرية</li>
+      </ul>
+      <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="pricing-btn">اشترك الآن</a>
+    </div>
+
+  </div>
+</section>
+
 <!-- الرئيسية -->
 <section id="home" class="section active">
   <div class="hero-inner">
@@ -302,17 +399,15 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
         <p class="out blink">جاري بناء الأفكار...</p>
       </div>
     </div>
-
     <div class="visitor-counter">
       <span class="label">👁️ عدد الزوار:</span>
       <span class="num" id="visitorCount">...</span>
     </div>
-
     <h1 class="glitch" data-text="أبني الكود. أصنع الحلول.">أبني الكود. أصنع الحلول.</h1>
     <p class="sub">متخصص في البرمجة والتطوير — من الفكرة إلى الإطلاق.</p>
     <div class="cta">
-      <button class="btn" onclick="showSection('services', document.querySelectorAll('.nav-links a')[2])">🚀 ابدأ البرمجة</button>
-      <button class="btn ghost" onclick="showSection('contact', document.querySelectorAll('.nav-links a')[14])">تواصل معي</button>
+      <button class="btn" onclick="showSection('plans', document.querySelectorAll('.nav-links a')[0])">⭐ اشترك الآن</button>
+      <button class="btn ghost" onclick="showSection('contact', document.querySelectorAll('.nav-links a')[15])">تواصل معي</button>
     </div>
   </div>
 </section>
@@ -321,8 +416,8 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="about" class="section">
   <h2 class="page-title">عنّي</h2>
   <div class="about-box">
-    <p>مطوّر ومبرمج متخصص في بناء الحلول الرقمية وتطوير المواقع والتطبيقات. أعمل على تحويل الأفكار إلى منتجات تقنية حقيقية — من كتابة الكود النظيف إلى إطلاق المشروع.</p>
-    <p>أهتم بالأداء، الأمان، وتجربة المستخدم، وأتابع أحدث التقنيات في عالم البرمجة والتطوير. هدفي دائماً تقديم عمل احترافي يخدم المستخدم ويحقق النتيجة المطلوبة.</p>
+    <p>منصة RA_7DEE7 — حيث تتحول الأفكار إلى واقع رقمي. لسنا مجرد موقع، بل بوابة تقنية متكاملة تجمع بين الإبداع والاحترافية.</p>
+    <p>نقدم حلولاً رقمية تناسب الجميع — من الفرد الذي يحلم بمشروعه الأول، إلى الشركة التي تبحث عن شريك تقني موثوق. نؤمن بأن التقنية حق للجميع، لذلك نقدم خدمات تبدأ من 1$ فقط.</p>
     <p>هذا الموقع متخصص في البرمجة والتطوير، ويضم خدماتي ومشاريعي، مع قنوات تواصل مباشرة للتعاون والاستفسار.</p>
   </div>
   <h3 class="section-title">المهارات</h3>
@@ -409,7 +504,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   </div>
 </section>
 
-<!-- أدواتي المفضلة -->
+<!-- أدواتي -->
 <section id="tools" class="section">
   <h2 class="page-title">أدواتي المفضلة</h2>
   <p class="page-sub">الأدوات اللي أستخدمها يومياً في البرمجة والتطوير.</p>
@@ -564,36 +659,12 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="faq" class="section">
   <h2 class="page-title">الأسئلة الشائعة</h2>
   <p class="page-sub">أسئلة تتكرر من الزبائن — إذا ما لقيت جوابك، تواصل معي.</p>
-
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-question">كم يستغرق تسليم الموقع؟ <span class="arrow">▼</span></div>
-    <div class="faq-answer">يعتمد على حجم الموقع. المواقع البسيطة 2-3 أيام، والمتوسطة 5-7 أيام، والمعقدة 2-3 أسابيع. نتفق على المدة قبل البدء.</div>
-  </div>
-
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-question">كيف يتم الدفع؟ <span class="arrow">▼</span></div>
-    <div class="faq-answer">نتفق على طريقة الدفع بعد الطلب — تحويل بنكي محلي، USDT، أو PayPal. الدفع على دفعتين: 50% مقدماً و 50% عند التسليم.</div>
-  </div>
-
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-question">هل تقدم دعم بعد التسليم؟ <span class="arrow">▼</span></div>
-    <div class="faq-answer">نعم — دعم مجاني لمدة 30 يوم بعد التسليم لأي مشكلة تقنية أو استفسار.</div>
-  </div>
-
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-question">هل يمكن تعديل الموقع بعد التسليم؟ <span class="arrow">▼</span></div>
-    <div class="faq-answer">نعم — أراجعك الكود كامل مع شرح كيف تعدل عليه. وإذا احتجت مساعدة، أنا موجود.</div>
-  </div>
-
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-question">هل تعمل على مشاريع خارج ليبيا؟ <span class="arrow">▼</span></div>
-    <div class="faq-answer">نعم — أعمل مع زبائن من أي مكان في العالم. التواصل عبر انستقرام أو الإيميل.</div>
-  </div>
-
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-question">ما هي طرق التواصل المتاحة؟ <span class="arrow">▼</span></div>
-    <div class="faq-answer">انستقرام (@ra_7dee7_)، تيك توك (@loh7he)، أو الإيميل (radwakana17@gmail.com).</div>
-  </div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كم يستغرق تسليم الموقع؟ <span class="arrow">▼</span></div><div class="faq-answer">يعتمد على حجم الموقع. المواقع البسيطة 2-3 أيام، والمتوسطة 5-7 أيام، والمعقدة 2-3 أسابيع. نتفق على المدة قبل البدء.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كيف يتم الدفع؟ <span class="arrow">▼</span></div><div class="faq-answer">نتفق على طريقة الدفع بعد الطلب — تحويل بنكي محلي، USDT، أو PayPal. الدفع على دفعتين: 50% مقدماً و 50% عند التسليم.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل تقدم دعم بعد التسليم؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — دعم مجاني لمدة 30 يوم بعد التسليم لأي مشكلة تقنية أو استفسار.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل يمكن تعديل الموقع بعد التسليم؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — أراجعك الكود كامل مع شرح كيف تعدل عليه. وإذا احتجت مساعدة، أنا موجود.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل تعمل على مشاريع خارج ليبيا؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — أعمل مع زبائن من أي مكان في العالم. التواصل عبر انستقرام أو الإيميل.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">ما الفرق بين Pro و Plus؟ <span class="arrow">▼</span></div><div class="faq-answer">Pro (4.99$) يعطيك فتح كل السكربتات والأدوات + خصم 20%. Plus (9.99$) يعطيك كل شي مجاني في الموقع + استشارات غير محدودة + خصم 50% + دعم VIP.</div></div>
 </section>
 
 <!-- قريباً -->
@@ -635,39 +706,17 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="report" class="section">
   <h2 class="page-title">🚨 الإبلاغ عن مشكلة</h2>
   <p class="page-sub">واجهت مشكلة في الموقع؟ خبرني وأصلحها بأسرع وقت.</p>
-
   <div class="email-display">
     <div class="label">📧 إيميل الإبلاغ المباشر:</div>
     <a href="mailto:radwakana17@gmail.com">radwakana17@gmail.com</a>
   </div>
-
   <div class="contact-form">
     <h3>📝 أرسل بلاغك</h3>
     <form onsubmit="sendReport(event)">
-      <div class="field">
-        <label>الاسم</label>
-        <input type="text" id="reportName" placeholder="اكتب اسمك" required>
-      </div>
-      <div class="field">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="reportEmail" placeholder="your@email.com" required>
-      </div>
-      <div class="field">
-        <label>نوع المشكلة</label>
-        <select id="reportType" required>
-          <option value="">اختر نوع المشكلة</option>
-          <option value="خطأ في الصفحة">خطأ في الصفحة</option>
-          <option value="مشكلة في التصميم">مشكلة في التصميم</option>
-          <option value="رابط لا يعمل">رابط لا يعمل</option>
-          <option value="مشكلة في السلة">مشكلة في السلة</option>
-          <option value="اقتراح تحسين">اقتراح تحسين</option>
-          <option value="أخرى">أخرى</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>تفاصيل المشكلة</label>
-        <textarea id="reportDetails" placeholder="اشرح المشكلة بالتفصيل..." required></textarea>
-      </div>
+      <div class="field"><label>الاسم</label><input type="text" id="reportName" placeholder="اكتب اسمك" required></div>
+      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="reportEmail" placeholder="your@email.com" required></div>
+      <div class="field"><label>نوع المشكلة</label><select id="reportType" required><option value="">اختر نوع المشكلة</option><option value="خطأ في الصفحة">خطأ في الصفحة</option><option value="مشكلة في التصميم">مشكلة في التصميم</option><option value="رابط لا يعمل">رابط لا يعمل</option><option value="مشكلة في السلة">مشكلة في السلة</option><option value="اقتراح تحسين">اقتراح تحسين</option><option value="أخرى">أخرى</option></select></div>
+      <div class="field"><label>تفاصيل المشكلة</label><textarea id="reportDetails" placeholder="اشرح المشكلة بالتفصيل..." required></textarea></div>
       <button type="submit">📤 إرسال البلاغ</button>
     </form>
   </div>
@@ -677,32 +726,20 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="contact" class="section">
   <h2 class="page-title">تواصل معي</h2>
   <p class="page-sub">اختر الطريقة الأنسب لك:</p>
-
   <div class="social-grid">
     <a href="https://www.tiktok.com/@loh7he" target="_blank" class="social"><span class="icon">♪</span><span class="name">TikTok</span><span class="handle">@loh7he</span><span class="follow">اشترك الآن ←</span></a>
     <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="social"><span class="icon">◉</span><span class="name">Instagram</span><span class="handle">@ra_7dee7_</span><span class="follow">تابعني ←</span></a>
   </div>
-
   <div class="email-display">
     <div class="label">📧 إيميلي للتواصل المباشر:</div>
     <a href="mailto:radwakana17@gmail.com">radwakana17@gmail.com</a>
   </div>
-
   <div class="contact-form">
     <h3>📝 أرسل لي رسالة</h3>
     <form onsubmit="sendMessage(event)">
-      <div class="field">
-        <label>الاسم</label>
-        <input type="text" id="visitorName" placeholder="اكتب اسمك" required>
-      </div>
-      <div class="field">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="visitorEmail" placeholder="your@email.com" required>
-      </div>
-      <div class="field">
-        <label>الرسالة</label>
-        <textarea id="visitorMessage" placeholder="اكتب رسالتك هنا..." required></textarea>
-      </div>
+      <div class="field"><label>الاسم</label><input type="text" id="visitorName" placeholder="اكتب اسمك" required></div>
+      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="visitorEmail" placeholder="your@email.com" required></div>
+      <div class="field"><label>الرسالة</label><textarea id="visitorMessage" placeholder="اكتب رسالتك هنا..." required></textarea></div>
       <button type="submit">📤 إرسال الرسالة</button>
     </form>
   </div>
@@ -712,7 +749,6 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   <p>© 2026 RA_7DEE7 — جميع الحقوق محفوظة</p>
 </footer>
 
-<!-- نافذة السلة -->
 <div class="cart-modal" id="cartModal">
   <div class="cart-content">
     <h3>🛒 سلة التسوق <button class="close-cart" onclick="closeCart()">✕</button></h3>
@@ -775,7 +811,6 @@ function toggleTheme() {
   }, 30);
 })();
 
-/* ====== عدّاد تنازلي 7 أيام ====== */
 (function initCountdown() {
   let end = localStorage.getItem('countdownEnd');
   if (!end) {
@@ -783,24 +818,19 @@ function toggleTheme() {
     localStorage.setItem('countdownEnd', end);
   }
   const endTime = parseInt(end);
-
   function update() {
     const now = Date.now();
     let diff = endTime - now;
     if (diff < 0) diff = 0;
-
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const mins = Math.floor((diff / (1000 * 60)) % 60);
     const secs = Math.floor((diff / 1000) % 60);
-
     const pad = n => String(n).padStart(2, '0');
-
     const dEl = document.getElementById('cd-days');
     const hEl = document.getElementById('cd-hours');
     const mEl = document.getElementById('cd-mins');
     const sEl = document.getElementById('cd-secs');
-
     if (dEl) dEl.textContent = days;
     if (hEl) hEl.textContent = pad(hours);
     if (mEl) mEl.textContent = pad(mins);
@@ -810,37 +840,23 @@ function toggleTheme() {
   setInterval(update, 1000);
 })();
 
-/* ====== الأسئلة الشائعة ====== */
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
+function toggleFaq(el) { el.classList.toggle('open'); }
 
-/* ====== السلة ====== */
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-
-function saveCart() {
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartBadge();
-}
-
+function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartBadge(); }
 function updateCartBadge() {
   const badge = document.getElementById('cartBadge');
   const sideBadge = document.getElementById('sideBadge');
   if (badge) badge.textContent = cart.length;
   if (sideBadge) sideBadge.textContent = cart.length;
 }
-
 function addToCart(name, price) {
   const existing = cart.find(item => item.name === name);
-  if (existing) {
-    existing.qty = (existing.qty || 1) + 1;
-  } else {
-    cart.push({ name: name, price: price, qty: 1 });
-  }
+  if (existing) { existing.qty = (existing.qty || 1) + 1; }
+  else { cart.push({ name: name, price: price, qty: 1 }); }
   saveCart();
   showToast('✅ تمت الإضافة إلى السلة: ' + name);
 }
-
 function showToast(msg) {
   const toast = document.createElement('div');
   toast.textContent = msg;
@@ -849,55 +865,32 @@ function showToast(msg) {
   setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = '0.3s'; }, 1800);
   setTimeout(() => toast.remove(), 2200);
 }
-
-function openCart() {
-  renderCart();
-  document.getElementById('cartModal').classList.add('open');
-}
-
-function closeCart() {
-  document.getElementById('cartModal').classList.remove('open');
-}
-
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  saveCart();
-  renderCart();
-}
-
+function openCart() { renderCart(); document.getElementById('cartModal').classList.add('open'); }
+function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
+function removeFromCart(index) { cart.splice(index, 1); saveCart(); renderCart(); }
 function renderCart() {
   const container = document.getElementById('cartItems');
   const totalEl = document.getElementById('cartTotal');
   const checkoutBtn = document.getElementById('checkoutBtn');
   const totalAmount = document.getElementById('totalAmount');
-
   if (cart.length === 0) {
     container.innerHTML = '<div class="cart-empty">🛒<br><br>السلة فاضية<br>أضف خدمات من المتجر</div>';
     totalEl.style.display = 'none';
     checkoutBtn.style.display = 'none';
     return;
   }
-
-  let html = '';
-  let total = 0;
+  let html = ''; let total = 0;
   cart.forEach((item, i) => {
     const qty = item.qty || 1;
     const subtotal = item.price * qty;
     total += subtotal;
-    html += '<div class="cart-item">' +
-      '<div class="item-info">' +
-        '<div class="item-name">' + item.name + (qty > 1 ? ' × ' + qty : '') + '</div>' +
-        '<div class="item-price">' + subtotal + ' $</div>' +
-      '</div>' +
-      '<button class="remove-btn" onclick="removeFromCart(' + i + ')">✕</button>' +
-    '</div>';
+    html += '<div class="cart-item"><div class="item-info"><div class="item-name">' + item.name + (qty > 1 ? ' × ' + qty : '') + '</div><div class="item-price">' + subtotal + ' $</div></div><button class="remove-btn" onclick="removeFromCart(' + i + ')">✕</button></div>';
   });
   container.innerHTML = html;
   totalAmount.textContent = total + ' $';
   totalEl.style.display = 'block';
   checkoutBtn.style.display = 'block';
 }
-
 function checkout() {
   if (cart.length === 0) return;
   let message = '🛒 طلب جديد من الموقع:\n\n';
@@ -915,14 +908,9 @@ function checkout() {
     navigator.clipboard.writeText(message).catch(() => {});
   }, 500);
 }
-
 updateCartBadge();
+document.getElementById('cartModal').addEventListener('click', function(e) { if (e.target === this) closeCart(); });
 
-document.getElementById('cartModal').addEventListener('click', function(e) {
-  if (e.target === this) closeCart();
-});
-
-/* ====== إرسال الرسائل ====== */
 function sendMessage(e) {
   e.preventDefault();
   const name = document.getElementById('visitorName').value;
@@ -932,7 +920,6 @@ function sendMessage(e) {
   const body = encodeURIComponent('الاسم: ' + name + '\nالإيميل: ' + email + '\n\nالرسالة:\n' + message);
   window.location.href = 'mailto:radwakana17@gmail.com?subject=' + subject + '&body=' + body;
 }
-
 function sendReport(e) {
   e.preventDefault();
   const name = document.getElementById('reportName').value;
@@ -943,7 +930,6 @@ function sendReport(e) {
   const body = encodeURIComponent('الاسم: ' + name + '\nالإيميل: ' + email + '\nنوع المشكلة: ' + type + '\n\nالتفاصيل:\n' + details);
   window.location.href = 'mailto:radwakana17@gmail.com?subject=' + subject + '&body=' + body;
 }
-
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.term-body .out').forEach((el, i) => {
     setTimeout(() => el.classList.add('show'), 400 * (i + 1));
@@ -951,4 +937,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-                                       </html>
+  </html>
