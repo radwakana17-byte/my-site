@@ -5,505 +5,390 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RA_7DEE7 | مطوّر ومبرمج</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 :root {
-  --red: #ff0033; --red-glow: #ff3355;
-  --bg: #0a0a0a; --bg2: #111; --bg3: #161616;
-  --text: #e6e6e6; --dim: #888;
-  --card-border: #222;
-  --term-bg: #1a1a1a;
-  --scan: rgba(255,0,51,0.03);
+  --green: #00ff41; --green-glow: #33ff66;
+  --green-dark: #00cc33;
+  --bg: #000000; --bg2: #0a0a0a; --bg3: #111111;
+  --text: #c8ffdb; --dim: #4a7a5a;
+  --card-border: #0d3319;
+  --term-bg: #051505;
   --gold: #ffd700;
 }
 body.light {
-  --bg: #f5f5f5; --bg2: #ffffff; --bg3: #eaeaea;
-  --text: #1a1a1a; --dim: #666;
-  --card-border: #ddd;
-  --term-bg: #e0e0e0;
-  --scan: rgba(255,0,51,0.04);
+  --bg: #f0fff4; --bg2: #ffffff; --bg3: #e8f5ec;
+  --text: #0a2a14; --dim: #4a7a5a;
+  --card-border: #a8d5b5;
+  --term-bg: #d5eddc;
 }
-body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; transition: background 0.4s, color 0.4s; padding-left: 70px; }
-.scanlines { position: fixed; inset: 0; pointer-events: none; z-index: 999; background: repeating-linear-gradient(to bottom, var(--scan) 0px, var(--scan) 1px, transparent 1px, transparent 3px); }
+body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; transition: background 0.4s, color 0.4s; padding-left: 80px; padding-right: 10px; padding-bottom: 10px; }
 
-/* ====== شاشة الدخول ====== */
-.splash-screen {
-  position: fixed; inset: 0; z-index: 10000;
-  background: radial-gradient(circle at center, #1a0000 0%, #0a0a0a 70%);
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: 30px;
-  transition: opacity 0.8s ease, visibility 0.8s;
-}
-.splash-screen.hide { opacity: 0; visibility: hidden; }
-.splash-logo {
-  font-size: 3rem; font-weight: bold; color: var(--red);
-  text-shadow: 0 0 30px var(--red-glow), 0 0 60px var(--red);
-  letter-spacing: 3px;
-  animation: pulseLogo 2s infinite;
-}
-.splash-logo span { color: var(--text); }
-@keyframes pulseLogo {
-  0%,100% { text-shadow: 0 0 30px var(--red-glow), 0 0 60px var(--red); }
-  50% { text-shadow: 0 0 50px var(--red), 0 0 100px var(--red); }
-}
-.splash-sub { color: var(--dim); font-size: 0.9rem; margin-top: -15px; letter-spacing: 2px; }
-.splash-btn {
-  background: linear-gradient(135deg, var(--red), #cc0029);
-  color: #fff; border: none;
-  padding: 18px 60px; border-radius: 50px;
-  font-size: 1.2rem; font-weight: bold;
-  font-family: inherit; cursor: pointer;
-  box-shadow: 0 0 40px rgba(255,0,51,0.6), inset 0 0 20px rgba(255,255,255,0.1);
-  transition: all 0.3s;
-  position: relative; overflow: hidden;
-  animation: pulseBtn 2s infinite;
-  letter-spacing: 2px;
-}
-.splash-btn:hover { transform: scale(1.05); box-shadow: 0 0 60px var(--red), inset 0 0 30px rgba(255,255,255,0.2); }
-.splash-btn:active { transform: scale(0.98); }
-@keyframes pulseBtn {
-  0%,100% { box-shadow: 0 0 40px rgba(255,0,51,0.6); }
-  50% { box-shadow: 0 0 70px rgba(255,0,51,0.9); }
-}
-.splash-btn::before {
-  content: ''; position: absolute;
-  top: 0; left: -100%; width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  animation: shine 3s infinite;
-}
-@keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
+/* ===== Matrix Canvas ===== */
+#matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.15; pointer-events: none; }
 
-/* ====== السايدبار ====== */
-.sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 70px; background: var(--bg2); border-left: 2px solid var(--red); display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 12px; z-index: 150; box-shadow: 2px 0 20px rgba(255,0,51,0.3); overflow-y: auto; }
+/* ===== Sidebar ===== */
+.sidebar { position: fixed; right: 0; top: 0; bottom: 0; width: 80px; background: linear-gradient(180deg, var(--bg2), var(--bg3)); border-left: 2px solid var(--green); display: flex; flex-direction: column; align-items: center; padding: 15px 0; gap: 8px; z-index: 200; box-shadow: -2px 0 25px rgba(0,255,65,0.3); overflow-y: auto; }
 .sidebar::-webkit-scrollbar { width: 0; }
-.sidebar .side-logo { color: var(--red); font-weight: bold; font-size: 0.7rem; text-align: center; margin-bottom: 10px; text-shadow: 0 0 8px var(--red-glow); }
-.side-icon { width: 48px; height: 48px; background: var(--bg); border: 1px solid var(--red); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--red); text-decoration: none; transition: 0.3s; position: relative; cursor: pointer; }
-.side-icon:hover { background: var(--red); color: #fff; transform: scale(1.1); box-shadow: 0 0 20px var(--red); }
-.side-icon .tooltip { position: absolute; right: 60px; background: var(--red); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s; font-weight: bold; }
-.side-icon:hover .tooltip { opacity: 1; right: 55px; }
-.side-icon .side-badge { position: absolute; top: -5px; right: -5px; background: #fff; color: var(--red); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; border: 2px solid var(--red); }
+.side-logo { color: var(--green); font-weight: bold; font-size: 0.65rem; text-align: center; margin-bottom: 8px; text-shadow: 0 0 10px var(--green-glow); line-height: 1.3; letter-spacing: 1px; }
+.side-icon { width: 52px; height: 52px; background: rgba(0,255,65,0.05); border: 1px solid var(--green); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--green); text-decoration: none; transition: all 0.3s; position: relative; cursor: pointer; flex-shrink: 0; }
+.side-icon:hover, .side-icon:active { background: var(--green); color: #000; transform: scale(1.08); box-shadow: 0 0 25px var(--green); }
+.side-icon .tooltip { position: absolute; right: 65px; background: var(--green); color: #000; padding: 6px 12px; border-radius: 6px; font-size: 0.72rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s; font-weight: bold; }
+.side-icon:hover .tooltip { opacity: 1; right: 60px; }
+.side-icon .side-badge { position: absolute; top: -5px; left: -5px; background: #ff0033; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: bold; border: 2px solid var(--bg); }
 
-/* ====== Header ====== */
-header { position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--bg) 95%, transparent); border-bottom: 1px solid var(--red); backdrop-filter: blur(6px); }
-nav { max-width: 1200px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; gap: 10px; }
-.logo { color: var(--red); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 8px var(--red-glow); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
-.verified-badge { display: inline-flex; align-items: center; gap: 3px; background: var(--red); color: #fff; font-size: 0.62rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 0 10px rgba(255,0,51,0.5); }
-.nav-links { list-style: none; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.nav-links a { color: var(--text); text-decoration: none; font-size: 0.78rem; transition: 0.25s; position: relative; cursor: pointer; }
-.nav-links a:hover, .nav-links a.active { color: var(--red); text-shadow: 0 0 8px var(--red-glow); }
-.nav-links a.active::after { content: ''; position: absolute; bottom: -6px; right: 0; left: 0; height: 2px; background: var(--red); box-shadow: 0 0 8px var(--red); }
-.menu-toggle { display: none; font-size: 1.5rem; color: var(--red); cursor: pointer; }
+/* ===== Header ===== */
+header { position: relative; z-index: 50; padding: 20px; border-bottom: 1px solid var(--green); margin-bottom: 20px; background: linear-gradient(180deg, rgba(0,255,65,0.05), transparent); }
+.header-inner { max-width: 1100px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.logo { color: var(--green); font-weight: bold; font-size: 1.15rem; text-shadow: 0 0 12px var(--green-glow); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.verified-badge { display: inline-flex; align-items: center; gap: 3px; background: var(--green); color: #000; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 0 12px rgba(0,255,65,0.6); }
+.theme-toggle-btn { background: transparent; border: 2px solid var(--green); color: var(--green); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+.theme-toggle-btn:hover { background: var(--green); color: #000; box-shadow: 0 0 20px var(--green); }
 
-/* ====== Sections ====== */
-.section { display: none; max-width: 1100px; margin: 50px auto; padding: 0 20px; }
-.section.active { display: block; animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* ===== Sections ===== */
+.section { display: none; max-width: 1100px; margin: 30px auto 60px; padding: 0 15px; position: relative; z-index: 10; }
+.section.active { display: block; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
 .hero-inner { text-align: center; }
-.terminal { background: var(--bg2); border: 1px solid var(--red); border-radius: 8px; overflow: hidden; box-shadow: 0 0 25px rgba(255,0,51,0.25); text-align: right; margin-bottom: 40px; }
-.term-bar { background: var(--term-bg); padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--card-border); }
+.terminal { background: var(--bg2); border: 1px solid var(--green); border-radius: 10px; overflow: hidden; box-shadow: 0 0 35px rgba(0,255,65,0.35), inset 0 0 60px rgba(0,255,65,0.05); text-align: right; margin-bottom: 30px; }
+.term-bar { background: var(--term-bg); padding: 10px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--green); }
 .dot { width: 12px; height: 12px; border-radius: 50%; }
 .dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
-.term-title { color: var(--dim); font-size: 0.8rem; margin-right: auto; }
-.term-body { padding: 18px; font-size: 0.9rem; line-height: 1.9; }
-.prompt { color: var(--red); }
-.out { color: var(--dim); padding-right: 14px; opacity: 0; transition: opacity 0.5s; }
+.term-title { color: var(--dim); font-size: 0.78rem; margin-right: auto; }
+.term-body { padding: 18px; font-size: 0.9rem; line-height: 1.9; font-family: 'Courier New', monospace; }
+.prompt { color: var(--green); }
+.out { color: var(--text); padding-right: 14px; opacity: 0; transition: opacity 0.5s; }
 .out.show { opacity: 1; }
-.blink::after { content: '▊'; color: var(--red); animation: blink 1s step-end infinite; }
+.blink::after { content: '▊'; color: var(--green); animation: blink 1s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
-.glitch { font-size: 2.2rem; color: var(--text); margin-bottom: 16px; position: relative; display: inline-block; text-shadow: 0 0 10px var(--red); }
+
+.glitch { font-size: 2.2rem; color: var(--green); margin-bottom: 16px; position: relative; display: inline-block; text-shadow: 0 0 20px var(--green); }
 .glitch::before, .glitch::after { content: attr(data-text); position: absolute; inset: 0; }
-.glitch::before { color: var(--red); animation: glitch1 2s infinite; }
-.glitch::after { color: #00e5ff; animation: glitch2 2s infinite; }
+.glitch::before { color: #00ffd5; animation: glitch1 2s infinite; }
+.glitch::after { color: #88ffaa; animation: glitch2 2s infinite; }
 @keyframes glitch1 { 0%,100% { transform: translate(0); } 20% { transform: translate(-2px,1px); } 40% { transform: translate(-2px,-1px); } 60% { transform: translate(2px,1px); } }
 @keyframes glitch2 { 0%,100% { transform: translate(0); } 20% { transform: translate(2px,-1px); } 40% { transform: translate(2px,1px); } 60% { transform: translate(-2px,-1px); } }
+
 .sub { color: var(--dim); margin-bottom: 28px; font-size: 1rem; }
-.visitor-counter { display: inline-flex; align-items: center; gap: 10px; background: var(--bg2); border: 1px solid var(--red); padding: 10px 20px; border-radius: 30px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(255,0,51,0.2); font-size: 0.9rem; }
-.visitor-counter .num { color: var(--red); font-weight: bold; font-size: 1.2rem; text-shadow: 0 0 10px var(--red-glow); }
+.visitor-counter { display: inline-flex; align-items: center; gap: 10px; background: var(--bg2); border: 1px solid var(--green); padding: 10px 20px; border-radius: 30px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(0,255,65,0.3); font-size: 0.9rem; }
+.visitor-counter .num { color: var(--green); font-weight: bold; font-size: 1.2rem; text-shadow: 0 0 10px var(--green-glow); }
 .visitor-counter .label { color: var(--dim); }
 
-/* ====== أزرار فخمة ====== */
+/* ===== Buttons ===== */
 .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.btn {
-  position: relative;
-  background: linear-gradient(135deg, var(--red) 0%, #cc0029 100%);
-  color: #fff; padding: 15px 32px;
-  text-decoration: none; border-radius: 50px;
-  font-weight: bold; font-family: inherit; font-size: 1rem;
-  border: none; cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 25px rgba(255,0,51,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-  overflow: hidden;
-  letter-spacing: 0.5px;
-}
-.btn::before {
-  content: ''; position: absolute;
-  top: 50%; left: 50%;
-  width: 0; height: 0;
-  background: rgba(255,255,255,0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.5s, height 0.5s;
-}
-.btn:hover::before { width: 300px; height: 300px; }
-.btn:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 15px 40px rgba(255,0,51,0.6), inset 0 1px 0 rgba(255,255,255,0.3);
-}
-.btn:active { transform: translateY(-1px) scale(0.98); }
-.btn.ghost {
-  background: transparent;
-  border: 2px solid var(--red);
-  color: var(--red);
-  box-shadow: 0 0 20px rgba(255,0,51,0.3), inset 0 0 20px rgba(255,0,51,0.1);
-}
-.btn.ghost:hover {
-  background: var(--red); color: #fff;
-  box-shadow: 0 15px 40px rgba(255,0,51,0.6);
-}
+.btn { background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #000; padding: 14px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; transition: 0.3s; box-shadow: 0 5px 25px rgba(0,255,65,0.4); border: none; cursor: pointer; font-family: inherit; font-size: 1rem; letter-spacing: 0.5px; }
+.btn:hover { box-shadow: 0 8px 40px var(--green); transform: translateY(-3px); }
+.btn:active { transform: scale(0.97); }
+.btn.ghost { background: transparent; border: 2px solid var(--green); color: var(--green); box-shadow: 0 0 15px rgba(0,255,65,0.3); }
+.btn.ghost:hover { background: var(--green); color: #000; box-shadow: 0 0 30px var(--green); }
 
-/* ====== Articles / بطاقات المقالات ====== */
-.articles-grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 30px; }
-.article-card {
-  position: relative;
-  background: linear-gradient(145deg, var(--bg3), var(--bg2));
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 26px;
-  transition: all 0.4s;
-  overflow: hidden;
-  cursor: pointer;
-}
-.article-card::before {
-  content: ''; position: absolute;
-  top: 0; right: 0; left: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, var(--red), transparent);
-  transform: scaleX(0); transition: 0.4s;
-}
-.article-card:hover::before { transform: scaleX(1); }
-.article-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--red);
-  box-shadow: 0 20px 45px rgba(255,0,51,0.25);
-}
-.article-card .art-icon { font-size: 2.5rem; margin-bottom: 14px; display: block; }
-.article-card .art-tag {
-  display: inline-block;
-  background: rgba(255,0,51,0.15);
-  color: var(--red);
-  border: 1px solid var(--red);
-  padding: 3px 12px; border-radius: 12px;
-  font-size: 0.72rem; margin-bottom: 10px;
-}
-.article-card h3 { color: var(--text); font-size: 1.1rem; margin-bottom: 10px; line-height: 1.5; }
-.article-card p { color: var(--dim); font-size: 0.88rem; line-height: 1.75; margin-bottom: 16px; }
-.article-card .read-more { color: var(--red); font-weight: bold; font-size: 0.85rem; }
+/* ===== Page Titles ===== */
+.page-title { color: var(--green); font-size: 1.8rem; margin-bottom: 12px; text-shadow: 0 0 15px var(--green-glow); border-right: 4px solid var(--green); padding-right: 14px; }
+.page-sub { color: var(--dim); margin-bottom: 32px; padding-right: 18px; font-size: 0.92rem; }
+.section-title { color: var(--green); margin: 36px 0 18px; font-size: 1.25rem; text-shadow: 0 0 10px var(--green-glow); }
 
-/* ====== باقي التصميم ====== */
-.page-title { color: var(--red); font-size: 1.8rem; margin-bottom: 12px; text-shadow: 0 0 10px var(--red-glow); border-right: 4px solid var(--red); padding-right: 14px; }
-.page-sub { color: var(--dim); margin-bottom: 32px; padding-right: 18px; }
-.section-title { color: var(--red); margin: 36px 0 18px; font-size: 1.3rem; }
-.prompt-badge { display: inline-block; background: linear-gradient(90deg, var(--red), #ff6600); color: #fff; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; box-shadow: 0 0 20px rgba(255,0,51,0.5); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { box-shadow: 0 0 20px rgba(255,0,51,0.5); } 50% { box-shadow: 0 0 35px rgba(255,0,51,0.9); } }
-.countdown-box { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 2px solid var(--red); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 30px; box-shadow: 0 0 30px rgba(255,0,51,0.4); }
-.countdown-box .countdown-label { color: var(--red); font-weight: bold; font-size: 1rem; margin-bottom: 12px; }
+.prompt-badge { display: inline-block; background: linear-gradient(90deg, var(--green), #00cc33); color: #000; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; box-shadow: 0 0 25px rgba(0,255,65,0.6); animation: pulseGreen 2s infinite; }
+@keyframes pulseGreen { 0%,100% { box-shadow: 0 0 25px rgba(0,255,65,0.6); } 50% { box-shadow: 0 0 45px rgba(0,255,65,1); } }
+
+.countdown-box { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 2px solid var(--green); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 30px; box-shadow: 0 0 30px rgba(0,255,65,0.4); }
+.countdown-label { color: var(--green); font-weight: bold; font-size: 1rem; margin-bottom: 12px; }
 .countdown-timer { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-.countdown-timer .unit { background: var(--bg); border: 1px solid var(--red); border-radius: 8px; padding: 10px 14px; min-width: 65px; }
-.countdown-timer .unit .num { color: var(--red); font-size: 1.6rem; font-weight: bold; display: block; text-shadow: 0 0 15px var(--red-glow); }
+.countdown-timer .unit { background: var(--bg); border: 1px solid var(--green); border-radius: 8px; padding: 10px 14px; min-width: 65px; }
+.countdown-timer .unit .num { color: var(--green); font-size: 1.6rem; font-weight: bold; display: block; text-shadow: 0 0 15px var(--green-glow); }
 .countdown-timer .unit .lbl { color: var(--dim); font-size: 0.72rem; }
-.about-box p { line-height: 2; margin-bottom: 16px; color: var(--text); background: var(--bg2); padding: 18px; border-right: 3px solid var(--red); border-radius: 4px; }
+
+.about-box p { line-height: 2; margin-bottom: 16px; color: var(--text); background: rgba(0,255,65,0.04); padding: 18px; border-right: 3px solid var(--green); border-radius: 6px; }
 .skills { display: flex; flex-wrap: wrap; gap: 10px; }
-.skills span { background: var(--bg2); border: 1px solid var(--red); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; color: var(--red); transition: 0.25s; }
-.skills span:hover { background: var(--red); color: #fff; box-shadow: 0 0 15px var(--red); }
+.skills span { background: rgba(0,255,65,0.08); border: 1px solid var(--green); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; color: var(--green); transition: 0.25s; }
+.skills span:hover { background: var(--green); color: #000; box-shadow: 0 0 20px var(--green); }
+
+/* ===== Cards ===== */
 .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-.card { background: var(--bg2); border: 1px solid var(--card-border); padding: 22px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; }
-.card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 0 25px rgba(255,0,51,0.3); }
-.card h3 { color: var(--red); margin-bottom: 10px; }
+.card { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--card-border); padding: 22px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.card::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--green), transparent); transform: scaleX(0); transition: 0.4s; }
+.card:hover::before { transform: scaleX(1); }
+.card:hover { border-color: var(--green); transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,255,65,0.25); }
+.card h3 { color: var(--green); margin-bottom: 10px; text-shadow: 0 0 8px rgba(0,255,65,0.4); }
 .card p { color: var(--dim); font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px; flex: 1; }
-.card .price { color: var(--red); font-weight: bold; font-size: 1rem; margin-bottom: 14px; padding-top: 12px; border-top: 1px dashed var(--card-border); }
-.card .order-btn {
-  background: transparent; border: 2px solid var(--red); color: var(--red);
-  padding: 11px; border-radius: 50px;
-  text-decoration: none; text-align: center; font-weight: bold;
-  transition: all 0.3s; font-family: inherit; font-size: 0.9rem; cursor: pointer; display: block; margin-bottom: 8px;
-  border-radius: 50px;
-}
-.card .order-btn:hover { background: var(--red); color: #fff; box-shadow: 0 0 25px var(--red); transform: scale(1.02); }
-.card .cart-add-btn {
-  background: linear-gradient(135deg, var(--red), #cc0029);
-  border: none; color: #fff;
-  padding: 11px; border-radius: 50px;
-  text-align: center; font-weight: bold;
-  transition: all 0.3s; font-family: inherit; font-size: 0.9rem; cursor: pointer; display: block;
-  box-shadow: 0 5px 20px rgba(255,0,51,0.4);
-}
-.card .cart-add-btn:hover { box-shadow: 0 8px 30px var(--red); transform: translateY(-3px) scale(1.02); }
-.tag { font-size: 0.75rem; color: var(--red); border: 1px solid var(--red); padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 10px; align-self: flex-start; }
+.card .price { color: var(--green); font-weight: bold; font-size: 1rem; margin-bottom: 14px; padding-top: 12px; border-top: 1px dashed var(--card-border); }
+.card .order-btn { background: transparent; border: 2px solid var(--green); color: var(--green); padding: 11px; border-radius: 50px; text-decoration: none; text-align: center; font-weight: bold; transition: 0.25s; font-family: inherit; font-size: 0.9rem; cursor: pointer; display: block; margin-bottom: 8px; }
+.card .order-btn:hover { background: var(--green); color: #000; box-shadow: 0 0 25px var(--green); }
+.card .cart-add-btn { background: linear-gradient(135deg, var(--green), var(--green-dark)); border: none; color: #000; padding: 11px; border-radius: 50px; text-align: center; font-weight: bold; transition: 0.25s; font-family: inherit; font-size: 0.9rem; cursor: pointer; display: block; box-shadow: 0 5px 20px rgba(0,255,65,0.35); }
+.card .cart-add-btn:hover { box-shadow: 0 8px 35px var(--green); transform: translateY(-3px); }
+.tag { font-size: 0.72rem; color: var(--green); border: 1px solid var(--green); padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 10px; align-self: flex-start; background: rgba(0,255,65,0.06); }
+
+/* ===== Pro Cards ===== */
 .pro-services { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 20px; }
 .pro-card { position: relative; background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 14px; padding: 28px 24px; transition: 0.35s; overflow: hidden; display: flex; flex-direction: column; }
-.pro-card::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--red), transparent); transform: scaleX(0); transition: 0.4s; }
+.pro-card::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--green), transparent); transform: scaleX(0); transition: 0.4s; }
 .pro-card:hover::before { transform: scaleX(1); }
-.pro-card:hover { transform: translateY(-8px); border-color: var(--red); box-shadow: 0 15px 40px rgba(255,0,51,0.25); }
-.pro-icon { width: 55px; height: 55px; background: rgba(255,0,51,0.1); border: 1px solid var(--red); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 18px; box-shadow: 0 0 20px rgba(255,0,51,0.25); }
+.pro-card:hover { transform: translateY(-8px); border-color: var(--green); box-shadow: 0 15px 45px rgba(0,255,65,0.3); }
+.pro-icon { width: 55px; height: 55px; background: rgba(0,255,65,0.1); border: 1px solid var(--green); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 18px; box-shadow: 0 0 25px rgba(0,255,65,0.3); }
 .pro-card h3 { color: var(--text); font-size: 1.15rem; margin-bottom: 10px; }
-.pro-card h3 span { color: var(--red); }
+.pro-card h3 span { color: var(--green); }
 .pro-card p { color: var(--dim); font-size: 0.9rem; line-height: 1.75; margin-bottom: 16px; flex: 1; }
 .pro-features { list-style: none; margin-bottom: 20px; }
 .pro-features li { color: var(--dim); font-size: 0.85rem; padding: 4px 0; padding-right: 20px; position: relative; }
-.pro-features li::before { content: '✓'; position: absolute; right: 0; color: var(--red); font-weight: bold; }
-.pro-btn {
-  display: block; text-align: center;
-  background: linear-gradient(135deg, var(--red), #cc0029);
-  color: #fff; padding: 13px; border-radius: 50px;
-  text-decoration: none; font-weight: bold;
-  transition: all 0.3s; font-size: 0.9rem;
-  box-shadow: 0 5px 20px rgba(255,0,51,0.3); cursor: pointer;
-}
-.pro-btn:hover { box-shadow: 0 8px 35px var(--red); transform: translateY(-3px); }
+.pro-features li::before { content: '✓'; position: absolute; right: 0; color: var(--green); font-weight: bold; }
+.pro-btn { display: block; text-align: center; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #000; padding: 13px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: 0.3s; font-size: 0.9rem; box-shadow: 0 5px 20px rgba(0,255,65,0.35); cursor: pointer; }
+.pro-btn:hover { box-shadow: 0 8px 35px var(--green); transform: translateY(-3px); }
+
+/* ===== Pricing ===== */
 .pricing-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 30px; }
 .pricing-card { position: relative; background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 2px solid var(--card-border); border-radius: 18px; padding: 32px 26px; transition: 0.4s; display: flex; flex-direction: column; text-align: center; overflow: hidden; }
 .pricing-card:hover { transform: translateY(-10px); }
-.pricing-card.free:hover { border-color: var(--dim); box-shadow: 0 15px 40px rgba(150,150,150,0.2); }
-.pricing-card.pro { border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,51,0.3); }
-.pricing-card.pro:hover { box-shadow: 0 20px 50px rgba(255,0,51,0.5); }
-.pricing-card.plus { border-color: var(--gold); box-shadow: 0 0 30px rgba(255,215,0,0.3); }
-.pricing-card.plus:hover { box-shadow: 0 20px 50px rgba(255,215,0,0.5); }
-.pricing-card .card-ribbon { position: absolute; top: 15px; left: -35px; background: var(--red); color: #fff; padding: 5px 40px; font-size: 0.7rem; font-weight: bold; transform: rotate(-45deg); box-shadow: 0 0 15px rgba(255,0,51,0.6); }
+.pricing-card.free:hover { border-color: var(--dim); box-shadow: 0 15px 40px rgba(74,122,90,0.3); }
+.pricing-card.pro { border-color: var(--green); box-shadow: 0 0 35px rgba(0,255,65,0.3); }
+.pricing-card.pro:hover { box-shadow: 0 20px 55px rgba(0,255,65,0.5); }
+.pricing-card.plus { border-color: var(--gold); box-shadow: 0 0 35px rgba(255,215,0,0.3); }
+.pricing-card.plus:hover { box-shadow: 0 20px 55px rgba(255,215,0,0.5); }
+.card-ribbon { position: absolute; top: 15px; left: -35px; background: var(--green); color: #000; padding: 5px 40px; font-size: 0.7rem; font-weight: bold; transform: rotate(-45deg); box-shadow: 0 0 15px rgba(0,255,65,0.6); }
 .pricing-card.plus .card-ribbon { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(255,215,0,0.6); }
-.pricing-card .plan-icon { font-size: 3rem; margin-bottom: 14px; }
-.pricing-card .plan-name { font-size: 1.4rem; font-weight: bold; margin-bottom: 8px; }
+.plan-icon { font-size: 3rem; margin-bottom: 14px; }
+.plan-name { font-size: 1.4rem; font-weight: bold; margin-bottom: 8px; }
 .pricing-card.free .plan-name { color: var(--dim); }
-.pricing-card.pro .plan-name { color: var(--red); text-shadow: 0 0 15px var(--red-glow); }
+.pricing-card.pro .plan-name { color: var(--green); text-shadow: 0 0 15px var(--green-glow); }
 .pricing-card.plus .plan-name { color: var(--gold); text-shadow: 0 0 15px rgba(255,215,0,0.5); }
-.pricing-card .plan-desc { color: var(--dim); font-size: 0.85rem; margin-bottom: 20px; }
-.pricing-card .plan-price { margin-bottom: 24px; }
-.pricing-card .plan-price .amount { font-size: 2.5rem; font-weight: bold; }
+.plan-desc { color: var(--dim); font-size: 0.85rem; margin-bottom: 20px; }
+.plan-price { margin-bottom: 24px; }
+.plan-price .amount { font-size: 2.5rem; font-weight: bold; }
 .pricing-card.free .plan-price .amount { color: var(--dim); }
-.pricing-card.pro .plan-price .amount { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+.pricing-card.pro .plan-price .amount { color: var(--green); text-shadow: 0 0 20px var(--green-glow); }
 .pricing-card.plus .plan-price .amount { color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.6); }
-.pricing-card .plan-price .currency { font-size: 1.1rem; color: var(--dim); }
-.pricing-card .plan-price .period { display: block; color: var(--dim); font-size: 0.8rem; margin-top: 4px; }
+.plan-price .currency { font-size: 1.1rem; color: var(--dim); }
+.plan-price .period { display: block; color: var(--dim); font-size: 0.8rem; margin-top: 4px; }
 .pricing-features { list-style: none; text-align: right; margin-bottom: 26px; flex: 1; }
-.pricing-features li { color: var(--text); font-size: 0.88rem; padding: 8px 0; padding-right: 26px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.pricing-features li { color: var(--text); font-size: 0.88rem; padding: 8px 0; padding-right: 26px; position: relative; border-bottom: 1px solid rgba(0,255,65,0.08); }
 .pricing-features li::before { content: '✓'; position: absolute; right: 0; font-weight: bold; }
 .pricing-card.free .pricing-features li::before { color: var(--dim); }
-.pricing-card.pro .pricing-features li::before { color: var(--red); }
+.pricing-card.pro .pricing-features li::before { color: var(--green); }
 .pricing-card.plus .pricing-features li::before { color: var(--gold); }
-.pricing-features li.no { opacity: 0.4; }
-.pricing-features li.no::before { content: '✕'; }
-.pricing-btn {
-  display: block; padding: 15px; border-radius: 50px;
-  text-decoration: none; font-weight: bold; font-size: 1rem;
-  transition: all 0.3s; text-align: center; cursor: pointer;
-}
+.pricing-btn { display: block; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: 0.3s; text-align: center; cursor: pointer; }
 .pricing-card.free .pricing-btn { background: transparent; border: 2px solid var(--dim); color: var(--dim); }
-.pricing-card.free .pricing-btn:hover { background: var(--dim); color: #fff; }
-.pricing-card.pro .pricing-btn { background: linear-gradient(135deg, var(--red), #cc0029); color: #fff; box-shadow: 0 5px 25px rgba(255,0,51,0.5); border: none; }
-.pricing-card.pro .pricing-btn:hover { box-shadow: 0 5px 40px var(--red); transform: translateY(-3px); }
+.pricing-card.free .pricing-btn:hover { background: var(--dim); color: #000; }
+.pricing-card.pro .pricing-btn { background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #000; box-shadow: 0 5px 25px rgba(0,255,65,0.5); border: none; }
+.pricing-card.pro .pricing-btn:hover { box-shadow: 0 5px 45px var(--green); transform: translateY(-3px); }
 .pricing-card.plus .pricing-btn { background: linear-gradient(135deg, var(--gold), #ff9500); color: #000; box-shadow: 0 5px 25px rgba(255,215,0,0.5); border: none; }
-.pricing-card.plus .pricing-btn:hover { box-shadow: 0 5px 40px rgba(255,215,0,0.8); transform: translateY(-3px); }
+.pricing-card.plus .pricing-btn:hover { box-shadow: 0 5px 45px rgba(255,215,0,0.8); transform: translateY(-3px); }
+
+/* ===== Apps ===== */
+.apps-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); margin-top: 20px; }
+.app-card { position: relative; background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 2px solid var(--card-border); border-radius: 16px; padding: 28px 24px; transition: 0.4s; display: flex; flex-direction: column; overflow: hidden; }
+.app-card::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: linear-gradient(90deg, var(--green), var(--green-glow), var(--green)); transform: scaleX(0); transition: 0.4s; }
+.app-card:hover::before { transform: scaleX(1); }
+.app-card:hover { transform: translateY(-10px); border-color: var(--green); box-shadow: 0 20px 55px rgba(0,255,65,0.3); }
+.app-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 18px; box-shadow: 0 10px 35px rgba(0,255,65,0.5); }
+.app-card h3 { color: var(--text); font-size: 1.3rem; margin-bottom: 8px; }
+.app-card .app-version { color: var(--dim); font-size: 0.75rem; margin-bottom: 12px; }
+.app-card p { color: var(--dim); font-size: 0.9rem; line-height: 1.75; margin-bottom: 16px; flex: 1; }
+.app-features { list-style: none; margin-bottom: 20px; }
+.app-features li { color: var(--text); font-size: 0.85rem; padding: 5px 0; padding-right: 22px; position: relative; }
+.app-features li::before { content: '✨'; position: absolute; right: 0; font-size: 0.75rem; }
+.app-download-btn { display: block; text-align: center; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #000; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: 0.3s; font-size: 1rem; box-shadow: 0 8px 30px rgba(0,255,65,0.5); cursor: pointer; }
+.app-download-btn:hover { box-shadow: 0 12px 45px var(--green); transform: translateY(-3px) scale(1.02); }
+.app-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: #000; font-size: 0.7rem; padding: 4px 12px; border-radius: 12px; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,65,0.6); }
+
+/* ===== Reviews ===== */
 .reviews { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 20px; }
 .review { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 14px; padding: 26px 22px; position: relative; transition: 0.35s; }
-.review:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255,0,51,0.2); }
-.review .quote { position: absolute; top: 10px; left: 18px; font-size: 3.5rem; color: var(--red); opacity: 0.25; line-height: 1; font-family: Georgia, serif; }
-.review .stars { color: var(--red); font-size: 1rem; margin-bottom: 14px; text-shadow: 0 0 10px rgba(255,0,51,0.5); }
+.review:hover { border-color: var(--green); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,255,65,0.2); }
+.review .quote { position: absolute; top: 10px; left: 18px; font-size: 3.5rem; color: var(--green); opacity: 0.25; line-height: 1; font-family: Georgia, serif; }
+.review .stars { color: var(--green); font-size: 1rem; margin-bottom: 14px; text-shadow: 0 0 10px rgba(0,255,65,0.5); }
 .review .text { color: var(--text); font-size: 0.92rem; line-height: 1.85; margin-bottom: 18px; font-style: italic; }
 .review .author { display: flex; align-items: center; gap: 12px; border-top: 1px dashed var(--card-border); padding-top: 16px; }
-.review .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; box-shadow: 0 0 15px rgba(255,0,51,0.4); }
+.review .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; box-shadow: 0 0 20px rgba(0,255,65,0.5); }
 .review .info .name { color: var(--text); font-weight: bold; font-size: 0.92rem; }
 .review .info .role { color: var(--dim); font-size: 0.78rem; }
+
+/* ===== Social ===== */
 .social-grid { display: grid; gap: 20px; margin-top: 24px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-.social { display: flex; flex-direction: column; gap: 8px; background: var(--bg2); border: 1px solid var(--card-border); padding: 26px; border-radius: 10px; text-decoration: none; color: var(--text); transition: 0.3s; position: relative; overflow: hidden; }
-.social::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 3px; background: var(--red); transform: scaleX(0); transform-origin: right; transition: 0.3s; }
+.social { display: flex; flex-direction: column; gap: 8px; background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--card-border); padding: 26px; border-radius: 12px; text-decoration: none; color: var(--text); transition: 0.3s; position: relative; overflow: hidden; }
+.social::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 3px; background: var(--green); transform: scaleX(0); transform-origin: right; transition: 0.3s; }
 .social:hover::before { transform: scaleX(1); }
-.social:hover { border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,51,0.35); transform: translateY(-4px); }
-.social .icon { font-size: 2rem; color: var(--red); }
+.social:hover { border-color: var(--green); box-shadow: 0 0 35px rgba(0,255,65,0.35); transform: translateY(-5px); }
+.social .icon { font-size: 2rem; color: var(--green); }
 .social .name { font-weight: bold; font-size: 1.1rem; }
 .social .handle { color: var(--dim); font-size: 0.9rem; direction: ltr; text-align: right; }
-.social .follow { margin-top: 8px; color: var(--red); font-size: 0.85rem; font-weight: bold; }
-.blog-post { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 12px; padding: 26px; margin-bottom: 22px; transition: 0.3s; }
-.blog-post:hover { border-color: var(--red); box-shadow: 0 0 25px rgba(255,0,51,0.2); }
-.blog-post h3 { color: var(--red); font-size: 1.3rem; margin-bottom: 8px; }
+.social .follow { margin-top: 8px; color: var(--green); font-size: 0.85rem; font-weight: bold; }
+
+/* ===== Blog ===== */
+.blog-post { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--card-border); border-radius: 12px; padding: 26px; margin-bottom: 22px; transition: 0.3s; }
+.blog-post:hover { border-color: var(--green); box-shadow: 0 0 30px rgba(0,255,65,0.2); }
+.blog-post h3 { color: var(--green); font-size: 1.3rem; margin-bottom: 8px; text-shadow: 0 0 10px rgba(0,255,65,0.4); }
 .blog-post .meta { color: var(--dim); font-size: 0.78rem; margin-bottom: 16px; }
 .blog-post p { color: var(--text); line-height: 1.9; margin-bottom: 12px; font-size: 0.92rem; }
 .blog-post ul { list-style: none; padding-right: 0; margin-top: 12px; }
 .blog-post ul li { color: var(--text); padding: 6px 0; padding-right: 22px; position: relative; font-size: 0.9rem; }
-.blog-post ul li::before { content: '▸'; position: absolute; right: 0; color: var(--red); }
-.blog-post .badge { display: inline-block; background: rgba(255,0,51,0.15); color: var(--red); border: 1px solid var(--red); padding: 3px 12px; border-radius: 12px; font-size: 0.72rem; margin-bottom: 12px; }
-.contact-form { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 12px; padding: 28px; margin-top: 30px; }
-.contact-form h3 { color: var(--red); margin-bottom: 20px; font-size: 1.2rem; }
-.contact-form .field { margin-bottom: 16px; }
-.contact-form label { display: block; color: var(--text); font-size: 0.85rem; margin-bottom: 6px; }
-.contact-form input, .contact-form textarea, .contact-form select { width: 100%; background: var(--bg); border: 1px solid var(--card-border); color: var(--text); padding: 12px 14px; border-radius: 8px; font-family: inherit; font-size: 0.9rem; transition: 0.25s; }
-.contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(255,0,51,0.3); }
-.contact-form textarea { min-height: 120px; resize: vertical; }
-.contact-form button { background: linear-gradient(135deg, var(--red), #cc0029); color: #fff; border: none; padding: 13px 32px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; font-family: inherit; transition: 0.25s; box-shadow: 0 5px 20px rgba(255,0,51,0.4); }
-.contact-form button:hover { box-shadow: 0 8px 30px var(--red); transform: translateY(-3px); }
-.email-display { background: var(--bg2); border: 1px dashed var(--red); padding: 18px; border-radius: 8px; margin-top: 20px; text-align: center; }
+.blog-post ul li::before { content: '▸'; position: absolute; right: 0; color: var(--green); }
+.blog-post .badge { display: inline-block; background: rgba(0,255,65,0.12); color: var(--green); border: 1px solid var(--green); padding: 3px 12px; border-radius: 12px; font-size: 0.72rem; margin-bottom: 12px; }
+
+/* ===== Forms ===== */
+.contact-form { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--card-border); border-radius: 12px; padding: 28px; margin-top: 30px; }
+.contact-form h3 { color: var(--green); margin-bottom: 20px; font-size: 1.2rem; }
+.field { margin-bottom: 16px; }
+.field label { display: block; color: var(--text); font-size: 0.85rem; margin-bottom: 6px; }
+.field input, .field textarea, .field select { width: 100%; background: var(--bg); border: 1px solid var(--card-border); color: var(--text); padding: 12px 14px; border-radius: 8px; font-family: inherit; font-size: 0.9rem; transition: 0.25s; }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 20px rgba(0,255,65,0.35); }
+.field textarea { min-height: 120px; resize: vertical; }
+.contact-form button { background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #000; border: none; padding: 13px 32px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; font-family: inherit; transition: 0.25s; box-shadow: 0 5px 20px rgba(0,255,65,0.4); }
+.contact-form button:hover { box-shadow: 0 8px 35px var(--green); transform: translateY(-3px); }
+
+.email-display { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px dashed var(--green); padding: 18px; border-radius: 8px; margin-top: 20px; text-align: center; }
 .email-display .label { color: var(--dim); font-size: 0.85rem; margin-bottom: 8px; }
-.email-display a { color: var(--red); text-decoration: none; font-size: 1rem; font-weight: bold; direction: ltr; display: inline-block; }
-.email-display a:hover { text-shadow: 0 0 10px var(--red); }
-.faq-item { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; transition: 0.3s; }
-.faq-item:hover { border-color: var(--red); }
+.email-display a { color: var(--green); text-decoration: none; font-size: 1rem; font-weight: bold; direction: ltr; display: inline-block; }
+.email-display a:hover { text-shadow: 0 0 15px var(--green); }
+
+/* ===== FAQ ===== */
+.faq-item { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; transition: 0.3s; }
+.faq-item:hover { border-color: var(--green); }
 .faq-question { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text); font-weight: bold; font-size: 0.95rem; transition: 0.25s; }
-.faq-question:hover { color: var(--red); }
-.faq-question .arrow { color: var(--red); font-size: 1.2rem; transition: 0.3s; }
+.faq-question:hover { color: var(--green); }
+.faq-question .arrow { color: var(--green); font-size: 1.2rem; transition: 0.3s; }
 .faq-item.open .faq-question .arrow { transform: rotate(180deg); }
 .faq-answer { max-height: 0; overflow: hidden; transition: 0.4s; padding: 0 22px; color: var(--dim); font-size: 0.9rem; line-height: 1.9; }
 .faq-item.open .faq-answer { max-height: 500px; padding: 0 22px 18px; }
+
+/* ===== Certs / Tools / Coming ===== */
 .cert-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top: 20px; }
 .cert-card { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; text-align: center; transition: 0.35s; }
-.cert-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,0,51,0.25); }
+.cert-card:hover { border-color: var(--green); transform: translateY(-5px); box-shadow: 0 10px 35px rgba(0,255,65,0.25); }
 .cert-card .cert-icon { font-size: 2.5rem; margin-bottom: 12px; }
-.cert-card h4 { color: var(--red); font-size: 1rem; margin-bottom: 8px; }
+.cert-card h4 { color: var(--green); font-size: 1rem; margin-bottom: 8px; }
 .cert-card p { color: var(--dim); font-size: 0.85rem; line-height: 1.7; }
+
 .coming-soon-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 20px; }
-.coming-card { background: var(--bg2); border: 1px dashed var(--red); border-radius: 12px; padding: 24px; text-align: center; transition: 0.3s; }
-.coming-card:hover { border-style: solid; box-shadow: 0 0 25px rgba(255,0,51,0.25); }
+.coming-card { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px dashed var(--green); border-radius: 12px; padding: 24px; text-align: center; transition: 0.3s; }
+.coming-card:hover { border-style: solid; box-shadow: 0 0 30px rgba(0,255,65,0.3); }
 .coming-card .soon-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.7; }
 .coming-card h4 { color: var(--text); font-size: 1rem; margin-bottom: 8px; }
 .coming-card p { color: var(--dim); font-size: 0.85rem; line-height: 1.7; margin-bottom: 14px; }
-.coming-card .soon-badge { display: inline-block; background: var(--red); color: #fff; padding: 4px 14px; border-radius: 12px; font-size: 0.72rem; font-weight: bold; box-shadow: 0 0 10px rgba(255,0,51,0.4); }
+.coming-card .soon-badge { display: inline-block; background: var(--green); color: #000; padding: 4px 14px; border-radius: 12px; font-size: 0.72rem; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,65,0.5); }
+
 .tools-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 20px; }
-.tool-card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
-.tool-card:hover { border-color: var(--red); transform: translateY(-4px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
+.tool-card { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
+.tool-card:hover { border-color: var(--green); transform: translateY(-4px); box-shadow: 0 0 25px rgba(0,255,65,0.2); }
 .tool-card .tool-icon { font-size: 1.8rem; }
-.tool-card h4 { color: var(--red); font-size: 0.98rem; }
+.tool-card h4 { color: var(--green); font-size: 0.98rem; }
 .tool-card p { color: var(--dim); font-size: 0.82rem; line-height: 1.7; flex: 1; }
-.tool-card .tool-tag { font-size: 0.7rem; color: var(--red); border: 1px solid var(--red); padding: 2px 10px; border-radius: 10px; align-self: flex-start; }
-.cart-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+.tool-card .tool-tag { font-size: 0.7rem; color: var(--green); border: 1px solid var(--green); padding: 2px 10px; border-radius: 10px; align-self: flex-start; }
+
+/* ===== Cart ===== */
+.cart-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); }
 .cart-modal.open { display: flex; animation: fadeIn 0.3s ease; }
-.cart-content { background: var(--bg2); border: 1px solid var(--red); border-radius: 12px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 0 50px rgba(255,0,51,0.5); }
-.cart-content h3 { color: var(--red); margin-bottom: 20px; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center; }
-.cart-content .close-cart { background: transparent; border: 1px solid var(--red); color: var(--red); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; font-family: inherit; }
-.cart-content .close-cart:hover { background: var(--red); color: #fff; }
+.cart-content { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--green); border-radius: 12px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 0 60px rgba(0,255,65,0.5); }
+.cart-content h3 { color: var(--green); margin-bottom: 20px; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center; }
+.cart-content .close-cart { background: transparent; border: 1px solid var(--green); color: var(--green); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; font-family: inherit; }
+.cart-content .close-cart:hover { background: var(--green); color: #000; }
 .cart-item { background: var(--bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.cart-item .item-info { flex: 1; }
 .cart-item .item-name { color: var(--text); font-weight: bold; font-size: 0.92rem; margin-bottom: 4px; }
-.cart-item .item-price { color: var(--red); font-weight: bold; font-size: 0.9rem; }
-.cart-item .remove-btn { background: transparent; border: 1px solid var(--red); color: var(--red); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1rem; font-family: inherit; transition: 0.25s; }
-.cart-item .remove-btn:hover { background: var(--red); color: #fff; }
-.cart-total { background: var(--bg); border: 1px dashed var(--red); border-radius: 8px; padding: 16px; margin-top: 16px; margin-bottom: 16px; text-align: center; }
+.cart-item .item-price { color: var(--green); font-weight: bold; font-size: 0.9rem; }
+.cart-item .remove-btn { background: transparent; border: 1px solid var(--green); color: var(--green); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-family: inherit; }
+.cart-item .remove-btn:hover { background: var(--green); color: #000; }
+.cart-total { background: var(--bg); border: 1px dashed var(--green); border-radius: 8px; padding: 16px; margin-top: 16px; margin-bottom: 16px; text-align: center; }
 .cart-total .label { color: var(--dim); font-size: 0.85rem; margin-bottom: 6px; }
-.cart-total .amount { color: var(--red); font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 15px var(--red-glow); }
+.cart-total .amount { color: var(--green); font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 15px var(--green-glow); }
 .cart-empty { text-align: center; color: var(--dim); padding: 30px 10px; }
-.checkout-btn { width: 100%; background: linear-gradient(135deg, var(--red), #cc0029); color: #fff; border: none; padding: 15px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; font-family: inherit; transition: 0.25s; box-shadow: 0 5px 20px rgba(255,0,51,0.4); }
-.checkout-btn:hover { box-shadow: 0 8px 35px var(--red); transform: translateY(-3px); }
-.payment-note { background: rgba(255,0,51,0.1); border: 1px dashed var(--red); border-radius: 8px; padding: 12px; margin-bottom: 14px; text-align: center; color: var(--red); font-weight: bold; font-size: 0.9rem; }
-footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1px solid var(--card-border); color: var(--dim); font-size: 0.85rem; }
+.checkout-btn { width: 100%; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #000; border: none; padding: 15px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; font-family: inherit; transition: 0.25s; box-shadow: 0 5px 25px rgba(0,255,65,0.4); }
+.checkout-btn:hover { box-shadow: 0 8px 40px var(--green); transform: translateY(-3px); }
+.payment-note { background: rgba(0,255,65,0.08); border: 1px dashed var(--green); border-radius: 8px; padding: 12px; margin-bottom: 14px; text-align: center; color: var(--green); font-weight: bold; font-size: 0.9rem; }
+
+/* ===== Footer ===== */
+footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1px solid var(--green); color: var(--dim); font-size: 0.85rem; position: relative; z-index: 10; background: linear-gradient(0deg, rgba(0,255,65,0.03), transparent); }
+
+/* ===== Toast ===== */
+@keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ===== Mobile ===== */
 @media (max-width: 720px) {
-  body { padding-left: 0; padding-bottom: 70px; }
-  .sidebar { left: 0; right: 0; bottom: 0; top: auto; width: 100%; flex-direction: row; justify-content: space-around; padding: 8px 0; border-left: none; border-top: 2px solid var(--red); overflow-x: auto; }
-  .sidebar .side-logo { display: none; }
-  .side-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+  body { padding-left: 10px; padding-right: 10px; padding-bottom: 85px; }
+  .sidebar { right: 0; left: 0; bottom: 0; top: auto; width: 100%; flex-direction: row; justify-content: space-around; padding: 8px 4px; border-left: none; border-top: 2px solid var(--green); overflow-x: auto; gap: 4px; }
+  .side-logo { display: none; }
+  .side-icon { width: 46px; height: 46px; font-size: 1.2rem; }
   .side-icon .tooltip { display: none; }
-  .menu-toggle { display: block; }
-  .nav-links { position: absolute; top: 100%; right: 0; left: 0; background: var(--bg); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--red); max-height: 0; overflow: hidden; transition: 0.3s; align-items: flex-start; }
-  .nav-links.open { max-height: 900px; }
-  .glitch { font-size: 1.5rem; }
+  .glitch { font-size: 1.4rem; }
   .term-body { font-size: 0.8rem; }
-  .splash-logo { font-size: 2rem; }
-  .splash-btn { padding: 15px 45px; font-size: 1.1rem; }
+  .page-title { font-size: 1.4rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- شاشة الدخول -->
-<div class="splash-screen" id="splashScreen">
-  <div class="splash-logo">&gt;_ <span>RA_7DEE7</span></div>
-  <div class="splash-sub">حيث يبدأ مشروعك</div>
-  <button class="splash-btn" onclick="enterSite()">🚀 ابدأ الموقع</button>
-</div>
+<!-- Matrix Canvas -->
+<canvas id="matrixCanvas"></canvas>
 
-<div class="scanlines"></div>
-
+<!-- Sidebar -->
 <aside class="sidebar">
   <div class="side-logo">&gt;_<br>RA</div>
-  <a href="https://www.tiktok.com/@loh7he" target="_blank" class="side-icon" title="تيك توك">♪ <span class="tooltip">تيك توك</span></a>
-  <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="side-icon" title="انستقرام">◉ <span class="tooltip">انستقرام</span></a>
-  <a href="mailto:radwakana17@gmail.com" class="side-icon" title="إيميل">✉ <span class="tooltip">راسلني</span></a>
-  <div class="side-icon" onclick="openCart()" title="السلة">🛒 <span class="side-badge" id="sideBadge">0</span><span class="tooltip">السلة</span></div>
-  <div class="side-icon" onclick="toggleTheme()" title="الوضع" id="sideTheme">🌙 <span class="tooltip">الوضع</span></div>
+  <a onclick="showSection('apps', this)" class="side-icon" title="تطبيقاتي">📱<span class="tooltip">تطبيقاتي</span></a>
+  <a onclick="showSection('plans', this)" class="side-icon" title="الاشتراكات">⭐<span class="tooltip">الاشتراكات</span></a>
+  <a onclick="showSection('home', this)" class="side-icon" title="الرئيسية">🏠<span class="tooltip">الرئيسية</span></a>
+  <a onclick="showSection('about', this)" class="side-icon" title="عنّي">👤<span class="tooltip">عنّي</span></a>
+  <a onclick="showSection('services', this)" class="side-icon" title="خدماتي">🌐<span class="tooltip">خدماتي</span></a>
+  <a onclick="showSection('free', this)" class="side-icon" title="مجانية">🎁<span class="tooltip">مجانية</span></a>
+  <a onclick="showSection('shop', this)" class="side-icon" title="متجري">🛒<span class="tooltip">متجري</span></a>
+  <a onclick="showSection('scripts', this)" class="side-icon" title="سكربتاتي">📜<span class="tooltip">سكربتاتي</span></a>
+  <a onclick="showSection('tools', this)" class="side-icon" title="أدواتي">🛠️<span class="tooltip">أدواتي</span></a>
+  <a onclick="showSection('blog', this)" class="side-icon" title="مدونتي">📚<span class="tooltip">مدونتي</span></a>
+  <a onclick="showSection('certs', this)" class="side-icon" title="شهاداتي">🎓<span class="tooltip">شهاداتي</span></a>
+  <a onclick="showSection('faq', this)" class="side-icon" title="أسئلة">❓<span class="tooltip">أسئلة</span></a>
+  <a onclick="showSection('soon', this)" class="side-icon" title="قريباً">🚧<span class="tooltip">قريباً</span></a>
+  <a onclick="showSection('work', this)" class="side-icon" title="أعمالي">💼<span class="tooltip">أعمالي</span></a>
+  <a onclick="showSection('reviews', this)" class="side-icon" title="آراء">⭐<span class="tooltip">آراء الزبائن</span></a>
+  <a onclick="showSection('report', this)" class="side-icon" title="إبلاغ">🚨<span class="tooltip">إبلاغ</span></a>
+  <a onclick="showSection('contact', this)" class="side-icon" title="تواصل">📞<span class="tooltip">تواصل</span></a>
+  <div class="side-icon" onclick="openCart()" title="السلة">🛒<span class="side-badge" id="sideBadge">0</span><span class="tooltip">السلة</span></div>
 </aside>
 
+<!-- Header -->
 <header>
-  <nav>
+  <div class="header-inner">
     <div class="logo">&gt;_ RA_7DEE7 <span class="verified-badge">✓ موثق</span></div>
-    <ul class="nav-links" id="navLinks">
-      <li><a onclick="showSection('plans', this)">⭐ الاشتراكات</a></li>
-      <li><a onclick="showSection('home', this)" class="active">الرئيسية</a></li>
-      <li><a onclick="showSection('about', this)">عنّي</a></li>
-      <li><a onclick="showSection('services', this)">خدماتي</a></li>
-      <li><a onclick="showSection('free', this)">مجانية</a></li>
-      <li><a onclick="showSection('shop', this)">متجري</a></li>
-      <li><a onclick="showSection('scripts', this)">سكربتاتي</a></li>
-      <li><a onclick="showSection('tools', this)">أدواتي</a></li>
-      <li><a onclick="showSection('blog', this)">مدونتي</a></li>
-      <li><a onclick="showSection('certs', this)">شهاداتي</a></li>
-      <li><a onclick="showSection('faq', this)">أسئلة</a></li>
-      <li><a onclick="showSection('soon', this)">قريباً</a></li>
-      <li><a onclick="showSection('work', this)">أعمالي</a></li>
-      <li><a onclick="showSection('reviews', this)">آراء</a></li>
-      <li><a onclick="showSection('report', this)">إبلاغ</a></li>
-      <li><a onclick="showSection('contact', this)">تواصل</a></li>
-    </ul>
-    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-  </nav>
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+  </div>
 </header>
 
-<!-- الاشتراكات -->
-<section id="plans" class="section">
-  <h2 class="page-title">⭐ خطط الاشتراك</h2>
-  <p class="page-sub">اختر الخطة اللي تناسبك — الدفع عبر رصيد ليبيانا.</p>
-  <div class="pricing-grid">
-    <div class="pricing-card free">
-      <div class="plan-icon">🆓</div>
-      <div class="plan-name">المجانية</div>
-      <div class="plan-desc">للتجربة والاستكشاف</div>
-      <div class="plan-price"><span class="amount">0</span><span class="currency"> د.ل</span><span class="period">مجاناً للأبد</span></div>
-      <ul class="pricing-features">
-        <li>تصفح كل الأقسام</li>
-        <li>خدمات مجانية محدودة</li>
-        <li>قراءة المدونة</li>
-        <li>التواصل عبر انستقرام</li>
-        <li class="no">الوصول لكل السكربتات</li>
-        <li class="no">دعم أسرع</li>
-        <li class="no">خصومات على الخدمات</li>
+<!-- تطبيقاتي -->
+<section id="apps" class="section">
+  <h2 class="page-title">📱 تطبيقاتي</h2>
+  <p class="page-sub">تطبيقات حقيقية طُوّرت بواسطتي — حمّلها مجاناً.</p>
+  <div class="apps-grid">
+    <div class="app-card">
+      <div class="app-badge">🆕 جديد</div>
+      <div class="app-icon">🎓</div>
+      <h3>RA Academy</h3>
+      <div class="app-version">الإصدار 1.0 · Android</div>
+      <p>أكاديمية تعليم البرمجة والأمن السيبراني — تعلّم من الصفر.</p>
+      <ul class="app-features">
+        <li>4 أقسام تعليمية</li>
+        <li>42 درس مفصّل</li>
+        <li>اختبارات بعد كل درس</li>
+        <li>شهادات إتمام</li>
       </ul>
-      <a onclick="contactViaInstagram('الخطة المجانية')" class="pricing-btn">ابدأ الآن</a>
+      <a href="https://drive.google.com/file/d/1g1DepR48so8i4PBlXa6U3WOdM1-GMpRv/view?usp=drivesdk" target="_blank" class="app-download-btn">⬇ تحميل APK</a>
     </div>
-    <div class="pricing-card pro">
-      <div class="card-ribbon">الأكثر طلباً</div>
-      <div class="plan-icon">🚀</div>
-      <div class="plan-name">Pro</div>
-      <div class="plan-desc">للمستخدمين الجادين</div>
-      <div class="plan-price"><span class="amount">5</span><span class="currency"> د.ل</span><span class="period">لمدة أسبوعين</span></div>
-      <ul class="pricing-features">
-        <li>كل مميزات المجانية</li>
-        <li>فتح كل السكربتات</li>
-        <li>فتح كل الأدوات</li>
-        <li>دعم أسرع عبر الخاص</li>
-        <li>طلب غير محدود</li>
-        <li>خصم 20% على الخدمات المدفوعة</li>
-        <li class="no">استشارات VIP</li>
+    <div class="app-card">
+      <div class="app-icon">💻</div>
+      <h3>RA_7DEE7</h3>
+      <div class="app-version">الإصدار 1.0 · Android</div>
+      <p>تطبيق الموقع الرسمي — تصفّح الخدمات، المتجر، الاشتراكات.</p>
+      <ul class="app-features">
+        <li>كل الأقسام</li>
+        <li>سلة تسوق ذكية</li>
+        <li>الدفع عبر رصيد ليبيانا</li>
       </ul>
-      <a onclick="contactViaInstagram('اشتراك Pro — 5 د.ل / أسبوعين (رصيد ليبيانا)')" class="pricing-btn">اشترك الآن</a>
+      <a href="#" onclick="showToast('⚠️ قريباً — جاري رفع APK', 3000); return false;" class="app-download-btn">⏳ قريباً</a>
     </div>
-    <div class="pricing-card plus">
-      <div class="card-ribbon">الخارقة</div>
-      <div class="plan-icon">👑</div>
-      <div class="plan-name">Plus</div>
-      <div class="plan-desc">كل شيء، بلا حدود</div>
-      <div class="plan-price"><span class="amount">10</span><span class="currency"> د.ل</span><span class="period">لمدة شهرين</span></div>
-      <ul class="pricing-features">
-        <li>كل مميزات Pro</li>
-        <li>كل الموقع مجاني بالكامل</li>
-        <li>استشارات غير محدودة</li>
-        <li>أولوية في تنفيذ الطلبات</li>
-        <li>دعم VIP على مدار الساعة</li>
-        <li>خصم 50% على كل الخدمات</li>
-        <li>هدية شهرية</li>
+    <div class="app-card">
+      <div class="app-icon">🛠️</div>
+      <h3>أدوات المبرمج</h3>
+      <div class="app-version">قريباً · Android</div>
+      <p>أدوات يومية لكل مبرمج — تحويلات، تنسيق أكواد، وأكثر.</p>
+      <ul class="app-features">
+        <li>تحويل الأنظمة</li>
+        <li>تنسيق الأكواد</li>
+        <li>توليد UUID</li>
       </ul>
-      <a onclick="contactViaInstagram('اشتراك Plus — 10 د.ل / شهرين (رصيد ليبيانا)')" class="pricing-btn">اشترك الآن</a>
+      <a href="#" onclick="showToast('🚧 قيد التطوير', 2000); return false;" class="app-download-btn">🚧 قريباً</a>
     </div>
   </div>
 </section>
@@ -522,38 +407,63 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
         <p class="out blink">جاري بناء الأفكار...</p>
       </div>
     </div>
-    <div class="visitor-counter"><span class="label">👁️ عدد الزوار:</span><span class="num" id="visitorCount">...</span></div>
+    <div class="visitor-counter"><span class="label">👁️ الزوار:</span><span class="num" id="visitorCount">...</span></div>
     <h1 class="glitch" data-text="أبني الكود. أصنع الحلول.">أبني الكود. أصنع الحلول.</h1>
     <p class="sub">متخصص في البرمجة والتطوير — الدفع عبر رصيد ليبيانا.</p>
     <div class="cta">
-      <button class="btn" onclick="showSection('plans', document.querySelectorAll('.nav-links a')[0])">⭐ اشترك الآن</button>
-      <button class="btn ghost" onclick="showSection('contact', document.querySelectorAll('.nav-links a')[15])">تواصل معي</button>
+      <button class="btn" onclick="showSection('apps', document.querySelectorAll('.side-icon')[0])">📱 حمّل تطبيقاتي</button>
+      <button class="btn ghost" onclick="showSection('plans', document.querySelectorAll('.side-icon')[1])">⭐ اشترك الآن</button>
     </div>
   </div>
+</section>
 
-  <!-- مقالات الرئيسية -->
-  <h3 class="section-title">📚 مقالات مختارة</h3>
-  <div class="articles-grid">
-    <div class="article-card" onclick="showSection('blog', document.querySelectorAll('.nav-links a')[8])">
-      <span class="art-icon">💻</span>
-      <span class="art-tag">برمجة</span>
-      <h3>كيف تبدأ في البرمجة من الصفر؟</h3>
-      <p>خارطة طريق كاملة للمبتدئين — من اختيار اللغة إلى أول مشروع حقيقي.</p>
-      <span class="read-more">اقرأ المزيد ←</span>
+<!-- الاشتراكات -->
+<section id="plans" class="section">
+  <h2 class="page-title">⭐ خطط الاشتراك</h2>
+  <p class="page-sub">اختر الخطة اللي تناسبك — الدفع عبر رصيد ليبيانا.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card free">
+      <div class="plan-icon">🆓</div>
+      <div class="plan-name">المجانية</div>
+      <div class="plan-desc">للتجربة والاستكشاف</div>
+      <div class="plan-price"><span class="amount">0</span><span class="currency"> د.ل</span><span class="period">مجاناً للأبد</span></div>
+      <ul class="pricing-features">
+        <li>تصفح كل الأقسام</li>
+        <li>خدمات مجانية محدودة</li>
+        <li>قراءة المدونة</li>
+        <li>تحميل التطبيقات</li>
+      </ul>
+      <a onclick="contactViaInstagram('الخطة المجانية')" class="pricing-btn">ابدأ الآن</a>
     </div>
-    <div class="article-card" onclick="showSection('blog', document.querySelectorAll('.nav-links a')[8])">
-      <span class="art-icon">🛡️</span>
-      <span class="art-tag">هكر أخلاقي</span>
-      <h3>من هو الهاكر الأخلاقي؟</h3>
-      <p>تعرّف على مجال الأمن السيبراني وكيف تصبح محترفاً فيه.</p>
-      <span class="read-more">اقرأ المزيد ←</span>
+    <div class="pricing-card pro">
+      <div class="card-ribbon">الأكثر طلباً</div>
+      <div class="plan-icon">🚀</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">للمستخدمين الجادين</div>
+      <div class="plan-price"><span class="amount">5</span><span class="currency"> د.ل</span><span class="period">لمدة أسبوعين</span></div>
+      <ul class="pricing-features">
+        <li>كل مميزات المجانية</li>
+        <li>فتح كل السكربتات</li>
+        <li>فتح كل الأدوات</li>
+        <li>دعم أسرع عبر الخاص</li>
+        <li>خصم 20% على الخدمات</li>
+      </ul>
+      <a onclick="contactViaInstagram('اشتراك Pro — 5 د.ل / أسبوعين')" class="pricing-btn">اشترك الآن</a>
     </div>
-    <div class="article-card" onclick="showSection('blog', document.querySelectorAll('.nav-links a')[8])">
-      <span class="art-icon">🔧</span>
-      <span class="art-tag">تعديل تطبيقات</span>
-      <h3>أساسيات تعديل التطبيقات</h3>
-      <p>مفاهيم عامة عن تخصيص التطبيقات وتحسينها حسب احتياجك.</p>
-      <span class="read-more">اقرأ المزيد ←</span>
+    <div class="pricing-card plus">
+      <div class="card-ribbon">الخارقة</div>
+      <div class="plan-icon">👑</div>
+      <div class="plan-name">Plus</div>
+      <div class="plan-desc">كل شيء، بلا حدود</div>
+      <div class="plan-price"><span class="amount">10</span><span class="currency"> د.ل</span><span class="period">لمدة شهرين</span></div>
+      <ul class="pricing-features">
+        <li>كل مميزات Pro</li>
+        <li>كل الموقع مجاني بالكامل</li>
+        <li>استشارات غير محدودة</li>
+        <li>دعم VIP على مدار الساعة</li>
+        <li>خصم 50% على كل الخدمات</li>
+      </ul>
+      <a onclick="contactViaInstagram('اشتراك Plus — 10 د.ل / شهرين')" class="pricing-btn">اشترك الآن</a>
     </div>
   </div>
 </section>
@@ -562,12 +472,12 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="about" class="section">
   <h2 class="page-title">عنّي</h2>
   <div class="about-box">
-    <p>منصة RA_7DEE7 — حيث تتحول الأفكار إلى واقع رقمي. لسنا مجرد موقع، بل بوابة تقنية متكاملة تجمع بين الإبداع والاحترافية.</p>
-    <p>نقدم حلولاً رقمية تناسب الجميع — من الفرد الذي يحلم بمشروعه الأول، إلى الشركة التي تبحث عن شريك تقني موثوق. نؤمن بأن التقنية حق للجميع، لذلك نقدم خدمات بأسعار منخفضة تبدأ من 2 دينار ليبي.</p>
+    <p>منصة RA_7DEE7 — حيث تتحول الأفكار إلى واقع رقمي. بوابة تقنية متكاملة تجمع بين الإبداع والاحترافية.</p>
+    <p>نقدم حلولاً رقمية تناسب الجميع — من الفرد الذي يحلم بمشروعه الأول، إلى الشركة التي تبحث عن شريك تقني موثوق.</p>
     <p><strong>💳 الدفع عبر رصيد ليبيانا — سهل وسريع وآمن.</strong></p>
   </div>
   <h3 class="section-title">المهارات</h3>
-  <div class="skills"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Python</span><span>تطوير واجهات</span><span>تطوير تطبيقات</span><span>حل المشكلات</span><span>تحسين الأداء</span></div>
+  <div class="skills"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Python</span><span>تطوير واجهات</span><span>تطوير تطبيقات</span><span>حل المشكلات</span></div>
 </section>
 
 <!-- خدماتي -->
@@ -575,12 +485,12 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   <h2 class="page-title">خدماتي الاحترافية</h2>
   <p class="page-sub">حلول تقنية متكاملة — الدفع عبر رصيد ليبيانا.</p>
   <div class="pro-services">
-    <div class="pro-card"><div class="pro-icon">🌐</div><h3>صنع <span>مواقع</span></h3><p>مواقع احترافية متجاوبة مع الجوال، سريعة الأداء، بتصميم عصري.</p><ul class="pro-features"><li>تصميم مخصص حسب رغبتك</li><li>متوافق مع كل الأجهزة</li><li>سرعة تحميل عالية</li></ul><a onclick="contactViaInstagram('صنع مواقع')" class="pro-btn">اطلب الخدمة ←</a></div>
-    <div class="pro-card"><div class="pro-icon">📱</div><h3>تصميم <span>تطبيقات</span></h3><p>تطبيقات حسب الرغبة — بأي وظيفة وبأي واجهة تريدها.</p><ul class="pro-features"><li>واجهة استخدام عصرية</li><li>أداء سريع وسلس</li><li>تطوير حسب الفكرة</li></ul><a onclick="contactViaInstagram('تصميم تطبيقات')" class="pro-btn">اطلب الخدمة ←</a></div>
-    <div class="pro-card"><div class="pro-icon">🛠️</div><h3>صنع <span>أدوات</span></h3><p>أدوات برمجية مخصصة لحل مشكلتك أو تسهيل مهمتك.</p><ul class="pro-features"><li>حسب الحاجة بالضبط</li><li>سهلة الاستخدام</li><li>دعم فني مستمر</li></ul><a onclick="contactViaInstagram('صنع أدوات')" class="pro-btn">اطلب الخدمة ←</a></div>
-    <div class="pro-card"><div class="pro-icon">🤖</div><h3>بناء <span>بوتات</span></h3><p>بوتات تيليجرام / واتساب / ديسكورد — لأي وظيفة تريدها.</p><ul class="pro-features"><li>ردود تلقائية ذكية</li><li>إدارة القنوات والسيرفرات</li><li>تنبيهات وإشعارات</li></ul><a onclick="contactViaInstagram('بناء بوتات')" class="pro-btn">اطلب الخدمة ←</a></div>
-    <div class="pro-card"><div class="pro-icon">⚡</div><h3>تحسين <span>الأداء</span></h3><p>تسريع موقعك البطيء وإصلاح الأخطاء البرمجية.</p><ul class="pro-features"><li>فحص شامل للموقع</li><li>إصلاح الثغرات والأخطاء</li><li>تحسين تجربة المستخدم</li></ul><a onclick="contactViaInstagram('تحسين الأداء')" class="pro-btn">اطلب الخدمة ←</a></div>
-    <div class="pro-card"><div class="pro-icon">🎨</div><h3>تصميم <span>الهوية</span></h3><p>شعار، بانر، كوفر — هوية بصرية متكاملة لمشروعك.</p><ul class="pro-features"><li>شعار احترافي مميز</li><li>تصميمات سوشيال ميديا</li><li>ملفات جاهزة للنشر</li></ul><a onclick="contactViaInstagram('تصميم الهوية')" class="pro-btn">اطلب الخدمة ←</a></div>
+    <div class="pro-card"><div class="pro-icon">🌐</div><h3>صنع <span>مواقع</span></h3><p>مواقع احترافية متجاوبة مع الجوال، سريعة الأداء.</p><a onclick="contactViaInstagram('صنع مواقع')" class="pro-btn">اطلب الخدمة ←</a></div>
+    <div class="pro-card"><div class="pro-icon">📱</div><h3>تصميم <span>تطبيقات</span></h3><p>تطبيقات حسب الرغبة — بأي وظيفة وبأي واجهة.</p><a onclick="contactViaInstagram('تصميم تطبيقات')" class="pro-btn">اطلب الخدمة ←</a></div>
+    <div class="pro-card"><div class="pro-icon">🛠️</div><h3>صنع <span>أدوات</span></h3><p>أدوات برمجية مخصصة لحل مشكلتك.</p><a onclick="contactViaInstagram('صنع أدوات')" class="pro-btn">اطلب الخدمة ←</a></div>
+    <div class="pro-card"><div class="pro-icon">🤖</div><h3>بناء <span>بوتات</span></h3><p>بوتات تيليجرام / واتساب / ديسكورد.</p><a onclick="contactViaInstagram('بناء بوتات')" class="pro-btn">اطلب الخدمة ←</a></div>
+    <div class="pro-card"><div class="pro-icon">⚡</div><h3>تحسين <span>الأداء</span></h3><p>تسريع موقعك وإصلاح الأخطاء البرمجية.</p><a onclick="contactViaInstagram('تحسين الأداء')" class="pro-btn">اطلب الخدمة ←</a></div>
+    <div class="pro-card"><div class="pro-icon">🎨</div><h3>تصميم <span>الهوية</span></h3><p>شعار، بانر، كوفر — هوية بصرية متكاملة.</p><a onclick="contactViaInstagram('تصميم الهوية')" class="pro-btn">اطلب الخدمة ←</a></div>
   </div>
 </section>
 
@@ -588,164 +498,113 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="free" class="section">
   <h2 class="page-title">خدمات مجانية</h2>
   <div class="prompt-badge">🔥 برومنت</div>
-  <p class="page-sub">خدمات أقدمها مجاناً — لدعم المبتدئين والمجتمع التقني.</p>
-  <div class="countdown-box">
-    <div class="countdown-label">⏳ عرض خاص — ينتهي خلال:</div>
-    <div class="countdown-timer">
-      <div class="unit"><span class="num" id="cd-days">7</span><span class="lbl">يوم</span></div>
-      <div class="unit"><span class="num" id="cd-hours">00</span><span class="lbl">ساعة</span></div>
-      <div class="unit"><span class="num" id="cd-mins">00</span><span class="lbl">دقيقة</span></div>
-      <div class="unit"><span class="num" id="cd-secs">00</span><span class="lbl">ثانية</span></div>
-    </div>
-  </div>
+  <p class="page-sub">خدمات أقدمها مجاناً — لدعم المبتدئين.</p>
   <div class="pro-services">
-    <div class="pro-card"><div class="pro-icon">🎁</div><h3>صنع موقع <span>جاهز لك</span></h3><p>أسوي لك موقع جاهز حسب طلبك — بسرعة وموثوقية عالية.</p><ul class="pro-features"><li>⚡ سرعة في تجهيز الموقع</li><li>✅ موثوق</li><li>⏳ لفترة محدودة</li></ul><a onclick="contactViaInstagram('صنع موقع جاهز (مجاني - عرض محدود)')" class="pro-btn">اطلب الآن ←</a></div>
-    <div class="pro-card"><div class="pro-icon">💬</div><h3>استشارة <span>تقنية</span></h3><p>10 دقائق نصيحة تقنية عن مشروعك — توجيه سريع ومفيد.</p><ul class="pro-features"><li>بدون أي مقابل</li><li>رد سريع</li></ul><a onclick="contactViaInstagram('استشارة تقنية (مجانية)')" class="pro-btn">اطلب الآن ←</a></div>
-    <div class="pro-card"><div class="pro-icon">👀</div><h3>مراجعة <span>كود</span></h3><p>أراجع كودك وأعطيك ملاحظات لتحسينه وتصحيح أخطائه.</p><ul class="pro-features"><li>مراجعة مجانية</li><li>ملاحظات مكتوبة</li></ul><a onclick="contactViaInstagram('مراجعة كود (مجانية)')" class="pro-btn">اطلب الآن ←</a></div>
-    <div class="pro-card"><div class="pro-icon">🎓</div><h3>توجيه <span>للمبتدئين</span></h3><p>توجيه للمبتدئين في البرمجة — من وين يبدأ وكيف يكمل.</p><ul class="pro-features"><li>خطة تعلم مخصصة</li><li>مصادر موثوقة</li></ul><a onclick="contactViaInstagram('توجيه للمبتدئين (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
-    <div class="pro-card"><div class="pro-icon">🖼️</div><h3>تصميم <span>صورة بروفايل</span></h3><p>صورة بروفايل احترافية لحساباتك على السوشيال ميديا.</p><ul class="pro-features"><li>تصميم مجاني</li><li>جاهزة للنشر</li></ul><a onclick="contactViaInstagram('تصميم صورة بروفايل (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
-    <div class="pro-card"><div class="pro-icon">⚙️</div><h3>سكربت <span>بسيط مجاني</span></h3><p>سكربت بسيط لمهمة واحدة — حسب حاجتك ومجاناً.</p><ul class="pro-features"><li>لمهمة وحدة</li><li>تنفيذ سريع</li></ul><a onclick="contactViaInstagram('سكربت بسيط (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
-    <div class="pro-card"><div class="pro-icon">📱</div><h3>توليد <span>رمز QR</span></h3><p>أسوي لك رمز QR لأي رابط أو نص — جاهز للاستخدام.</p><ul class="pro-features"><li>مجاني تماماً</li><li>جاهز فوراً</li></ul><a onclick="contactViaInstagram('توليد رمز QR (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
+    <div class="pro-card"><div class="pro-icon">🎁</div><h3>صنع موقع <span>جاهز لك</span></h3><p>أسوي لك موقع جاهز — بسرعة وموثوقية.</p><a onclick="contactViaInstagram('صنع موقع جاهز (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
+    <div class="pro-card"><div class="pro-icon">💬</div><h3>استشارة <span>تقنية</span></h3><p>10 دقائق نصيحة تقنية عن مشروعك.</p><a onclick="contactViaInstagram('استشارة تقنية (مجانية)')" class="pro-btn">اطلب الآن ←</a></div>
+    <div class="pro-card"><div class="pro-icon">👀</div><h3>مراجعة <span>كود</span></h3><p>أراجع كودك وأعطيك ملاحظات لتحسينه.</p><a onclick="contactViaInstagram('مراجعة كود (مجانية)')" class="pro-btn">اطلب الآن ←</a></div>
+    <div class="pro-card"><div class="pro-icon">🎓</div><h3>توجيه <span>للمبتدئين</span></h3><p>توجيه للمبتدئين في البرمجة.</p><a onclick="contactViaInstagram('توجيه للمبتدئين (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
+    <div class="pro-card"><div class="pro-icon">🖼️</div><h3>تصميم <span>صورة بروفايل</span></h3><p>صورة بروفايل احترافية لحساباتك.</p><a onclick="contactViaInstagram('تصميم صورة بروفايل (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
+    <div class="pro-card"><div class="pro-icon">📱</div><h3>توليد <span>رمز QR</span></h3><p>أسوي لك رمز QR لأي رابط أو نص.</p><a onclick="contactViaInstagram('توليد رمز QR (مجاني)')" class="pro-btn">اطلب الآن ←</a></div>
   </div>
 </section>
 
 <!-- متجري -->
 <section id="shop" class="section">
   <h2 class="page-title">متجري</h2>
-  <p class="page-sub">الدفع عبر رصيد ليبيانا — أضف إلى السلة أو تواصل مباشرة.</p>
+  <p class="page-sub">الدفع عبر رصيد ليبيانا — أضف إلى السلة.</p>
   <div class="grid">
-    <div class="card"><span class="tag">تطوير ويب</span><h3>صنع مواقع</h3><p>تنفيذ موقع كامل من الصفر حسب طلبك.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('صنع مواقع', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع مواقع — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تطبيقات</span><h3>تصميم تطبيقات</h3><p>تصميم وتنفيذ تطبيق حسب فكرتك — بأي وظيفة.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم تطبيقات', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم تطبيقات — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">أدوات</span><h3>صنع أدوات</h3><p>بناء أدوات برمجية مخصصة حسب حاجتك.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('صنع أدوات', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع أدوات — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تطوير ويب</span><h3>تصميم موقع كامل</h3><p>موقع متجاوب بأي فكرة تريدها — شخصي أو شركة.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم موقع كامل', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم موقع كامل — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">بوتات</span><h3>بوت تيليجرام / واتساب</h3><p>بوت مخصص لأي وظيفة — ردود تلقائية، تنبيهات.</p><div class="price">4 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('بوت تيليجرام/واتساب', 4)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت تيليجرام / واتساب — 4 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">بوتات</span><h3>بوت ديسكورد</h3><p>بوت لإدارة السيرفرات — أوامر، حماية، أدوات.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('بوت ديسكورد', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت ديسكورد — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تصميم</span><h3>تصميم شعار احترافي</h3><p>شعار مخصص يناسب هويتك — بأسلوب عصري.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم شعار', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم شعار — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">تصميم</span><h3>تصميم بانر / كوفر</h3><p>كوفر احترافي لقناتك على يوتيوب أو تيك توك.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم بانر/كوفر', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم بانر / كوفر — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">أتمتة</span><h3>سكربت أتمتة</h3><p>سكربت لأي مهمة متكررة تسويها آلياً.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت أتمتة', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت أتمتة — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">إصلاح</span><h3>إصلاح أخطاء المواقع</h3><p>حل مشاكل موقعك وإصلاح الأخطاء البرمجية.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('إصلاح أخطاء المواقع', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('إصلاح أخطاء المواقع — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">أداء</span><h3>تحسين سرعة المواقع</h3><p>تسريع موقعك البطيء وتحسين تجربة المستخدم.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تحسين سرعة المواقع', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تحسين سرعة المواقع — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تطوير ويب</span><h3>صنع مواقع</h3><p>تنفيذ موقع كامل من الصفر.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('صنع مواقع', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع مواقع — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تطبيقات</span><h3>تصميم تطبيقات</h3><p>تطبيق حسب فكرتك.</p><div class="price">5 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم تطبيقات', 5)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم تطبيقات — 5 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">أدوات</span><h3>صنع أدوات</h3><p>أدوات برمجية مخصصة.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('صنع أدوات', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('صنع أدوات — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">بوتات</span><h3>بوت تيليجرام/واتساب</h3><p>بوت لأي وظيفة.</p><div class="price">4 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('بوت تيليجرام/واتساب', 4)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت تيليجرام — 4 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">بوتات</span><h3>بوت ديسكورد</h3><p>بوت لإدارة السيرفرات.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('بوت ديسكورد', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('بوت ديسكورد — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">تصميم</span><h3>تصميم شعار</h3><p>شعار مخصص لهويتك.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تصميم شعار', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تصميم شعار — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">أتمتة</span><h3>سكربت أتمتة</h3><p>سكربت لأي مهمة متكررة.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت أتمتة', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت أتمتة — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">أداء</span><h3>تحسين سرعة</h3><p>تسريع موقعك البطيء.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('تحسين سرعة', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('تحسين سرعة — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
   </div>
 </section>
 
 <!-- سكربتاتي -->
 <section id="scripts" class="section">
   <h2 class="page-title">سكربتاتي</h2>
-  <p class="page-sub">الدفع عبر رصيد ليبيانا — سكربتات جاهزة للاستخدام.</p>
+  <p class="page-sub">سكربتات جاهزة — الدفع عبر رصيد ليبيانا.</p>
   <div class="grid">
-    <div class="card"><span class="tag">Python</span><h3>سكربت تحميل فيديوهات</h3><p>تحميل فيديوهات من منصات مختلفة بجودة عالية.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت تحميل فيديوهات', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت تحميل فيديوهات — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>سكربت ضغط ملفات</h3><p>ضغط عدد كبير من الملفات دفعة وحدة.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت ضغط ملفات', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت ضغط ملفات — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>إعادة تسمية تلقائية</h3><p>يعيد تسمية مئات الملفات تلقائياً بنمط تختاره.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت إعادة تسمية', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت إعادة تسمية — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>تنبيه واتساب / تيليجرام</h3><p>يرسل لك تنبيه عند حدث معين.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت تنبيهات', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت تنبيهات — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">JavaScript</span><h3>حماية نموذج</h3><p>حماية نماذج التواصل من السبام والبوتات.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت حماية نموذج', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت حماية نموذج — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">JavaScript</span><h3>عدّاد تنازلي</h3><p>عدّاد جاهز للعروض والمناسبات.</p><div class="price">2 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت عدّاد', 2)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت عدّاد — 2 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Bash</span><h3>نسخ احتياطي</h3><p>نسخة احتياطية دورية من موقعك أو ملفاتك.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت نسخ احتياطي', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت نسخ احتياطي — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
-    <div class="card"><span class="tag">Python</span><h3>مراقبة موقع</h3><p>يراقب موقعاً ويبلغك لو تعطّل أو تغيّر.</p><div class="price">3 د.ل — رصيد ليبيانا</div><button class="cart-add-btn" onclick="addToCart('سكربت مراقبة موقع', 3)">🛒 أضف إلى السلة</button><a onclick="contactViaInstagram('سكربت مراقبة موقع — 3 د.ل')" class="order-btn">تواصل معي ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>تحميل فيديوهات</h3><p>تحميل من منصات مختلفة.</p><div class="price">3 د.ل</div><button class="cart-add-btn" onclick="addToCart('سكربت تحميل', 3)">🛒 أضف</button><a onclick="contactViaInstagram('سكربت تحميل')" class="order-btn">تواصل ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>ضغط ملفات</h3><p>ضغط جماعي للملفات.</p><div class="price">2 د.ل</div><button class="cart-add-btn" onclick="addToCart('سكربت ضغط', 2)">🛒 أضف</button><a onclick="contactViaInstagram('سكربت ضغط')" class="order-btn">تواصل ←</a></div>
+    <div class="card"><span class="tag">JavaScript</span><h3>حماية نموذج</h3><p>حماية من السبام.</p><div class="price">2 د.ل</div><button class="cart-add-btn" onclick="addToCart('حماية نموذج', 2)">🛒 أضف</button><a onclick="contactViaInstagram('حماية نموذج')" class="order-btn">تواصل ←</a></div>
+    <div class="card"><span class="tag">Python</span><h3>مراقبة موقع</h3><p>تنبيه لو تعطل الموقع.</p><div class="price">3 د.ل</div><button class="cart-add-btn" onclick="addToCart('مراقبة موقع', 3)">🛒 أضف</button><a onclick="contactViaInstagram('مراقبة موقع')" class="order-btn">تواصل ←</a></div>
   </div>
 </section>
 
 <!-- أدواتي -->
 <section id="tools" class="section">
   <h2 class="page-title">أدواتي المفضلة</h2>
-  <p class="page-sub">الأدوات اللي أستخدمها يومياً في البرمجة والتطوير.</p>
+  <p class="page-sub">الأدوات اللي أستخدمها يومياً.</p>
   <div class="tools-grid">
-    <div class="tool-card"><div class="tool-icon">🐍</div><h4>Python</h4><p>لغتي الأساسية في الأتمتة، السكربتات، والذكاء الاصطناعي.</p><span class="tool-tag">لغة برمجة</span></div>
-    <div class="tool-card"><div class="tool-icon">⚡</div><h4>JavaScript</h4><p>لتطوير الويب والتفاعل مع المستخدم.</p><span class="tool-tag">لغة برمجة</span></div>
-    <div class="tool-card"><div class="tool-icon">📝</div><h4>VS Code</h4><p>محرر الكود المفضل عندي — خفيف وقوي.</p><span class="tool-tag">محرر أكواد</span></div>
-    <div class="tool-card"><div class="tool-icon">🐙</div><h4>GitHub</h4><p>لحفظ المشاريع والتعاون مع المطورين.</p><span class="tool-tag">استضافة كود</span></div>
-    <div class="tool-card"><div class="tool-icon">🎨</div><h4>Figma</h4><p>لتصميم الواجهات قبل ما أبدأ البرمجة.</p><span class="tool-tag">تصميم</span></div>
-    <div class="tool-card"><div class="tool-icon">🔧</div><h4>Postman</h4><p>لاختبار APIs والتعامل معها.</p><span class="tool-tag">أدوات API</span></div>
+    <div class="tool-card"><div class="tool-icon">🐍</div><h4>Python</h4><p>لغتي الأساسية في الأتمتة والسكربتات.</p><span class="tool-tag">لغة برمجة</span></div>
+    <div class="tool-card"><div class="tool-icon">⚡</div><h4>JavaScript</h4><p>لتطوير الويب والتفاعل.</p><span class="tool-tag">لغة برمجة</span></div>
+    <div class="tool-card"><div class="tool-icon">📝</div><h4>VS Code</h4><p>محرر الكود المفضل.</p><span class="tool-tag">محرر أكواد</span></div>
+    <div class="tool-card"><div class="tool-icon">🐙</div><h4>GitHub</h4><p>لحفظ المشاريع.</p><span class="tool-tag">استضافة كود</span></div>
+    <div class="tool-card"><div class="tool-icon">🎨</div><h4>Figma</h4><p>لتصميم الواجهات.</p><span class="tool-tag">تصميم</span></div>
+    <div class="tool-card"><div class="tool-icon">🔧</div><h4>Postman</h4><p>لاختبار APIs.</p><span class="tool-tag">أدوات API</span></div>
   </div>
 </section>
 
 <!-- مدونتي -->
 <section id="blog" class="section">
   <h2 class="page-title">مدونتي</h2>
-  <p class="page-sub">نصائح تقنية ومفاهيم في الأمن السيبراني والهندسة العكسية.</p>
+  <p class="page-sub">نصائح تقنية ومفاهيم في الأمن السيبراني.</p>
 
   <div class="blog-post">
     <span class="badge">برمجة</span>
     <h3>💻 كيف تبدأ في البرمجة من الصفر؟</h3>
-    <div class="meta">📅 للمبتدئين · قراءة 4 دقائق</div>
-    <p>البداية في البرمجة أسهل مما تتخيل. هذي خارطة طريق مبسطة:</p>
+    <div class="meta">📅 للمبتدئين · 4 دقائق</div>
     <ul>
       <li>اختر لغة واحدة وابدأ فيها (Python أو JavaScript)</li>
-      <li>تعلم الأساسيات: المتغيرات، الشروط، الحلقات، الدوال</li>
-      <li>طبّق بمشاريع صغيرة — لا تكتفي بالمشاهدة</li>
+      <li>تعلم الأساسيات: المتغيرات، الشروط، الحلقات</li>
+      <li>طبّق بمشاريع صغيرة</li>
       <li>شارك كودك واطلب ملاحظات</li>
-      <li>اصبر — الإتقان يحتاج وقت وممارسة</li>
+      <li>اصبر — الإتقان يحتاج وقت</li>
     </ul>
   </div>
 
   <div class="blog-post">
-    <span class="badge">الهكر الأخلاقي</span>
+    <span class="badge">هكر أخلاقي</span>
     <h3>🛡️ من هو الهاكر الأخلاقي؟</h3>
-    <div class="meta">📅 مفاهيم · قراءة 5 دقائق</div>
-    <p>الهاكر الأخلاقي (Ethical Hacker) هو شخص يستخدم مهاراته التقنية لاختبار أمان الأنظمة — <strong>بإذن رسمي</strong> من أصحابها، وبهدف تحسين الحماية.</p>
-    <p><strong>الفرق الأساسي:</strong></p>
+    <div class="meta">📅 مفاهيم · 5 دقائق</div>
+    <p>الهاكر الأخلاقي يستخدم مهاراته لاختبار أمان الأنظمة — <strong>بإذن رسمي</strong> — بهدف تحسين الحماية.</p>
     <ul>
       <li>✅ يعمل بإذن قانوني موثق</li>
       <li>✅ يبلّغ عن الثغرات لإصلاحها</li>
       <li>✅ يحترم الخصوصية والسرية</li>
       <li>✅ يتبع ميثاق أخلاقي مهني</li>
     </ul>
-    <p><strong>أشهر الشهادات:</strong> CEH · OSCP · CompTIA Security+ · CISSP</p>
   </div>
 
   <div class="blog-post">
     <span class="badge">تعديل تطبيقات</span>
     <h3>🔧 أساسيات تعديل التطبيقات</h3>
-    <div class="meta">📅 مفاهيم · قراءة 4 دقائق</div>
-    <p>تعديل التطبيقات (App Modding) هو عملية تخصيص التطبيقات لتلائم احتياجاتك — بإذن من المطوّر أو لتطبيقات مفتوحة المصدر.</p>
-    <p><strong>يُستخدم بشكل مشروع في:</strong></p>
+    <div class="meta">📅 مفاهيم · 4 دقائق</div>
+    <p>تخصيص التطبيقات لتلائم احتياجاتك — بإذن أو للتطبيقات مفتوحة المصدر.</p>
     <ul>
-      <li>تخصيص واجهة التطبيق</li>
+      <li>تخصيص الواجهة</li>
       <li>إضافة ميزات جديدة</li>
       <li>تحسين الأداء</li>
-      <li>الترجمة للعربية</li>
-      <li>التعلم وفهم التقنيات</li>
-    </ul>
-    <p><strong>القاعدة الذهبية:</strong> احترم حقوق المطوّرين، وعدّل فقط ما تملكه أو ما سُمح لك به.</p>
-  </div>
-
-  <div class="blog-post">
-    <span class="badge">الهندسة العكسية</span>
-    <h3>🔍 ما هي الهندسة العكسية؟</h3>
-    <div class="meta">📅 مفاهيم · قراءة 4 دقائق</div>
-    <p>الهندسة العكسية (Reverse Engineering) هي عملية تحليل نظام أو برنامج لفهم كيفية عمله — بدون الوصول إلى الكود المصدري الأصلي.</p>
-    <p><strong>تُستخدم بشكل مشروع في:</strong></p>
-    <ul>
-      <li>تحليل البرمجيات الخبيثة لفهم سلوكها</li>
-      <li>اكتشاف الثغرات الأمنية لإصلاحها</li>
-      <li>التوافق بين الأنظمة المختلفة</li>
-      <li>التعليم وفهم التقنيات</li>
-      <li>استعادة البيانات من أنظمة قديمة</li>
+      <li>احترام حقوق المطورين</li>
     </ul>
   </div>
 
   <div class="blog-post">
-    <span class="badge">نصائح تقنية</span>
+    <span class="badge">نصائح</span>
     <h3>🔒 5 نصائح لحماية حساباتك</h3>
-    <div class="meta">📅 نصائح عامة · قراءة 3 دقائق</div>
+    <div class="meta">📅 نصائح عامة · 3 دقائق</div>
     <ul>
-      <li>استخدم كلمة مرور قوية ومختلفة لكل حساب</li>
+      <li>كلمة مرور قوية لكل حساب</li>
       <li>فعّل المصادقة الثنائية (2FA)</li>
-      <li>لا تضغط على روابط مشبوهة</li>
-      <li>حدّث تطبيقاتك ونظامك باستمرار</li>
-      <li>استخدم مدير كلمات مرور موثوق</li>
-    </ul>
-  </div>
-
-  <div class="blog-post">
-    <span class="badge">أمن سيبراني</span>
-    <h3>🔐 أنواع الهجمات الشائعة (نظرة دفاعية)</h3>
-    <div class="meta">📅 توعية · قراءة 5 دقائق</div>
-    <ul>
-      <li><strong>Phishing:</strong> رسائل مزيفة تسرق بياناتك</li>
-      <li><strong>Malware:</strong> برامج خبيثة</li>
-      <li><strong>DDoS:</strong> إغراق موقع بطلبات</li>
-      <li><strong>SQL Injection:</strong> استغلال ثغرات قواعد البيانات</li>
-      <li><strong>Social Engineering:</strong> استغلال النفس البشرية</li>
+      <li>لا تضغط روابط مشبوهة</li>
+      <li>حدّث تطبيقاتك باستمرار</li>
+      <li>استخدم مدير كلمات مرور</li>
     </ul>
   </div>
 </section>
@@ -753,35 +612,33 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <!-- شهاداتي -->
 <section id="certs" class="section">
   <h2 class="page-title">شهاداتي</h2>
-  <p class="page-sub">شهادات وإنجازات تقنية في مسيرتي.</p>
+  <p class="page-sub">شهادات وإنجازات في مسيرتي.</p>
   <div class="cert-grid">
-    <div class="cert-card"><div class="cert-icon">🎓</div><h4>أساسيات البرمجة</h4><p>شهادة في أساسيات البرمجة وتطوير الويب.</p></div>
-    <div class="cert-card"><div class="cert-icon">🐍</div><h4>Python للمبتدئين</h4><p>إتمام دورة Python من الصفر حتى المستوى المتقدم.</p></div>
-    <div class="cert-card"><div class="cert-icon">🌐</div><h4>تطوير الويب</h4><p>شهادة في تطوير مواقع الويب (Frontend).</p></div>
-    <div class="cert-card"><div class="cert-icon">🛡️</div><h4>أساسيات الأمن السيبراني</h4><p>شهادة في أساسيات الحماية والأمن الرقمي.</p></div>
+    <div class="cert-card"><div class="cert-icon">🎓</div><h4>أساسيات البرمجة</h4><p>شهادة في البرمجة وتطوير الويب.</p></div>
+    <div class="cert-card"><div class="cert-icon">🐍</div><h4>Python</h4><p>دورة Python من الصفر للاحتراف.</p></div>
+    <div class="cert-card"><div class="cert-icon">🌐</div><h4>تطوير الويب</h4><p>شهادة في Frontend Development.</p></div>
+    <div class="cert-card"><div class="cert-icon">🛡️</div><h4>الأمن السيبراني</h4><p>أساسيات الحماية والأمن الرقمي.</p></div>
   </div>
 </section>
 
 <!-- الأسئلة الشائعة -->
 <section id="faq" class="section">
   <h2 class="page-title">الأسئلة الشائعة</h2>
-  <p class="page-sub">أسئلة تتكرر من الزبائن — إذا ما لقيت جوابك، تواصل معي.</p>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كم يستغرق تسليم الموقع؟ <span class="arrow">▼</span></div><div class="faq-answer">يعتمد على حجم الموقع. المواقع البسيطة 2-3 أيام، والمتوسطة 5-7 أيام، والمعقدة 2-3 أسابيع.</div></div>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كيف يتم الدفع؟ <span class="arrow">▼</span></div><div class="faq-answer">الدفع عبر رصيد ليبيانا — سهل وسريع. نتفق على التفاصيل عبر الخاص.</div></div>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل تقدم دعم بعد التسليم؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — دعم مجاني لمدة 30 يوم بعد التسليم لأي مشكلة تقنية أو استفسار.</div></div>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل يمكن تعديل الموقع بعد التسليم؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — أراجعك الكود كامل مع شرح كيف تعدل عليه.</div></div>
-  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">ما الفرق بين Pro و Plus؟ <span class="arrow">▼</span></div><div class="faq-answer">Pro (5 د.ل — أسبوعين) يعطيك فتح كل السكربتات والأدوات + خصم 20%. Plus (10 د.ل — شهرين) يعطيك كل شي مجاني + استشارات غير محدودة + خصم 50% + دعم VIP.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كم يستغرق تسليم الموقع؟ <span class="arrow">▼</span></div><div class="faq-answer">المواقع البسيطة 2-3 أيام، والمتوسطة 5-7 أيام.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">كيف يتم الدفع؟ <span class="arrow">▼</span></div><div class="faq-answer">عبر رصيد ليبيانا — سهل وسريع.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل تقدم دعم بعد التسليم؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — 30 يوم دعم مجاني.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question">هل التطبيقات مجانية؟ <span class="arrow">▼</span></div><div class="faq-answer">نعم — كل تطبيقاتي مجانية 100%.</div></div>
 </section>
 
 <!-- قريباً -->
 <section id="soon" class="section">
   <h2 class="page-title">قريباً</h2>
-  <p class="page-sub">خدمات وميزات جديدة رح تضاف قريباً.</p>
+  <p class="page-sub">ميزات وخدمات جديدة قادمة.</p>
   <div class="coming-soon-grid">
-    <div class="coming-card"><div class="soon-icon">📱</div><h4>تطبيق جوال</h4><p>تطبيق للموقع يعمل على Android و iOS.</p><span class="soon-badge">قريباً</span></div>
-    <div class="coming-card"><div class="soon-icon">🎥</div><h4>دورات فيديو</h4><p>دورات تعليمية في البرمجة والأمن السيبراني.</p><span class="soon-badge">قريباً</span></div>
-    <div class="coming-card"><div class="soon-icon">💳</div><h4>دفع إلكتروني</h4><p>بوابة دفع مباشرة في الموقع.</p><span class="soon-badge">قريباً</span></div>
-    <div class="coming-card"><div class="soon-icon">🏆</div><h4>نظام نقاط</h4><p>نقاط لكل زبون، وخصومات للزبائن الدائمين.</p><span class="soon-badge">قريباً</span></div>
+    <div class="coming-card"><div class="soon-icon">📱</div><h4>تطبيق جوال</h4><p>تطبيق يعمل على Android و iOS.</p><span class="soon-badge">قريباً</span></div>
+    <div class="coming-card"><div class="soon-icon">🎥</div><h4>دورات فيديو</h4><p>دورات في البرمجة والأمن.</p><span class="soon-badge">قريباً</span></div>
+    <div class="coming-card"><div class="soon-icon">💳</div><h4>دفع إلكتروني</h4><p>بوابة دفع مباشرة.</p><span class="soon-badge">قريباً</span></div>
+    <div class="coming-card"><div class="soon-icon">🏆</div><h4>نظام نقاط</h4><p>نقاط للزبائن الدائمين.</p><span class="soon-badge">قريباً</span></div>
   </div>
 </section>
 
@@ -789,37 +646,33 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <section id="work" class="section">
   <h2 class="page-title">أعمالي</h2>
   <div class="grid">
-    <div class="card"><h3>مشروع ويب</h3><p>موقع متجاوب بتصميم عصري وأداء عالٍ.</p><span class="tag">HTML · CSS · JS</span></div>
-    <div class="card"><h3>تطبيق تفاعلي</h3><p>واجهة تفاعلية مع منطق برمجي متكامل.</p><span class="tag">JavaScript</span></div>
-    <div class="card"><h3>أداة برمجية</h3><p>سكربت بأداء عالٍ لحل مشكلة محددة.</p><span class="tag">Python</span></div>
-    <div class="card"><h3>مشروع قادم</h3><p>مساحة جاهزة لإضافة عملك القادم هنا.</p><span class="tag">قريباً</span></div>
+    <div class="card"><h3>RA Academy</h3><p>أكاديمية تعليمية لتعلم البرمجة والأمن السيبراني.</p><span class="tag">تطبيق Android</span></div>
+    <div class="card"><h3>موقع RA_7DEE7</h3><p>الموقع الرسمي — خدمات، متجر، اشتراكات.</p><span class="tag">موقع ويب</span></div>
+    <div class="card"><h3>مشروع قادم</h3><p>مساحة لعملك القادم.</p><span class="tag">قريباً</span></div>
   </div>
 </section>
 
-<!-- آراء الزبائن -->
+<!-- آراء -->
 <section id="reviews" class="section">
   <h2 class="page-title">آراء الزبائن</h2>
-  <p class="page-sub">تقييمات حقيقية من زبائن تعاملوا معي.</p>
   <div class="reviews">
-    <div class="review"><span class="quote">"</span><div class="stars">★★★★★</div><p class="text">شغل احترافي وسريع، سلمني الموقع قبل الموعد.</p><div class="author"><div class="avatar">أ</div><div class="info"><div class="name">أحمد</div><div class="role">صاحب متجر</div></div></div></div>
-    <div class="review"><span class="quote">"</span><div class="stars">★★★★★</div><p class="text">طلبت بوت تيليجرام، النتيجة فاقت توقعاتي.</p><div class="author"><div class="avatar">م</div><div class="info"><div class="name">محمد</div><div class="role">صاحب قناة</div></div></div></div>
-    <div class="review"><span class="quote">"</span><div class="stars">★★★★★</div><p class="text">موقعي كان بطيء، بعد التحسين صار سريع جداً.</p><div class="author"><div class="avatar">س</div><div class="info"><div class="name">سارة</div><div class="role">مصممة</div></div></div></div>
-    <div class="review"><span class="quote">"</span><div class="stars">★★★★★</div><p class="text">أفضل مبرمج تعاملت معه، يفهم المطلوب بسرعة.</p><div class="author"><div class="avatar">ع</div><div class="info"><div class="name">عبدالله</div><div class="role">صاحب شركة</div></div></div></div>
+    <div class="review"><span class="quote">"</span><div class="stars">★★★★★</div><p class="text">شغل احترافي وسريع.</p><div class="author"><div class="avatar">أ</div><div class="info"><div class="name">أحمد</div><div class="role">صاحب متجر</div></div></div></div>
+    <div class="review"><span class="quote">"</span><div class="stars">★★★★★</div><p class="text">النتيجة فاقت توقعاتي.</p><div class="author"><div class="avatar">م</div><div class="info"><div class="name">محمد</div><div class="role">صاحب قناة</div></div></div></div>
+    <div class="review"><span class="quote">"</span><div class="stars">★★★★★</div><p class="text">أفضل مبرمج تعاملت معه.</p><div class="author"><div class="avatar">ع</div><div class="info"><div class="name">عبدالله</div><div class="role">صاحب شركة</div></div></div></div>
   </div>
 </section>
 
 <!-- الإبلاغ -->
 <section id="report" class="section">
   <h2 class="page-title">🚨 الإبلاغ عن مشكلة</h2>
-  <p class="page-sub">واجهت مشكلة في الموقع؟ خبرني وأصلحها بأسرع وقت.</p>
-  <div class="email-display"><div class="label">📧 إيميل الإبلاغ المباشر:</div><a href="mailto:radwakana17@gmail.com">radwakana17@gmail.com</a></div>
+  <p class="page-sub">واجهت مشكلة؟ خبرني.</p>
+  <div class="email-display"><div class="label">📧 إيميل الإبلاغ:</div><a href="mailto:radwakana17@gmail.com">radwakana17@gmail.com</a></div>
   <div class="contact-form">
-    <h3>📝 أرسل بلاغك</h3>
     <form onsubmit="sendReport(event)">
-      <div class="field"><label>الاسم</label><input type="text" id="reportName" placeholder="اكتب اسمك" required></div>
-      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="reportEmail" placeholder="your@email.com" required></div>
-      <div class="field"><label>نوع المشكلة</label><select id="reportType" required><option value="">اختر نوع المشكلة</option><option value="خطأ في الصفحة">خطأ في الصفحة</option><option value="مشكلة في التصميم">مشكلة في التصميم</option><option value="رابط لا يعمل">رابط لا يعمل</option><option value="مشكلة في السلة">مشكلة في السلة</option><option value="اقتراح تحسين">اقتراح تحسين</option><option value="أخرى">أخرى</option></select></div>
-      <div class="field"><label>تفاصيل المشكلة</label><textarea id="reportDetails" placeholder="اشرح المشكلة بالتفصيل..." required></textarea></div>
+      <div class="field"><label>الاسم</label><input type="text" id="reportName" required></div>
+      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="reportEmail" required></div>
+      <div class="field"><label>نوع المشكلة</label><input type="text" id="reportType" placeholder="مثال: تطبيق لا يعمل..."></div>
+      <div class="field"><label>التفاصيل</label><textarea id="reportDetails" required></textarea></div>
       <button type="submit">📤 إرسال البلاغ</button>
     </form>
   </div>
@@ -830,17 +683,16 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   <h2 class="page-title">تواصل معي</h2>
   <p class="page-sub">اختر الطريقة الأنسب لك:</p>
   <div class="social-grid">
-    <a href="https://www.tiktok.com/@loh7he" target="_blank" class="social"><span class="icon">♪</span><span class="name">TikTok</span><span class="handle">@loh7he</span><span class="follow">اشترك الآن ←</span></a>
+    <a href="https://www.tiktok.com/@loh7he" target="_blank" class="social"><span class="icon">♪</span><span class="name">TikTok</span><span class="handle">@loh7he</span><span class="follow">اشترك ←</span></a>
     <a href="https://www.instagram.com/ra_7dee7_" target="_blank" class="social"><span class="icon">◉</span><span class="name">Instagram</span><span class="handle">@ra_7dee7_</span><span class="follow">تابعني ←</span></a>
   </div>
-  <div class="email-display"><div class="label">📧 إيميلي للتواصل المباشر:</div><a href="mailto:radwakana17@gmail.com">radwakana17@gmail.com</a></div>
+  <div class="email-display"><div class="label">📧 إيميلي:</div><a href="mailto:radwakana17@gmail.com">radwakana17@gmail.com</a></div>
   <div class="contact-form">
-    <h3>📝 أرسل لي رسالة</h3>
     <form onsubmit="sendMessage(event)">
-      <div class="field"><label>الاسم</label><input type="text" id="visitorName" placeholder="اكتب اسمك" required></div>
-      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="visitorEmail" placeholder="your@email.com" required></div>
-      <div class="field"><label>الرسالة</label><textarea id="visitorMessage" placeholder="اكتب رسالتك هنا..." required></textarea></div>
-      <button type="submit">📤 إرسال الرسالة</button>
+      <div class="field"><label>الاسم</label><input type="text" id="visitorName" required></div>
+      <div class="field"><label>البريد</label><input type="email" id="visitorEmail" required></div>
+      <div class="field"><label>الرسالة</label><textarea id="visitorMessage" required></textarea></div>
+      <button type="submit">📤 إرسال</button>
     </form>
   </div>
 </section>
@@ -849,75 +701,90 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 
 <div class="cart-modal" id="cartModal">
   <div class="cart-content">
-    <h3>🛒 سلة التسوق <button class="close-cart" onclick="closeCart()">✕</button></h3>
+    <h3>🛒 السلة <button class="close-cart" onclick="closeCart()">✕</button></h3>
     <div id="cartItems"></div>
-    <div class="cart-total" id="cartTotal" style="display:none;"><div class="label">المجموع الكلي:</div><div class="amount" id="totalAmount">0 د.ل</div></div>
+    <div class="cart-total" id="cartTotal" style="display:none;"><div class="label">المجموع:</div><div class="amount" id="totalAmount">0 د.ل</div></div>
     <div class="payment-note" id="paymentNote" style="display:none;">💳 الدفع عبر رصيد ليبيانا</div>
     <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" style="display:none;">📤 إتمام الطلب</button>
   </div>
 </div>
 
 <script>
-/* ====== شاشة الدخول ====== */
-function enterSite() {
-  playClickSound();
-  const splash = document.getElementById('splashScreen');
-  splash.classList.add('hide');
-  setTimeout(() => splash.style.display = 'none', 800);
-}
+/* ===== Matrix Background ===== */
+(function() {
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  const chars = 'RA7DEE7アイウエオカキクケコ01アカサタナabcdef';
+  const fontSize = 14;
+  let columns = Math.floor(canvas.width / fontSize);
+  let drops = Array(columns).fill(1);
+  function draw() {
+    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#00ff41';
+    ctx.font = fontSize + 'px monospace';
+    for (let i = 0; i < drops.length; i++) {
+      const text = chars.charAt(Math.floor(Math.random() * chars.length));
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw, 60);
+  window.addEventListener('resize', () => {
+    columns = Math.floor(canvas.width / fontSize);
+    drops = Array(columns).fill(1);
+  });
+})();
 
-/* ====== صوت النقرات ====== */
+/* ===== صوت نقرات هادئ ===== */
 let audioCtx = null;
-function playClickSound() {
+function playClick() {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.05);
+    osc.connect(gain); gain.connect(audioCtx.destination);
     osc.type = 'sine';
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
     osc.start(audioCtx.currentTime);
-    osc.stop(audioCtx.currentTime + 0.08);
-  } catch(e) { /* ignore */ }
+    osc.stop(audioCtx.currentTime + 0.1);
+  } catch(e) {}
 }
 
-/* ====== باقي الدوال ====== */
+/* ===== التنقل ===== */
 function showSection(id, el) {
-  playClickSound();
+  playClick();
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-  if (el) el.classList.add('active');
-  document.querySelector('.nav-links').classList.remove('open');
+  document.querySelectorAll('.side-icon').forEach(a => a.classList.remove('active'));
+  if (el && el.classList) el.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function toggleMenu() { playClickSound(); document.getElementById('navLinks').classList.toggle('open'); }
-
+/* ===== الوضع الفاتح/الغامق ===== */
 function toggleTheme() {
-  playClickSound();
+  playClick();
   document.body.classList.toggle('light');
   const isLight = document.body.classList.contains('light');
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
-  const sideTheme = document.getElementById('sideTheme');
-  if (sideTheme) sideTheme.innerHTML = (isLight ? '☀️' : '🌙') + ' <span class="tooltip">الوضع</span>';
+  document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
 }
-
 (function loadTheme() {
   const saved = localStorage.getItem('theme');
   if (saved === 'light') {
     document.body.classList.add('light');
-    setTimeout(() => {
-      const sideTheme = document.getElementById('sideTheme');
-      if (sideTheme) sideTheme.innerHTML = '☀️ <span class="tooltip">الوضع</span>';
-    }, 100);
+    setTimeout(() => { const b = document.getElementById('themeBtn'); if (b) b.textContent = '☀️'; }, 100);
   }
 })();
 
+/* ===== عداد الزوار ===== */
 (function initVisitorCounter() {
   const counterEl = document.getElementById('visitorCount');
   if (!counterEl) return;
@@ -934,161 +801,121 @@ function toggleTheme() {
   }, 30);
 })();
 
-(function initCountdown() {
-  let end = localStorage.getItem('countdownEnd');
-  if (!end) { end = Date.now() + (7 * 24 * 60 * 60 * 1000); localStorage.setItem('countdownEnd', end); }
-  const endTime = parseInt(end);
-  function update() {
-    const diff = Math.max(0, endTime - Date.now());
-    const pad = n => String(n).padStart(2, '0');
-    const dEl = document.getElementById('cd-days');
-    const hEl = document.getElementById('cd-hours');
-    const mEl = document.getElementById('cd-mins');
-    const sEl = document.getElementById('cd-secs');
-    if (dEl) dEl.textContent = Math.floor(diff / 86400000);
-    if (hEl) hEl.textContent = pad(Math.floor((diff / 3600000) % 24));
-    if (mEl) mEl.textContent = pad(Math.floor((diff / 60000) % 60));
-    if (sEl) sEl.textContent = pad(Math.floor((diff / 1000) % 60));
-  }
-  update();
-  setInterval(update, 1000);
-})();
+/* ===== FAQ ===== */
+function toggleFaq(el) { playClick(); el.classList.toggle('open'); }
 
-function toggleFaq(el) { playClickSound(); el.classList.toggle('open'); }
-
+/* ===== التواصل مع انستقرام ===== */
 function contactViaInstagram(serviceName) {
-  playClickSound();
+  playClick();
   const message = 'مرحباً،\nأريد خدمة: ' + serviceName + '\nالدفع عبر رصيد ليبيانا\nمن موقع RA_7DEE7';
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(message).then(() => {
       showToast('✅ تم نسخ الرسالة — الصقها في الخاص', 3500);
     }).catch(() => fallbackCopy(message));
-  } else {
-    fallbackCopy(message);
-  }
+  } else { fallbackCopy(message); }
   setTimeout(() => { window.open('https://www.instagram.com/ra_7dee7_', '_blank'); }, 900);
 }
-
 function fallbackCopy(text) {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-  try { document.execCommand('copy'); showToast('✅ تم نسخ الرسالة — الصقها في الخاص', 3500); }
-  catch(e) { showToast('⚠️ انسخ الرسالة يدوياً في الخاص', 3500); }
-  textarea.remove();
+  const t = document.createElement('textarea');
+  t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+  document.body.appendChild(t); t.select();
+  try { document.execCommand('copy'); showToast('✅ تم نسخ الرسالة', 3500); }
+  catch(e) { showToast('⚠️ انسخ يدوياً', 3500); }
+  t.remove();
 }
 
+/* ===== السلة ===== */
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartBadge(); }
 function updateCartBadge() {
-  const badge = document.getElementById('cartBadge');
-  const sideBadge = document.getElementById('sideBadge');
-  if (badge) badge.textContent = cart.length;
-  if (sideBadge) sideBadge.textContent = cart.length;
+  const b = document.getElementById('sideBadge');
+  if (b) b.textContent = cart.length;
 }
 function addToCart(name, price) {
-  playClickSound();
-  const existing = cart.find(item => item.name === name);
-  if (existing) { existing.qty = (existing.qty || 1) + 1; }
-  else { cart.push({ name: name, price: price, qty: 1 }); }
+  playClick();
+  const existing = cart.find(i => i.name === name);
+  if (existing) existing.qty = (existing.qty || 1) + 1;
+  else cart.push({ name, price, qty: 1 });
   saveCart();
-  showToast('✅ تمت الإضافة إلى السلة: ' + name, 1800);
+  showToast('✅ تمت الإضافة: ' + name, 1800);
 }
 function showToast(msg, duration) {
   duration = duration || 1800;
-  const toast = document.createElement('div');
-  toast.textContent = msg;
-  toast.style.cssText = 'position:fixed;bottom:30px;right:50%;transform:translateX(50%);background:linear-gradient(135deg,#ff0033,#cc0029);color:#fff;padding:14px 24px;border-radius:50px;z-index:3000;font-weight:bold;box-shadow:0 10px 40px rgba(255,0,51,0.6);font-family:inherit;animation:fadeIn 0.3s;max-width:90%;text-align:center;';
-  document.body.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = '0.3s'; }, duration);
-  setTimeout(() => toast.remove(), duration + 400);
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:90px;right:50%;transform:translateX(50%);background:linear-gradient(135deg,#00ff41,#00cc33);color:#000;padding:14px 24px;border-radius:50px;z-index:3000;font-weight:bold;box-shadow:0 10px 40px rgba(0,255,65,0.6);font-family:inherit;animation:slideUp 0.3s;max-width:90%;text-align:center;';
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = '0.3s'; }, duration);
+  setTimeout(() => t.remove(), duration + 400);
 }
-function openCart() { playClickSound(); renderCart(); document.getElementById('cartModal').classList.add('open'); }
-function closeCart() { playClickSound(); document.getElementById('cartModal').classList.remove('open'); }
-function removeFromCart(index) { playClickSound(); cart.splice(index, 1); saveCart(); renderCart(); }
+function openCart() { playClick(); renderCart(); document.getElementById('cartModal').classList.add('open'); }
+function closeCart() { playClick(); document.getElementById('cartModal').classList.remove('open'); }
+function removeFromCart(i) { playClick(); cart.splice(i, 1); saveCart(); renderCart(); }
 function renderCart() {
-  const container = document.getElementById('cartItems');
-  const totalEl = document.getElementById('cartTotal');
-  const checkoutBtn = document.getElementById('checkoutBtn');
-  const totalAmount = document.getElementById('totalAmount');
-  const paymentNote = document.getElementById('paymentNote');
+  const c = document.getElementById('cartItems');
+  const t = document.getElementById('cartTotal');
+  const co = document.getElementById('checkoutBtn');
+  const am = document.getElementById('totalAmount');
+  const pn = document.getElementById('paymentNote');
   if (cart.length === 0) {
-    container.innerHTML = '<div class="cart-empty">🛒<br><br>السلة فاضية<br>أضف خدمات من المتجر</div>';
-    totalEl.style.display = 'none';
-    checkoutBtn.style.display = 'none';
-    if (paymentNote) paymentNote.style.display = 'none';
+    c.innerHTML = '<div class="cart-empty">🛒<br><br>السلة فاضية</div>';
+    t.style.display = 'none'; co.style.display = 'none'; if (pn) pn.style.display = 'none';
     return;
   }
   let html = ''; let total = 0;
   cart.forEach((item, i) => {
     const qty = item.qty || 1;
-    const subtotal = item.price * qty;
-    total += subtotal;
-    html += '<div class="cart-item"><div class="item-info"><div class="item-name">' + item.name + (qty > 1 ? ' × ' + qty : '') + '</div><div class="item-price">' + subtotal + ' د.ل</div></div><button class="remove-btn" onclick="removeFromCart(' + i + ')">✕</button></div>';
+    const sub = item.price * qty; total += sub;
+    html += '<div class="cart-item"><div class="item-info"><div class="item-name">' + item.name + (qty > 1 ? ' × ' + qty : '') + '</div><div class="item-price">' + sub + ' د.ل</div></div><button class="remove-btn" onclick="removeFromCart(' + i + ')">✕</button></div>';
   });
-  container.innerHTML = html;
-  totalAmount.textContent = total + ' د.ل';
-  totalEl.style.display = 'block';
-  checkoutBtn.style.display = 'block';
-  if (paymentNote) paymentNote.style.display = 'block';
+  c.innerHTML = html;
+  am.textContent = total + ' د.ل';
+  t.style.display = 'block'; co.style.display = 'block'; if (pn) pn.style.display = 'block';
 }
 function checkout() {
-  playClickSound();
+  playClick();
   if (cart.length === 0) return;
-  let message = '🛒 طلب جديد من الموقع:\n\n';
-  let total = 0;
+  let msg = '🛒 طلب جديد:\n\n'; let total = 0;
   cart.forEach(item => {
     const qty = item.qty || 1;
-    const subtotal = item.price * qty;
-    total += subtotal;
-    message += '• ' + item.name + (qty > 1 ? ' × ' + qty : '') + ' = ' + subtotal + ' د.ل\n';
+    const sub = item.price * qty; total += sub;
+    msg += '• ' + item.name + (qty > 1 ? ' × ' + qty : '') + ' = ' + sub + ' د.ل\n';
   });
-  message += '\n💰 المجموع: ' + total + ' د.ل';
-  message += '\n💳 الدفع عبر رصيد ليبيانا';
+  msg += '\n💰 المجموع: ' + total + ' د.ل\n💳 الدفع عبر رصيد ليبيانا';
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(message).then(() => {
-      showToast('✅ تم نسخ الطلب — الصقه في الخاص', 3500);
-    }).catch(() => fallbackCopy(message));
-  } else {
-    fallbackCopy(message);
-  }
+    navigator.clipboard.writeText(msg).then(() => showToast('✅ تم نسخ الطلب', 3500)).catch(() => fallbackCopy(msg));
+  } else fallbackCopy(msg);
   setTimeout(() => { window.open('https://www.instagram.com/ra_7dee7_', '_blank'); }, 900);
 }
 updateCartBadge();
 document.getElementById('cartModal').addEventListener('click', function(e) { if (e.target === this) closeCart(); });
 
+/* ===== نماذج ===== */
 function sendMessage(e) {
-  e.preventDefault();
-  playClickSound();
-  const name = document.getElementById('visitorName').value;
-  const email = document.getElementById('visitorEmail').value;
-  const message = document.getElementById('visitorMessage').value;
-  const subject = encodeURIComponent('رسالة من ' + name);
-  const body = encodeURIComponent('الاسم: ' + name + '\nالإيميل: ' + email + '\n\nالرسالة:\n' + message);
-  window.location.href = 'mailto:radwakana17@gmail.com?subject=' + subject + '&body=' + body;
+  e.preventDefault(); playClick();
+  const n = document.getElementById('visitorName').value;
+  const m = document.getElementById('visitorEmail').value;
+  const msg = document.getElementById('visitorMessage').value;
+  const s = encodeURIComponent('رسالة من ' + n);
+  const b = encodeURIComponent('الاسم: ' + n + '\nالإيميل: ' + m + '\n\n' + msg);
+  window.location.href = 'mailto:radwakana17@gmail.com?subject=' + s + '&body=' + b;
 }
 function sendReport(e) {
-  e.preventDefault();
-  playClickSound();
-  const name = document.getElementById('reportName').value;
-  const email = document.getElementById('reportEmail').value;
-  const type = document.getElementById('reportType').value;
-  const details = document.getElementById('reportDetails').value;
-  const subject = encodeURIComponent('🚨 بلاغ: ' + type);
-  const body = encodeURIComponent('الاسم: ' + name + '\nالإيميل: ' + email + '\nنوع المشكلة: ' + type + '\n\nالتفاصيل:\n' + details);
-  window.location.href = 'mailto:radwakana17@gmail.com?subject=' + subject + '&body=' + body;
+  e.preventDefault(); playClick();
+  const n = document.getElementById('reportName').value;
+  const m = document.getElementById('reportEmail').value;
+  const t = document.getElementById('reportType').value;
+  const d = document.getElementById('reportDetails').value;
+  const s = encodeURIComponent('🚨 بلاغ: ' + t);
+  const b = encodeURIComponent('الاسم: ' + n + '\nالإيميل: ' + m + '\nالنوع: ' + t + '\n\n' + d);
+  window.location.href = 'mailto:radwakana17@gmail.com?subject=' + s + '&body=' + b;
 }
 
-/* صوت النقر على كل الأزرار */
+/* صوت النقر الشامل */
 document.addEventListener('click', function(e) {
-  const target = e.target.closest('button, a, .side-icon, .faq-question, .article-card, .card, .pricing-card, .pro-card, .tool-card, .social, .review');
-  if (target && !target.classList.contains('splash-btn')) {
-    playClickSound();
-  }
-});
+  const target = e.target.closest('button, .side-icon, .faq-question, .card, .app-card, a');
+  if (target) playClick();
+}, true);
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.term-body .out').forEach((el, i) => {
@@ -1097,4 +924,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-          </html>
+</html>
