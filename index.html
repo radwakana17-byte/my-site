@@ -25,7 +25,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Courier New', mo
 
 #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.15; pointer-events: none; }
 
-/* ===== Sidebar ===== */
 .sidebar { position: fixed; right: 0; top: 0; bottom: 0; width: 80px; background: linear-gradient(180deg, var(--bg2), var(--bg3)); border-left: 2px solid var(--green); display: flex; flex-direction: column; align-items: center; padding: 15px 0; gap: 8px; z-index: 200; box-shadow: -2px 0 25px rgba(0,255,65,0.3); overflow-y: auto; }
 .sidebar::-webkit-scrollbar { width: 0; }
 .side-logo { color: var(--green); font-weight: bold; font-size: 0.65rem; text-align: center; margin-bottom: 8px; text-shadow: 0 0 10px var(--green-glow); line-height: 1.3; letter-spacing: 1px; }
@@ -179,6 +178,20 @@ header { position: relative; z-index: 50; padding: 20px; border-bottom: 1px soli
 .app-download-btn:hover { box-shadow: 0 12px 45px var(--green); transform: translateY(-3px) scale(1.02); }
 .app-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: #000; font-size: 0.7rem; padding: 4px 12px; border-radius: 12px; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,65,0.6); }
 
+/* روابط مفيدة */
+.links-category { margin-bottom: 40px; }
+.links-category-title { color: var(--green); font-size: 1.3rem; margin-bottom: 18px; text-shadow: 0 0 12px var(--green-glow); display: flex; align-items: center; gap: 10px; }
+.links-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.link-card { background: linear-gradient(145deg, var(--bg2), var(--bg3)); border: 1px solid var(--card-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--text); transition: 0.3s; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden; }
+.link-card::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--green), transparent); transform: scaleX(0); transition: 0.4s; }
+.link-card:hover::before { transform: scaleX(1); }
+.link-card:hover { border-color: var(--green); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,255,65,0.25); }
+.link-card .link-icon { font-size: 1.8rem; }
+.link-card .link-name { color: var(--green); font-weight: bold; font-size: 1rem; }
+.link-card .link-desc { color: var(--dim); font-size: 0.82rem; line-height: 1.6; }
+.link-card .link-url { color: var(--green); font-size: 0.72rem; direction: ltr; text-align: left; opacity: 0.7; margin-top: 4px; }
+.link-card .link-go { color: var(--green); font-size: 0.78rem; font-weight: bold; margin-top: 6px; }
+
 .reviews { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 20px; }
 .review { background: linear-gradient(145deg, var(--bg3), var(--bg2)); border: 1px solid var(--card-border); border-radius: 14px; padding: 26px 22px; position: relative; transition: 0.35s; }
 .review:hover { border-color: var(--green); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,255,65,0.2); }
@@ -297,6 +310,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
 <aside class="sidebar">
   <div class="side-logo">&gt;_<br>RA</div>
   <a onclick="showSection('apps', this)" class="side-icon" title="تطبيقاتي">📱<span class="tooltip">تطبيقاتي</span></a>
+  <a onclick="showSection('links', this)" class="side-icon" title="روابط مفيدة">🔗<span class="tooltip">روابط مفيدة</span></a>
   <a onclick="showSection('plans', this)" class="side-icon" title="الاشتراكات">⭐<span class="tooltip">الاشتراكات</span></a>
   <a onclick="showSection('home', this)" class="side-icon" title="الرئيسية">🏠<span class="tooltip">الرئيسية</span></a>
   <a onclick="showSection('about', this)" class="side-icon" title="عنّي">👤<span class="tooltip">عنّي</span></a>
@@ -371,6 +385,148 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
   </div>
 </section>
 
+<!-- روابط مفيدة -->
+<section id="links" class="section">
+  <h2 class="page-title">🔗 روابط مفيدة</h2>
+  <p class="page-sub">مجموعة مختارة من أفضل المصادر التقنية — تعليم، أدوات، ذكاء اصطناعي، وتصميم.</p>
+
+  <div class="links-category">
+    <h3 class="links-category-title">📚 تعلم البرمجة</h3>
+    <div class="links-grid">
+      <a href="https://www.freecodecamp.org" target="_blank" class="link-card">
+        <div class="link-icon">🎓</div>
+        <div class="link-name">freeCodeCamp</div>
+        <div class="link-desc">كورسات برمجة مجانية معتمدة — HTML, CSS, JS, Python وأكثر.</div>
+        <div class="link-url">freecodecamp.org</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://www.w3schools.com" target="_blank" class="link-card">
+        <div class="link-icon">📖</div>
+        <div class="link-name">W3Schools</div>
+        <div class="link-desc">مرجع شامل لـ HTML, CSS, JavaScript, SQL وغيرها.</div>
+        <div class="link-url">w3schools.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://www.codecademy.com" target="_blank" class="link-card">
+        <div class="link-icon">💻</div>
+        <div class="link-name">Codecademy</div>
+        <div class="link-desc">دورات تفاعلية في البرمجة — تعلم بالتطبيق المباشر.</div>
+        <div class="link-url">codecademy.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://www.khanacademy.org/computing" target="_blank" class="link-card">
+        <div class="link-icon">🧮</div>
+        <div class="link-name">Khan Academy</div>
+        <div class="link-desc">أساسيات علوم الحاسب والبرمجة — بالعربية والإنجليزية.</div>
+        <div class="link-url">khanacademy.org</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="links-category">
+    <h3 class="links-category-title">🛠️ أدوات المبرمج</h3>
+    <div class="links-grid">
+      <a href="https://github.com" target="_blank" class="link-card">
+        <div class="link-icon">🐙</div>
+        <div class="link-name">GitHub</div>
+        <div class="link-desc">استضافة الأكواد والتعاون مع المطورين حول العالم.</div>
+        <div class="link-url">github.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://codepen.io" target="_blank" class="link-card">
+        <div class="link-icon">✏️</div>
+        <div class="link-name">CodePen</div>
+        <div class="link-desc">تجربة أكواد HTML/CSS/JS مباشرة في المتصفح.</div>
+        <div class="link-url">codepen.io</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://replit.com" target="_blank" class="link-card">
+        <div class="link-icon">💡</div>
+        <div class="link-name">Replit</div>
+        <div class="link-desc">بيئة تطوير كاملة في المتصفح — بدون تثبيت.</div>
+        <div class="link-url">replit.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://stackoverflow.com" target="_blank" class="link-card">
+        <div class="link-icon">❓</div>
+        <div class="link-name">Stack Overflow</div>
+        <div class="link-desc">أكبر مجتمع للمبرمجين — حلول لكل مشكلة.</div>
+        <div class="link-url">stackoverflow.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="links-category">
+    <h3 class="links-category-title">🤖 ذكاء اصطناعي</h3>
+    <div class="links-grid">
+      <a href="https://chat.openai.com" target="_blank" class="link-card">
+        <div class="link-icon">💬</div>
+        <div class="link-name">ChatGPT</div>
+        <div class="link-desc">مساعد ذكي لتوليد الأكواد وحل المشكلات البرمجية.</div>
+        <div class="link-url">chat.openai.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://gemini.google.com" target="_blank" class="link-card">
+        <div class="link-icon">✨</div>
+        <div class="link-name">Google Gemini</div>
+        <div class="link-desc">مساعد Google الذكي — مجاني وقوي للبرمجة.</div>
+        <div class="link-url">gemini.google.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://claude.ai" target="_blank" class="link-card">
+        <div class="link-icon">🎯</div>
+        <div class="link-name">Claude</div>
+        <div class="link-desc">مساعد ذكي ممتاز لتحليل وكتابة الأكواد.</div>
+        <div class="link-url">claude.ai</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://www.blackbox.ai" target="_blank" class="link-card">
+        <div class="link-icon">⬛</div>
+        <div class="link-name">Blackbox AI</div>
+        <div class="link-desc">مساعد ذكي مخصص للمبرمجين — بحث وإكمال كود.</div>
+        <div class="link-url">blackbox.ai</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="links-category">
+    <h3 class="links-category-title">🎨 تصميم</h3>
+    <div class="links-grid">
+      <a href="https://www.canva.com" target="_blank" class="link-card">
+        <div class="link-icon">🎨</div>
+        <div class="link-name">Canva</div>
+        <div class="link-desc">تصميم احترافي بسهولة — شعارات، بوسترات، عروض.</div>
+        <div class="link-url">canva.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://www.figma.com" target="_blank" class="link-card">
+        <div class="link-icon">🖌️</div>
+        <div class="link-name">Figma</div>
+        <div class="link-desc">تصميم واجهات المستخدم والمواقع — مجاني.</div>
+        <div class="link-url">figma.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://coolors.co" target="_blank" class="link-card">
+        <div class="link-icon">🌈</div>
+        <div class="link-name">Coolors</div>
+        <div class="link-desc">توليد باليتات ألوان احترافية بنقرة واحدة.</div>
+        <div class="link-url">coolors.co</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+      <a href="https://fonts.google.com" target="_blank" class="link-card">
+        <div class="link-icon">🔤</div>
+        <div class="link-name">Google Fonts</div>
+        <div class="link-desc">مكتبة خطوط مجانية — عربية وإنجليزية.</div>
+        <div class="link-url">fonts.google.com</div>
+        <div class="link-go">زيارة ←</div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- الرئيسية -->
 <section id="home" class="section active">
   <div class="hero-inner">
@@ -390,7 +546,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
     <p class="sub">متخصص في البرمجة والتطوير — الدفع عبر رصيد ليبيانا.</p>
     <div class="cta">
       <button class="btn" onclick="showSection('apps', document.querySelectorAll('.side-icon')[0])">📱 حمّل تطبيقاتي</button>
-      <button class="btn ghost" onclick="showSection('plans', document.querySelectorAll('.side-icon')[1])">⭐ اشترك الآن</button>
+      <button class="btn ghost" onclick="showSection('links', document.querySelectorAll('.side-icon')[1])">🔗 روابط مفيدة</button>
     </div>
   </div>
 </section>
@@ -524,8 +680,6 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
     <div class="tool-card"><div class="tool-icon">⚡</div><h4>JavaScript</h4><p>لتطوير الويب والتفاعل.</p><span class="tool-tag">لغة برمجة</span></div>
     <div class="tool-card"><div class="tool-icon">📝</div><h4>VS Code</h4><p>محرر الكود المفضل.</p><span class="tool-tag">محرر أكواد</span></div>
     <div class="tool-card"><div class="tool-icon">🐙</div><h4>GitHub</h4><p>لحفظ المشاريع.</p><span class="tool-tag">استضافة كود</span></div>
-    <div class="tool-card"><div class="tool-icon">🎨</div><h4>Figma</h4><p>لتصميم الواجهات.</p><span class="tool-tag">تصميم</span></div>
-    <div class="tool-card"><div class="tool-icon">🔧</div><h4>Postman</h4><p>لاختبار APIs.</p><span class="tool-tag">أدوات API</span></div>
   </div>
 </section>
 
@@ -539,7 +693,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 1
     <h3>💻 كيف تبدأ في البرمجة من الصفر؟</h3>
     <div class="meta">📅 للمبتدئين · 4 دقائق</div>
     <ul>
-      <li>اختر لغة واحدة وابدأ فيها (Python أو JavaScript)</li>
+      <li>اختر لغة واحدة وابدأ فيها</li>
       <li>تعلم الأساسيات: المتغيرات، الشروط، الحلقات</li>
       <li>طبّق بمشاريع صغيرة</li>
       <li>شارك كودك واطلب ملاحظات</li>
@@ -880,7 +1034,7 @@ function sendReport(e) {
 }
 
 document.addEventListener('click', function(e) {
-  const target = e.target.closest('button, .side-icon, .faq-question, .card, .app-card, a');
+  const target = e.target.closest('button, .side-icon, .faq-question, .card, .app-card, .link-card, a');
   if (target) playClick();
 }, true);
 
@@ -891,4 +1045,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-    </html>
+                                 </html>
